@@ -1,0 +1,318 @@
+﻿/*Container Items*/
+
+@media all and (max-width: 960px) {
+    .oasisWrap {
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+        box-sizing: border-box;
+    }
+
+    .headerLogoWrap .headerLogo {
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+    }
+}
+
+@media (max-width:600px) {
+    .wrapper_container {
+        padding: 10px;
+    }
+}
+
+@media all and (min-width: 960px) {
+    .oasisWrap {
+        width: 90%;
+        min-width: 960px; /* turn off for responsive width*/
+        box-sizing: border-box;
+    }
+
+    .headerLogoWrap .headerLogo {
+        width: 90%;
+        min-width: 960px; /* turn off for responsive width*/
+        max-width: 1200px;
+    }
+}
+
+.contentWrapper {
+    position: relative;
+    -moz-transition: -moz-transform 0.3s,opacity 0.3s;
+    -webkit-transition: -webkit-transform 0.3s,opacity 0.3s;
+    transition: transform 0.3s,opacity 0.3s;
+}
+
+/*Menu
+---------------------*/
+
+.desktop-menu {
+    display: block;
+}
+
+body.menu-active {
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}
+
+    body.menu-active .contentWrapper {
+        -moz-transform: translate(320px, 0);
+        -webkit-transform: translate(320px, 0);
+        transform: translate(320px, 0);
+        height: 100vh;
+        overflow: hidden;
+    }
+
+.mobile-menu-overlay {
+    -moz-transition: opacity 0.3s;
+    -webkit-transition: opacity 0.3s;
+    transition: opacity 0.3s;
+    opacity: 0;
+    overflow: hidden;
+}
+
+body.menu-active .mobile-menu-overlay {
+    opacity: 1;
+}
+
+.mobile-menu-trigger {
+    padding: 4px 10px;
+    height: 40px;
+    display: none;
+    position: relative;
+    text-align: right;/* temporary solution so it does not collide with hamburger menu for user side.*/
+}
+
+    .mobile-menu-trigger, .mobile-menu-trigger a, .mobile-menu-trigger a:hover {
+        text-decoration: none;
+        font-size: 1.2em;
+        cursor: pointer;
+    }
+
+        .mobile-menu-trigger .menuIcon {
+            background-image: url('../images/menu-sprite.png');
+            background-position: 0 32px;
+            width: 32px;
+            height: 32px;
+            display: inline-block;
+            vertical-align: bottom;
+        }
+
+.mobile-menu-overlay {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+body.menu-active .mobile-menu {
+    -moz-transform: none;
+    -webkit-transform: none;
+    transform: none;
+}
+
+.mobile-menu {
+    width: 320px;
+    height: 100vh;
+    position: absolute;
+    overflow-y: auto;
+    /*background: #fffde6;*/
+    -moz-transform: translate(-320px, 0);
+    -webkit-transform: translate(-320px, 0);
+    transform: translate(-320px, 0);
+    -moz-transition: -moz-transform 0.3s;
+    -webkit-transition: -webkit-transform 0.3s;
+    transition: transform 0.3s;
+}
+
+.mobile-menu-header {
+    
+     background-image:none;
+       -moz-background-size: auto 32px;
+    -webkit-background-size: auto 32px;
+    background-size: auto 32px;
+    background-position: 10px 8px;
+    background-repeat: no-repeat;
+    text-align: right;
+    padding: 8px 10px 4px 40px;
+    border-bottom: 2px solid black;
+}
+
+.mobile-menu-close {
+    height: 32px;
+    cursor: pointer;
+}
+
+.mobile-menu ul {
+    list-style-type: none;
+    padding: 0 20px;
+}
+
+    .mobile-menu ul li {
+        margin-top: 20px;
+    }
+
+        .mobile-menu ul li li {
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+.menu-list-root {
+    font-size: 1.3em;
+    border-bottom: 1px solid #333333;
+}
+
+    .menu-list-root a, .menu-list-root a:hover {
+        color: black;
+        text-decoration: none;
+    }
+
+.menu-list-toggle {
+    display: inline-block;
+    float: right;
+    background-image: url('../images/double_arrow_down.png');
+    -moz-background-size: contain;
+    -webkit-background-size: contain;
+    background-size: contain;
+    -moz-transition: -moz-transform 0.12s;
+    -webkit-transition: -webkit-transform 0.12s;
+    transition: transform 0.12s;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+    .menu-list-toggle::after {
+        clear: both;
+    }
+
+    .menu-list-toggle.active {
+        -moz-transform: rotate(180deg);
+        -webkit-transform: rotate(180deg);
+        transform: rotate(180deg);
+    }
+
+.menu-list-child {
+    font-size: 1.1em;
+    display: none;
+}
+
+    .menu-list-child.active {
+        display: block;
+    }
+
+    .menu-list-child ul {
+        padding: 0;
+    }
+
+    .menu-list-child li {
+        padding: 0 12px;
+    }
+
+@media all and (max-width: 768px) {
+    .desktop-menu, .nav_top.desktop-menu {
+        display: none;
+    }
+
+
+    .mobile-menu-trigger {
+        display: block;
+    }
+}
+
+
+
+/*Login
+----------------------------*/
+.mobile-login {
+    display: none;
+}
+
+@media all and (max-width: 768px) {
+    .mobile-login {
+        display: inline-block;
+        padding: 6px 20px;
+        background: transparent;
+        /*background: #70b100; not sure why we color it with that */
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+    }
+
+        .mobile-login, .mobile-login a, .mobile-login a:link, .mobile-login a:visited, .mobile-login a:hover {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+}
+
+/*Achievement*/
+.achievementRowIcon {
+    float: right;
+    width: 10%;
+}
+
+.achievementRowData {
+    float: left;
+    width: 90%;
+}
+
+@media (max-width:768px) {
+    .achievementRowIcon {
+        float: none;
+        display: none;
+    }
+
+    .achievementRowData {
+        float: none;
+        width: initial;
+    }
+}
+
+
+/*Others
+-----------------------*/
+
+@media (max-width:768px) {
+    .mobile-no-box {
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .mobile-small-text {
+        font-size: 0.9em;
+    }
+
+    .mobile-lineSeparator {
+        border-bottom: 1px solid gray;
+        margin: 10px 0;
+    }
+}
+
+@media (min-width:675px) and (max-width:900px) {
+    .relatedProductCard {
+        -webkit-flex: 1 0 30%;
+        flex: 1 0 30%;
+        margin: 10px 1.5%;
+    }
+}
+
+@media (min-width:450px) and (max-width:675px) {
+    .relatedProductCard {
+        -webkit-flex: 1 0 46%;
+        flex: 1 0 46%;
+        margin: 10px 2%;
+    }
+}
+
+@media (max-width:450px) {
+    .relatedProductCard {
+        -webkit-flex: 1 0 100%;
+        flex: 1 0 100%;
+        margin: 10px 0%;
+    }
+}

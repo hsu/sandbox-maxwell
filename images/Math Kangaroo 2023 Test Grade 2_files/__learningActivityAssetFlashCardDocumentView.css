@@ -1,0 +1,56 @@
+﻿.learningActivityAssetFlashCard_DocumentView_Image {
+    height: 100%;
+    display: flex;
+    flex-direction: column; /* so tall image is not chopped, but this makes video not visible */
+    align-items: center;
+}
+.learningActivityAssetFlashCard_DocumentView_Video {
+    height: 100%;
+    display: flex;
+    flex-direction: row; /* video won't be displayed if we use column. */
+    align-items: center;
+}
+
+.learningActivityAssetFlashCard_DocumentView_Other {
+    height: 100%;
+    display: flex;
+    flex-direction: row; /* follow video for now. */
+    align-items: center;
+}
+
+.flashCard_documentViewWrapper {
+    overflow-y: auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%; /* so PDF/other document icon can be centered */
+}
+
+.flashCard_documentView {
+    flex: 0 0 auto;
+    max-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    word-break: break-word;
+    text-align: center;
+}
+
+.flashCard_videoDocumentView {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.flashCard_imageDocumentView {
+    flex: 1 1 auto;
+    max-height: 100%;
+    max-width: 100%;
+    text-align: center;
+}
+
+    .flashCard_imageDocumentView.height200 {
+        height: 200px /* when image is displayed normally in a box (not maximized), we need to limit the height so the image can be displayed proportionally. */
+    }

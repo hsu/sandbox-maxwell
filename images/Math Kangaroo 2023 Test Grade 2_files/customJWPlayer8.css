@@ -1,0 +1,4 @@
+﻿/* general custom styling that applies to all jw8 configurations */
+.jw-controlbar .jw-button-image {
+    max-height: 18px;
+}

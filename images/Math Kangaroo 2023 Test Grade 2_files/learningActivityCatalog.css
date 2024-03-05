@@ -1,0 +1,314 @@
+﻿/*
+    This css is exclusively used for the UI of course/learning activity courses or we call it catalog and catalog items
+*/
+.learningActivityCatalogListHeaderClass {
+    /*margin-left: 15px;*/
+}
+
+.factor360LearningActivityCatalogItem_ListView_MainContainer {
+    font-size: 100%; /*no enlargement */
+    padding: 0px;
+    margin-bottom: 12px;
+/*    cursor: pointer;*/
+}
+
+.catalogItemTitleAndStatus {
+    cursor: pointer;
+}
+
+.aspNetDisabled.factor360LearningActivityCatalogItem_ListView_MainContainer {
+    font-size: 100%; /*no enlargement */
+    padding: 0px;
+    margin-bottom: 12px;
+    cursor: not-allowed;
+}
+
+.factor360LearningActivityCatalogItem_ListView_MainContainer .learningActivityCredit {
+    margin: 5px !important;
+    font-style: italic;
+}
+
+.switchLearningActivityCatalogDisplayModeClass {
+    text-align: right;
+    margin: 8px 0px;
+}
+
+.factor360LearningActivityCatalogItem_container {
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+    display: flex;
+    /* NEW, Spec - Firefox, Chrome, Opera */
+    flex-flow: row nowrap;
+    -webkit-justify-content: space-between;
+    /* Safari */
+    justify-content: space-between;
+    -webkit-align-items: center;
+    /* Safari */
+    align-items: center;
+    /*height: 120px; follows image height */
+}
+
+    .factor360LearningActivityCatalogItem_container.topAligned {
+        -webkit-align-items: flex-start;
+        /* Safari */
+        align-items: flex-start;
+        /*height: 120px; follows image height */
+    }
+
+    .factor360LearningActivityCatalogItem_container.disabledLearningActivityCatalogItema {
+        opacity: .7;
+    }
+
+.factor360LearningActivityCatalogItemCoverImageWrapper {
+    flex: 0 1 10%;
+    left: 0;
+    margin: 0px 10px 1px 0px; /* no margin except on the right (and 1px bottom so that image does not overlay the border) to give impression that the image sticks to the left of the container box*/
+    min-width: 100px; /* to enlarge image smaller than 150px wide */
+    position: relative;
+}
+
+
+.factor360LearningActivityCatalogItemCoverImage {
+    width: 100%;
+}
+
+.factor360LearningActivityCatalogItemContent {
+    flex: 1 1 90%;
+    position: relative;
+}
+
+   .userCatalogProgressBar {
+        flex: 1 1 100%;
+        position: relative;
+        height: 24px;
+        overflow: hidden;
+    }
+.userCatalogProgressBar.height24 {   
+    height: 24px;
+    overflow: hidden;
+}
+
+@media only screen and (min-width : 768px) {
+    .factor360LearningActivityCatalogItemCoverImageWrapper {
+        flex: 0 1 15%;
+        min-width: 125px; /* to enlarge image smaller than 180px wide */
+    }
+
+    .factor360LearningActivityCatalogItemContent {
+        flex: 0 1 100%;
+    }
+
+       .userCatalogProgressBar {
+           height:auto;
+           overflow:visible;
+        }
+}
+
+.factor360LearningActivityCatalogItem_TileView_MainContainer .learningActivityCatalogItemCoverImage {
+    width: 100%;
+    height: 180px;
+    vertical-align: middle;
+    background: transparent;
+    background-size: auto; /* "cover" stretches the image, but "contains" will have some transparent background, not fully takes the whole space */
+    -webkit-background-size: auto;
+    -moz-background-size: auto;
+    -o-background-size: auto;
+    background-repeat: no-repeat;
+    position: relative;
+    background-position: center;
+}
+/* Nov 15, 2019. fix the cover image so that it does not look weird */
+@media only screen and (min-width : 768px) {
+    .factor360LearningActivityCatalogItem_TileView_MainContainer .learningActivityCatalogItemCoverImage {
+        background-size: cover; /* covers all the container */
+        -webkit-background-size: contain;
+        -moz-background-size: contain;
+        -o-background-size: contain;
+        height: 180px;
+    }
+}
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 992px) {
+    .factor360LearningActivityCatalogItem_TileView_MainContainer .learningActivityCatalogItemCoverImage {
+        height: 200px;
+        background-size: contain; /*will have some white spaces */
+        -webkit-background-size: contain;
+        -moz-background-size: contain;
+        -o-background-size: contain;
+    }
+}
+
+.factor360LearningActivityCatalogItem_TileView_MainContainer .learningActivityCredit {
+    margin: 5px !important;
+    font-style: italic;
+}
+
+.factor360LearningActivityCatalogItem_TileView_MainContainer .learningActivityPrice {
+    margin: 5px !important;
+}
+
+.factor360LearningActivityCatalogItemContent_InnerContentWrapper {
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+    display: flex;
+    /* NEW, Spec - Firefox, Chrome, Opera */
+    flex-flow: column nowrap;
+    -webkit-justify-content: space-between;
+    /* Safari */
+    justify-content: space-between;
+    -webkit-align-items: stretch;
+    /* Safari */
+    align-items: stretch;
+    padding: 15px 5px 8px 5px;
+}
+
+.factor360LearningActivityCatalogItemContent_InnerContent {
+    flex: 0 1 auto;
+    position: relative;
+}
+
+.factor360LearningActivityCatalogItemContent_iconWrapper_tileView {
+    padding: 1px 0px !important;
+}
+
+    .icons,
+    .factor360LearningActivityCatalogItemContent_iconWrapper_tileView .icons {
+        text-align: right;
+        margin: 1px 1px -10px 0px; /* 1px so that it does not touch the parent box*/
+    }
+
+        .icons .icon,
+        .factor360LearningActivityCatalogItemContent_iconWrapper_tileView .icon {
+            top: 0;
+            margin: 0 5px 0px 10px;
+            font-size: 150%;
+            display: inline-block;
+        }
+
+.factor360LearningActivityCatalogItemContent .catalogItemTitleAndStatus {
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+    display: flex;
+    /* NEW, Spec - Firefox, Chrome, Opera */
+    flex-flow: row nowrap;
+    -webkit-justify-content: space-between;
+    /* Safari */
+    justify-content: space-between;
+    -webkit-align-items: flex-start;
+    /* Safari */
+    align-items: flex-start;
+}
+
+.factor360LearningActivityCatalogItemContent .catalogItemTitle {
+    flex: 0 1 auto;
+    font-weight: 700;
+    font-size: 107%;
+}
+
+.factor360LearningActivityCatalogItemContent .learningActivityCatalogItem_ListView_UserStatus {
+    flex: 0 1 auto;
+}
+
+    .factor360LearningActivityCatalogItemContent .learningActivityCatalogItem_ListView_UserStatus.rightMargined {
+        margin-right: 25px; /* used when featured banner shows up (see js file) */
+    }
+
+.factor360LearningActivityCatalogItem_bottomSection {
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+    display: flex;
+    /* NEW, Spec - Firefox, Chrome, Opera */
+    flex-flow: row wrap;
+    -webkit-justify-content: space-between;
+    /* Safari */
+    justify-content: space-between;
+    -webkit-align-items: flex-start;
+    /* Safari */
+    align-items: flex-start;
+}
+
+.factor360LearningActivityCatalogItem_bottomSection {
+    margin-top: 8px;
+}
+
+    .factor360LearningActivityCatalogItem_bottomSection .catalogItemPrices {
+        flex: 1 1 auto;
+        text-align: right;
+    }
+
+    .factor360LearningActivityCatalogItem_bottomSection .catalogItemSocialStatistics {
+        flex: 0 1 40%;
+        left: 0;
+    }
+
+.factor360LearningActivityCatalogItem_favorite {
+    text-decoration: none;
+    color: inherit;
+}
+
+    .factor360LearningActivityCatalogItem_favorite.favorited {
+        color: #d01919 !important; /* red */
+    }
+
+    .factor360LearningActivityCatalogItem_favorite.notFavorited {
+        color: #b7b7b7 !important; /* grey */
+    }
+
+.factor360LearningActivityCatalogItem_learningActivityItemBadge {
+    font-size: 12px;
+    background-color: #EDEDED;
+    color: black;
+    margin-left: 20px;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border: 1px solid black;
+    border-radius: 4px;
+    -webkit-transition: all 200ms ease-in;
+    -webkit-transform: scale(1);
+    -ms-transition: all 200ms ease-in;
+    -ms-transform: scale(1);
+    -moz-transition: all 200ms ease-in;
+    -moz-transform: scale(1);
+    transition: all 200ms ease-in;
+    transform: scale(1);
+}
+
+    .factor360LearningActivityCatalogItem_learningActivityItemBadge:hover {
+        z-index: 2;
+        -webkit-transition: all 200ms ease-in;
+        -webkit-transform: scale(1.2);
+        -ms-transition: all 200ms ease-in;
+        -ms-transform: scale(1.2);
+        -moz-transition: all 200ms ease-in;
+        -moz-transform: scale(1.2);
+        transition: all 200ms ease-in;
+        transform: scale(1.2);
+    }
+
+.factor360LearningActivityCatalogListSpanToMakeDivClickable {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}

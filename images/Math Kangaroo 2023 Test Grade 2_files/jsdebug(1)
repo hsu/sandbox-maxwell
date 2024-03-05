@@ -1,0 +1,281 @@
+Type.registerNamespace('SelfAssessment.WebApp');
+SelfAssessment.WebApp.QuestionServices=function() {
+SelfAssessment.WebApp.QuestionServices.initializeBase(this);
+this._timeout = 0;
+this._userContext = null;
+this._succeeded = null;
+this._failed = null;
+}
+SelfAssessment.WebApp.QuestionServices.prototype={
+_get_path:function() {
+ var p = this.get_path();
+ if (p) return p;
+ else return SelfAssessment.WebApp.QuestionServices._staticInstance.get_path();},
+ToggleHasOptedToDisplayAnswerKey:function(EncryptedUserExamMapID,succeededCallback, failedCallback, userContext) {
+/// <param name="EncryptedUserExamMapID" type="String">System.String</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'ToggleHasOptedToDisplayAnswerKey',false,{EncryptedUserExamMapID:EncryptedUserExamMapID},succeededCallback,failedCallback,userContext); },
+AuditUserQuestionAnswerChanged:function(UserQuestionID,CurrentSelectedSequences,NewSelectedSequences,succeededCallback, failedCallback, userContext) {
+/// <param name="UserQuestionID" type="String">System.String</param>
+/// <param name="CurrentSelectedSequences" type="String">System.String</param>
+/// <param name="NewSelectedSequences" type="String">System.String</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'AuditUserQuestionAnswerChanged',false,{UserQuestionID:UserQuestionID,CurrentSelectedSequences:CurrentSelectedSequences,NewSelectedSequences:NewSelectedSequences},succeededCallback,failedCallback,userContext); },
+AutoSaveQuestionContent:function(PerformerID,QuestionID,QuestionTitle,Objective,LearningObjectiveIDStrs,Keywords,Stem,LeadIn,Commentary,ReferenceContent,AnswerOptionObjectList,AnswerSequenceMode,succeededCallback, failedCallback, userContext) {
+/// <param name="PerformerID" type="Number">System.Int32</param>
+/// <param name="QuestionID" type="Number">System.Int32</param>
+/// <param name="QuestionTitle" type="String">System.String</param>
+/// <param name="Objective" type="String">System.String</param>
+/// <param name="LearningObjectiveIDStrs" type="Array">System.String[]</param>
+/// <param name="Keywords" type="String">System.String</param>
+/// <param name="Stem" type="String">System.String</param>
+/// <param name="LeadIn" type="String">System.String</param>
+/// <param name="Commentary" type="String">System.String</param>
+/// <param name="ReferenceContent" type="String">System.String</param>
+/// <param name="AnswerOptionObjectList" type="Array">System.String[]</param>
+/// <param name="AnswerSequenceMode" type="String">System.String</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'AutoSaveQuestionContent',false,{PerformerID:PerformerID,QuestionID:QuestionID,QuestionTitle:QuestionTitle,Objective:Objective,LearningObjectiveIDStrs:LearningObjectiveIDStrs,Keywords:Keywords,Stem:Stem,LeadIn:LeadIn,Commentary:Commentary,ReferenceContent:ReferenceContent,AnswerOptionObjectList:AnswerOptionObjectList,AnswerSequenceMode:AnswerSequenceMode},succeededCallback,failedCallback,userContext); },
+UpdateUserQuestionStatusFilterEnumSession:function(NewStatusFilterEnum,NewSpecificCategoryIDFilter,NullableUserExamID,NullableUserExamQuizID,succeededCallback, failedCallback, userContext) {
+/// <param name="NewStatusFilterEnum" type="SelfAssessment.Core.Constant.UserQuestionFilter_FilterEnum">SelfAssessment.Core.Constant.UserQuestionFilter+FilterEnum</param>
+/// <param name="NewSpecificCategoryIDFilter" type="Number">System.Int32</param>
+/// <param name="NullableUserExamID" type="Number">System.Int32</param>
+/// <param name="NullableUserExamQuizID" type="Number">System.Int32</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'UpdateUserQuestionStatusFilterEnumSession',false,{NewStatusFilterEnum:NewStatusFilterEnum,NewSpecificCategoryIDFilter:NewSpecificCategoryIDFilter,NullableUserExamID:NullableUserExamID,NullableUserExamQuizID:NullableUserExamQuizID},succeededCallback,failedCallback,userContext); },
+CompareUserExamQuestionNavigationFilters:function(UserExamQuestionNavigationFilterToCompare,succeededCallback, failedCallback, userContext) {
+/// <param name="UserExamQuestionNavigationFilterToCompare" type="SelfAssessment.Core.Constant.UserQuestionFilter_FilterEnum">SelfAssessment.Core.Constant.UserQuestionFilter+FilterEnum</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'CompareUserExamQuestionNavigationFilters',false,{UserExamQuestionNavigationFilterToCompare:UserExamQuestionNavigationFilterToCompare},succeededCallback,failedCallback,userContext); },
+UpdateCurrentUserQuestionDuringLearnerNavigation:function(UserQuestionID,NullableUserExamID,NullableUserExamQuizID,succeededCallback, failedCallback, userContext) {
+/// <param name="UserQuestionID" type="Number">System.Int32</param>
+/// <param name="NullableUserExamID" type="Number">System.Int32</param>
+/// <param name="NullableUserExamQuizID" type="Number">System.Int32</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'UpdateCurrentUserQuestionDuringLearnerNavigation',false,{UserQuestionID:UserQuestionID,NullableUserExamID:NullableUserExamID,NullableUserExamQuizID:NullableUserExamQuizID},succeededCallback,failedCallback,userContext); },
+UpdateClientQuestionSetting:function(TargetID,IsSelected,succeededCallback, failedCallback, userContext) {
+/// <param name="TargetID" type="Number">System.Int32</param>
+/// <param name="IsSelected" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'UpdateClientQuestionSetting',false,{TargetID:TargetID,IsSelected:IsSelected},succeededCallback,failedCallback,userContext); },
+UpdateClientQuestionSettingByQuestionSettingColumnEnum:function(TargetID,IsSelected,succeededCallback, failedCallback, userContext) {
+/// <param name="TargetID" type="Number">System.Int32</param>
+/// <param name="IsSelected" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'UpdateClientQuestionSettingByQuestionSettingColumnEnum',false,{TargetID:TargetID,IsSelected:IsSelected},succeededCallback,failedCallback,userContext); },
+UpdateClientAnswerSequenceMode:function(TargetClientAnswerSequenceModeID,IsSelected,succeededCallback, failedCallback, userContext) {
+/// <param name="TargetClientAnswerSequenceModeID" type="Number">System.Int32</param>
+/// <param name="IsSelected" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'UpdateClientAnswerSequenceMode',false,{TargetClientAnswerSequenceModeID:TargetClientAnswerSequenceModeID,IsSelected:IsSelected},succeededCallback,failedCallback,userContext); },
+SetDefaultClientAnswerSequenceMode:function(TargetAnswerSequenceModeID,IsSelected,succeededCallback, failedCallback, userContext) {
+/// <param name="TargetAnswerSequenceModeID" type="Number">System.Int32</param>
+/// <param name="IsSelected" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'SetDefaultClientAnswerSequenceMode',false,{TargetAnswerSequenceModeID:TargetAnswerSequenceModeID,IsSelected:IsSelected},succeededCallback,failedCallback,userContext); },
+UpdateClientQuestionType:function(TargetNullableClientQuestionTypeID,TargetQuestionTypeID,IsSelected,succeededCallback, failedCallback, userContext) {
+/// <param name="TargetNullableClientQuestionTypeID" type="Number">System.Int32</param>
+/// <param name="TargetQuestionTypeID" type="Number">System.Int32</param>
+/// <param name="IsSelected" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'UpdateClientQuestionType',false,{TargetNullableClientQuestionTypeID:TargetNullableClientQuestionTypeID,TargetQuestionTypeID:TargetQuestionTypeID,IsSelected:IsSelected},succeededCallback,failedCallback,userContext); },
+ProcessUserQuestionSubmissionDueToTimeIsUp:function(succeededCallback, failedCallback, userContext) {
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'ProcessUserQuestionSubmissionDueToTimeIsUp',false,{},succeededCallback,failedCallback,userContext); },
+ProcessExamSectionSubmissionDueToTimeIsUp:function(succeededCallback, failedCallback, userContext) {
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'ProcessExamSectionSubmissionDueToTimeIsUp',false,{},succeededCallback,failedCallback,userContext); },
+ProcessExamSubmissionDueToTimeIsUp:function(succeededCallback, failedCallback, userContext) {
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'ProcessExamSubmissionDueToTimeIsUp',false,{},succeededCallback,failedCallback,userContext); },
+UpdateCurrentUserQuestionElapsedTime:function(succeededCallback, failedCallback, userContext) {
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'UpdateCurrentUserQuestionElapsedTime',false,{},succeededCallback,failedCallback,userContext); }}
+SelfAssessment.WebApp.QuestionServices.registerClass('SelfAssessment.WebApp.QuestionServices',Sys.Net.WebServiceProxy);
+SelfAssessment.WebApp.QuestionServices._staticInstance = new SelfAssessment.WebApp.QuestionServices();
+SelfAssessment.WebApp.QuestionServices.set_path = function(value) {
+SelfAssessment.WebApp.QuestionServices._staticInstance.set_path(value); }
+SelfAssessment.WebApp.QuestionServices.get_path = function() { 
+/// <value type="String" mayBeNull="true">The service url.</value>
+return SelfAssessment.WebApp.QuestionServices._staticInstance.get_path();}
+SelfAssessment.WebApp.QuestionServices.set_timeout = function(value) {
+SelfAssessment.WebApp.QuestionServices._staticInstance.set_timeout(value); }
+SelfAssessment.WebApp.QuestionServices.get_timeout = function() { 
+/// <value type="Number">The service timeout.</value>
+return SelfAssessment.WebApp.QuestionServices._staticInstance.get_timeout(); }
+SelfAssessment.WebApp.QuestionServices.set_defaultUserContext = function(value) { 
+SelfAssessment.WebApp.QuestionServices._staticInstance.set_defaultUserContext(value); }
+SelfAssessment.WebApp.QuestionServices.get_defaultUserContext = function() { 
+/// <value mayBeNull="true">The service default user context.</value>
+return SelfAssessment.WebApp.QuestionServices._staticInstance.get_defaultUserContext(); }
+SelfAssessment.WebApp.QuestionServices.set_defaultSucceededCallback = function(value) { 
+ SelfAssessment.WebApp.QuestionServices._staticInstance.set_defaultSucceededCallback(value); }
+SelfAssessment.WebApp.QuestionServices.get_defaultSucceededCallback = function() { 
+/// <value type="Function" mayBeNull="true">The service default succeeded callback.</value>
+return SelfAssessment.WebApp.QuestionServices._staticInstance.get_defaultSucceededCallback(); }
+SelfAssessment.WebApp.QuestionServices.set_defaultFailedCallback = function(value) { 
+SelfAssessment.WebApp.QuestionServices._staticInstance.set_defaultFailedCallback(value); }
+SelfAssessment.WebApp.QuestionServices.get_defaultFailedCallback = function() { 
+/// <value type="Function" mayBeNull="true">The service default failed callback.</value>
+return SelfAssessment.WebApp.QuestionServices._staticInstance.get_defaultFailedCallback(); }
+SelfAssessment.WebApp.QuestionServices.set_enableJsonp = function(value) { SelfAssessment.WebApp.QuestionServices._staticInstance.set_enableJsonp(value); }
+SelfAssessment.WebApp.QuestionServices.get_enableJsonp = function() { 
+/// <value type="Boolean">Specifies whether the service supports JSONP for cross domain calling.</value>
+return SelfAssessment.WebApp.QuestionServices._staticInstance.get_enableJsonp(); }
+SelfAssessment.WebApp.QuestionServices.set_jsonpCallbackParameter = function(value) { SelfAssessment.WebApp.QuestionServices._staticInstance.set_jsonpCallbackParameter(value); }
+SelfAssessment.WebApp.QuestionServices.get_jsonpCallbackParameter = function() { 
+/// <value type="String">Specifies the parameter name that contains the callback function name for a JSONP request.</value>
+return SelfAssessment.WebApp.QuestionServices._staticInstance.get_jsonpCallbackParameter(); }
+SelfAssessment.WebApp.QuestionServices.set_path("/WebServices/QuestionServices.asmx");
+SelfAssessment.WebApp.QuestionServices.ToggleHasOptedToDisplayAnswerKey= function(EncryptedUserExamMapID,onSuccess,onFailed,userContext) {
+/// <param name="EncryptedUserExamMapID" type="String">System.String</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.QuestionServices._staticInstance.ToggleHasOptedToDisplayAnswerKey(EncryptedUserExamMapID,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.QuestionServices.AuditUserQuestionAnswerChanged= function(UserQuestionID,CurrentSelectedSequences,NewSelectedSequences,onSuccess,onFailed,userContext) {
+/// <param name="UserQuestionID" type="String">System.String</param>
+/// <param name="CurrentSelectedSequences" type="String">System.String</param>
+/// <param name="NewSelectedSequences" type="String">System.String</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.QuestionServices._staticInstance.AuditUserQuestionAnswerChanged(UserQuestionID,CurrentSelectedSequences,NewSelectedSequences,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.QuestionServices.AutoSaveQuestionContent= function(PerformerID,QuestionID,QuestionTitle,Objective,LearningObjectiveIDStrs,Keywords,Stem,LeadIn,Commentary,ReferenceContent,AnswerOptionObjectList,AnswerSequenceMode,onSuccess,onFailed,userContext) {
+/// <param name="PerformerID" type="Number">System.Int32</param>
+/// <param name="QuestionID" type="Number">System.Int32</param>
+/// <param name="QuestionTitle" type="String">System.String</param>
+/// <param name="Objective" type="String">System.String</param>
+/// <param name="LearningObjectiveIDStrs" type="Array">System.String[]</param>
+/// <param name="Keywords" type="String">System.String</param>
+/// <param name="Stem" type="String">System.String</param>
+/// <param name="LeadIn" type="String">System.String</param>
+/// <param name="Commentary" type="String">System.String</param>
+/// <param name="ReferenceContent" type="String">System.String</param>
+/// <param name="AnswerOptionObjectList" type="Array">System.String[]</param>
+/// <param name="AnswerSequenceMode" type="String">System.String</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.QuestionServices._staticInstance.AutoSaveQuestionContent(PerformerID,QuestionID,QuestionTitle,Objective,LearningObjectiveIDStrs,Keywords,Stem,LeadIn,Commentary,ReferenceContent,AnswerOptionObjectList,AnswerSequenceMode,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.QuestionServices.UpdateUserQuestionStatusFilterEnumSession= function(NewStatusFilterEnum,NewSpecificCategoryIDFilter,NullableUserExamID,NullableUserExamQuizID,onSuccess,onFailed,userContext) {
+/// <param name="NewStatusFilterEnum" type="SelfAssessment.Core.Constant.UserQuestionFilter_FilterEnum">SelfAssessment.Core.Constant.UserQuestionFilter+FilterEnum</param>
+/// <param name="NewSpecificCategoryIDFilter" type="Number">System.Int32</param>
+/// <param name="NullableUserExamID" type="Number">System.Int32</param>
+/// <param name="NullableUserExamQuizID" type="Number">System.Int32</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.QuestionServices._staticInstance.UpdateUserQuestionStatusFilterEnumSession(NewStatusFilterEnum,NewSpecificCategoryIDFilter,NullableUserExamID,NullableUserExamQuizID,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.QuestionServices.CompareUserExamQuestionNavigationFilters= function(UserExamQuestionNavigationFilterToCompare,onSuccess,onFailed,userContext) {
+/// <param name="UserExamQuestionNavigationFilterToCompare" type="SelfAssessment.Core.Constant.UserQuestionFilter_FilterEnum">SelfAssessment.Core.Constant.UserQuestionFilter+FilterEnum</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.QuestionServices._staticInstance.CompareUserExamQuestionNavigationFilters(UserExamQuestionNavigationFilterToCompare,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.QuestionServices.UpdateCurrentUserQuestionDuringLearnerNavigation= function(UserQuestionID,NullableUserExamID,NullableUserExamQuizID,onSuccess,onFailed,userContext) {
+/// <param name="UserQuestionID" type="Number">System.Int32</param>
+/// <param name="NullableUserExamID" type="Number">System.Int32</param>
+/// <param name="NullableUserExamQuizID" type="Number">System.Int32</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.QuestionServices._staticInstance.UpdateCurrentUserQuestionDuringLearnerNavigation(UserQuestionID,NullableUserExamID,NullableUserExamQuizID,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.QuestionServices.UpdateClientQuestionSetting= function(TargetID,IsSelected,onSuccess,onFailed,userContext) {
+/// <param name="TargetID" type="Number">System.Int32</param>
+/// <param name="IsSelected" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.QuestionServices._staticInstance.UpdateClientQuestionSetting(TargetID,IsSelected,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.QuestionServices.UpdateClientQuestionSettingByQuestionSettingColumnEnum= function(TargetID,IsSelected,onSuccess,onFailed,userContext) {
+/// <param name="TargetID" type="Number">System.Int32</param>
+/// <param name="IsSelected" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.QuestionServices._staticInstance.UpdateClientQuestionSettingByQuestionSettingColumnEnum(TargetID,IsSelected,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.QuestionServices.UpdateClientAnswerSequenceMode= function(TargetClientAnswerSequenceModeID,IsSelected,onSuccess,onFailed,userContext) {
+/// <param name="TargetClientAnswerSequenceModeID" type="Number">System.Int32</param>
+/// <param name="IsSelected" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.QuestionServices._staticInstance.UpdateClientAnswerSequenceMode(TargetClientAnswerSequenceModeID,IsSelected,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.QuestionServices.SetDefaultClientAnswerSequenceMode= function(TargetAnswerSequenceModeID,IsSelected,onSuccess,onFailed,userContext) {
+/// <param name="TargetAnswerSequenceModeID" type="Number">System.Int32</param>
+/// <param name="IsSelected" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.QuestionServices._staticInstance.SetDefaultClientAnswerSequenceMode(TargetAnswerSequenceModeID,IsSelected,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.QuestionServices.UpdateClientQuestionType= function(TargetNullableClientQuestionTypeID,TargetQuestionTypeID,IsSelected,onSuccess,onFailed,userContext) {
+/// <param name="TargetNullableClientQuestionTypeID" type="Number">System.Int32</param>
+/// <param name="TargetQuestionTypeID" type="Number">System.Int32</param>
+/// <param name="IsSelected" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.QuestionServices._staticInstance.UpdateClientQuestionType(TargetNullableClientQuestionTypeID,TargetQuestionTypeID,IsSelected,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.QuestionServices.ProcessUserQuestionSubmissionDueToTimeIsUp= function(onSuccess,onFailed,userContext) {
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.QuestionServices._staticInstance.ProcessUserQuestionSubmissionDueToTimeIsUp(onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.QuestionServices.ProcessExamSectionSubmissionDueToTimeIsUp= function(onSuccess,onFailed,userContext) {
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.QuestionServices._staticInstance.ProcessExamSectionSubmissionDueToTimeIsUp(onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.QuestionServices.ProcessExamSubmissionDueToTimeIsUp= function(onSuccess,onFailed,userContext) {
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.QuestionServices._staticInstance.ProcessExamSubmissionDueToTimeIsUp(onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.QuestionServices.UpdateCurrentUserQuestionElapsedTime= function(onSuccess,onFailed,userContext) {
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.QuestionServices._staticInstance.UpdateCurrentUserQuestionElapsedTime(onSuccess,onFailed,userContext); }
+var gtc = Sys.Net.WebServiceProxy._generateTypedConstructor;
+Type.registerNamespace('SelfAssessment.Core.BusinessLogicLayer');
+if (typeof(SelfAssessment.Core.BusinessLogicLayer.ReturnMessage) === 'undefined') {
+SelfAssessment.Core.BusinessLogicLayer.ReturnMessage=gtc("SelfAssessment.Core.BusinessLogicLayer.ReturnMessage");
+SelfAssessment.Core.BusinessLogicLayer.ReturnMessage.registerClass('SelfAssessment.Core.BusinessLogicLayer.ReturnMessage');
+}
+Type.registerNamespace('SelfAssessment.Core.Constant');
+if (typeof(SelfAssessment.Core.Constant.FilterEnum) === 'undefined') {
+SelfAssessment.Core.Constant.FilterEnum = function() { throw Error.invalidOperation(); }
+SelfAssessment.Core.Constant.FilterEnum.prototype = {All: 1,QuestionSeriesOnly: 2,ByCategory: 3,AnsweredOnly: 4,CorrectAnswerOnly: 5,IncorrectAnswerOnly: 6,UnansweredOnly: 7,BookmarkedOnly: 8,QuestionsWithNotesOnly: 9,BySpecificCategory: 10,ByConfidenceLevel: 11,ConfidenceLevel_PureGuess: 12,ConfidenceLevel_SemiConfidence: 13,ConfidenceLevel_FairlyConfidence: 14,ConfidenceLevel_100pctCertain: 15}
+SelfAssessment.Core.Constant.FilterEnum.registerEnum('SelfAssessment.Core.Constant.FilterEnum', true);
+}

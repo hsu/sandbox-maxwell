@@ -1,0 +1,1732 @@
+﻿/* THEME COLOR :  #0B5995 */
+:root {
+    --factor360ButtonBackgroundColor: #0B5995;
+    --factor360ButtonColor: #fff;
+}
+
+body {
+    background: none;
+    background-color: #f1f1f1;
+    /*background-image: url(../images/bodyBackground/grey_diagonal_fabric.png);
+    background-repeat: repeat;
+    background-color: #E2E2E2;*/
+}
+
+a {
+    color: #3687C6;
+}
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+.banner {
+    vertical-align: middle;
+    border: 0px;
+}
+
+.box {
+    padding: 1px;
+}
+
+.title {
+    color: #38668A;
+}
+
+
+
+.box_error_small {
+    border: 1px solid red;
+    color: Red;
+    margin: 10px 0;
+    padding: 2px 20px 2px 20px;
+}
+
+.box_notification_short {
+    background: #edf2f8;
+    border: 1px solid #C5CFD9;
+    margin: 10px 0;
+    padding: 5px 5px 5px 10px;
+    border-radius: 5px !important;
+    -webkit-border-radius: 5px !important;
+    -moz-border-radius-: 5px !important;
+}
+
+    .box_notification_short.banner {
+    }
+
+.box_notification {
+    background: #edf2f8;
+    border: 1px solid #C5CFD9;
+    margin: 10px 0;
+    padding: 20px 20px 20px 20px;
+}
+
+    .box_notification.NoPadding {
+        padding: 0;
+    }
+
+    .box_notification.reload {
+        background: #edf2f8 url(../images/reload.png) no-repeat 10px 15%;
+        padding-left: 100px;
+    }
+
+    .box_notification.iconOnTop {
+        background-position: 10px 15%;
+    }
+
+.box_content {
+    background: #edf2f8;
+    padding: 10px 10px 20px 10px;
+}
+
+    .box_content.Option3 {
+        background: #fefaf3;
+    }
+
+
+
+.button.small {
+    padding: 2px 5px;
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+
+.button_disabled {
+    display: inline;
+    padding: 3px 10px;
+    border: 1px solid #A6A6A6;
+    font-weight: bold;
+    color: #aaa;
+}
+
+.icon_arrow {
+    background: url("../images/btn_arrow.gif") top left no-repeat;
+    padding-left: 23px;
+}
+
+.titleBar {
+    color: #045796;
+}
+
+a.page_button {
+    border: 1px solid #C4C4C4;
+    color: #5986B9;
+    background: url("../images/bg_button.gif") top left repeat-x;
+    padding: 4px 10px;
+}
+
+.wrapper_container {
+    /* background: url("../images/bg.gif") top left repeat-y;*/
+    border-radius: 0.5em !important;
+    -webkit-border-radius: 0.5em !important;
+    -moz-border-radius-: 0.5em !important;
+    background-color: #ffffff;
+    border: 1px solid #C5CFD9;
+}
+
+.wrapper_content {
+    margin: 0 7px 0 9px;
+    padding: 0 0 10px 0;
+}
+
+/*Menu Styles*/
+.nav_top {
+    background-color: #045796;
+    background-image: linear-gradient(bottom, #3777A8 48%, #045796 73%);
+    background-image: -o-linear-gradient(bottom, #3777A8 48%, #045796 73%);
+    background-image: -moz-linear-gradient(bottom, #3777A8 48%, #045796 73%);
+    background-image: -webkit-linear-gradient(bottom, #3777A8 48%, #045796 73%);
+    background-image: -ms-linear-gradient(bottom, #3777A8 48%, #045796 73%);
+    background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0.48, #3777A8), color-stop(0.73, #045796) );
+    background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0.48, #1D67A0), color-stop(0.73, #045796) );
+}
+    /* sub menus */
+    .nav_top li ul {
+        float: left;
+        list-style: none;
+        padding: 5px;
+        display: block;
+        background: #045796;
+        background-color: #045796;
+    }
+
+    .nav_top ul li a {
+        color: #fff;
+    }
+
+    .nav_top ul li:after, .nav_top ul li:hover {
+        color: #0B5995;
+        background-color: #d4d4d4;
+        background-image: -moz-linear-gradient(#d4d4d4, #e3e3e3);
+        background-image: -webkit-gradient(linear, left top, left bottom, from(#d4d4d4), to(#e3e3e3));
+        background-image: -webkit-linear-gradient(#d4d4d4, #e3e3e3);
+        background-image: -o-linear-gradient(#d4d4d4, #e3e3e3);
+        background-image: -ms-linear-gradient(#d4d4d4, #e3e3e3);
+        background-image: linear-gradient(#d4d4d4, #e3e3e3);
+    }
+
+    .nav_top ul li a:after, .nav_top ul li a:hover {
+        color: #0B5995;
+    }
+
+    .nav_top ul li a.selected, .ClientMenu .AspNet-Menu-Selected {
+        color: #0B5995;
+        background-color: #d4d4d4;
+        font-weight: bold;
+    }
+/*End of Menu*/
+
+.rightanswer {
+    color: #009900;
+    font-weight: bold;
+}
+
+.wronganswer {
+    color: #FC0303;
+    font-weight: bold;
+}
+
+.wrapper_simple {
+    margin-top: 14px;
+}
+
+
+
+/* -------------------- Colors ------------------- */
+.borderSilver {
+    border-color: Silver;
+}
+
+/* PRIMARY LAYOUT ELEMENTS   
+----------------------------------------------------------*/
+
+.main {
+    /* padding: 0px 12px;     margin: 12px 8px 8px 8px;*/
+    min-height: 50px;
+}
+
+.footer {
+    /*background-image: url(../images/Oasis/footer.png);     background-repeat: repeat-x;     background-color: #bbbbbb;*/
+    padding: 8px 0 8px 0;
+    margin: 0 auto;
+    font-size: 0.7em;
+    text-align: left;
+}
+
+    .footer .content {
+        padding: 0 30px;
+    }
+
+
+/* LOGIN ELEMENT
+----------------------------------------------- */
+.nav_login {
+    color: #000;
+    text-align: right;
+    padding: 20px 5px 20px 5px;
+    position: relative;
+    margin: 0px 0px 2px 0px;
+    padding: 10px;
+    background: none;
+}
+
+    .nav_login a {
+        color: #000;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+        .nav_login a:hover {
+            text-decoration: underline;
+        }
+
+/* TAB MENU   
+----------------------------------------------------------*/
+
+div.hideSkiplink {
+    background-color: #3a4f63;
+    width: 100%;
+}
+
+.centered {
+    text-align: center;
+}
+
+/*for highchart*/
+/*class would be: [name of your chart]_container*/
+#barChart_container {
+    height: 100% !important;
+    text-align: center !important;
+}
+
+#pieChart_container {
+    height: 100% !important;
+    text-align: center !important;
+}
+
+
+.highcharts-container {
+    text-align: center;
+    height: 100%;
+}
+
+
+/* row separator size (height between two rows*/
+.rowseparatorSize {
+    line-height: 0.1em;
+}
+
+
+/*Telerik RadGrid Overridden CSS*/
+.rgHeader {
+    /* background: transparent !important;*/
+}
+
+/*AJAX Loading*/
+.AJAXLoading {
+    background-color: #fff;
+    height: 100%;
+    width: 100%;
+}
+
+
+
+
+/*Layouts*/
+
+/*remove floaf left*/
+#header {    
+    background: #fff;
+}
+
+
+#footer {
+    margin-top: 20px;
+    padding: 5px;
+    width: auto;
+}
+
+.oasisWrap {
+    position: relative;
+    margin: 0 auto;
+}
+
+.wrapFullWidth {
+    position: relative;
+    margin: 0 auto;
+    width: 100%;
+}
+
+
+/*Navigation Menu*/
+/*Button*/
+
+
+/*Gotologin button*/
+.gotologinButton {
+    text-decoration: none;
+    padding-left: 25px;
+    margin-left: 10px;
+    color: #fff;
+    cursor: pointer;
+    background: url(../images/keys.png) no-repeat 0px 45%;
+}
+
+/*logout button*/
+.logoutButton {
+    text-decoration: none;
+    padding-left: 25px;
+    margin-left: 10px;
+    color: #fff;
+    cursor: pointer;
+    background: url(../images/Log-Out-icon.png) no-repeat 0px 45%;
+}
+/* custom button from bootstrap button */
+.input-group-btn > .btn.factor360CustomBootstrapButton {
+    background: #0B5995;
+    color: #fff;
+}
+/* end of custom button from bootstrap button */
+.button, a.button, .timeOutWindow .ui-dialog-buttonpane button {
+    font-size: 14px;
+    text-decoration: none;
+    border: 0px #e2e2e2 solid;
+    padding: 5px 12px;
+    background: #0B5995;
+    color: #ffffff !important;
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    font-weight: normal;
+    border-radius: 3px !important;
+    -webkit-border-radius: 3px !important;
+    -moz-border-radius-: 3px !important;
+    -webkit-transition: all 0.4s ease-in;
+    -moz-transition: all 0.4s ease-in;
+    -ms-transition: all 0.4s ease-in;
+    white-space: normal;
+}
+
+.input-group-btn > .btn.factor360CustomBootstrapButton,
+.btn.factor360CustomBootstrapButton {
+    background: #0B5995;
+    color: #ffffff !important;
+    border-color: #0B5995;
+}
+
+.button:hover, a.button:hover, .timeOutWindow .ui-dialog-buttonpane button:hover {
+    color: #000 !important;
+    background: #cbcbcb !important;
+}
+
+.button[disabled], a.button[disabled] {
+    background: #D9D9D9 !important;
+    color: #aaa !important;
+}
+
+.aspNetDisabled.button {
+    background: #D9D9D9 !important;
+    color: #aaa !important;
+}
+
+
+.hyperlinkDisabled {
+    text-decoration: none;
+    border: 0px #e2e2e2 solid;
+    padding: 5px 12px;
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    font-weight: normal;
+    border-radius: 3px !important;
+    -webkit-border-radius: 3px !important;
+    -moz-border-radius-: 3px !important;
+    -webkit-transition: all 0.4s ease-in;
+    -moz-transition: all 0.4s ease-in;
+    -ms-transition: all 0.4s ease-in;
+    white-space: normal;
+    background: #D9D9D9;
+    color: #aaa;
+}
+
+
+
+hyperlinkDisabled:hover {
+    background: #D9D9D9;
+    color: #aaa;
+    text-decoration: none;
+}
+
+/*button login*/
+
+
+.buttonLogin {
+    text-decoration: none;
+    border: 0px #e2e2e2 solid;
+    padding: 5px 12px;
+    background: #fff;
+    color: #000;
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    font-weight: normal;
+    border-radius: 3px !important;
+    -webkit-border-radius: 3px !important;
+    -moz-border-radius-: 3px !important;
+    -webkit-transition: all 0.4s ease-in;
+    -moz-transition: all 0.4s ease-in;
+    -ms-transition: all 0.4s ease-in;
+    white-space: normal;
+}
+
+    .buttonLogin:hover {
+        color: #fff;
+        background: #444444;
+    }
+
+
+a.button_disabled {
+    text-decoration: none;
+    border: 0px #e2e2e2 solid;
+    padding: 5px 12px;
+    color: #aaa !important;
+    background: #444444;
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 3px !important;
+    -webkit-border-radius: 3px !important;
+    -moz-border-radius-: 3px !important;
+    -webkit-transition: all 0.4s ease-in;
+    -moz-transition: all 0.4s ease-in;
+    -ms-transition: all 0.4s ease-in;
+    white-space: normal;
+}
+
+    a.button_disabled:hover {
+        text-decoration: none;
+        color: #aaa;
+    }
+
+.loginBox {
+    background-color: #045796 !important;
+    padding: 20px !important;
+    color: #fff;
+}
+
+
+    .loginBox a {
+        color: #fff;
+    }
+
+
+
+/*Grid Styles
+---------------------------*/
+.cellPaleBlue {
+    color: Black;
+    background-color: #d6e0ec;
+}
+
+.cellGreen {
+    color: White;
+    background-color: #008575;
+}
+
+.cellNavyBlue {
+    color: White;
+    background-color: #3B4654;
+}
+
+.cellWhite {
+    color: Black;
+    background-color: White;
+}
+
+.cellYellow {
+    color: Black;
+    background-color: #f5e59f;
+}
+
+.cellLightYellow {
+    color: Black;
+    background-color: #fef9cf;
+}
+
+/*Border colors*/
+.orangeBorder {
+    border-color: #FFAD04;
+}
+
+.logoutButton {
+}
+
+
+/* Custom Tab */
+
+.customTab, .customTab a {
+    background: #D7D7D7 !important;
+    border: 1px solid #3777A8 !important;
+    color: #fff;
+}
+
+    .customTab a {
+        margin: 3px !important;
+        margin-bottom: 1px !important;
+    }
+
+    .customTab.selected {
+        background: #FFFFFF !important;
+        border-bottom: 1px solid #fff !important;
+    }
+
+    .customTab.hover {
+        background: #115F9B !important;
+        color: #fff !important;
+    }
+/* End of Custom Tab */
+
+/* ribbon style */
+
+.ribbon-wrapper {
+    position: relative;
+    left: -10px;
+}
+
+.ribbon-front {
+    background-color: #045796;
+    width: 200px;
+    position: relative;
+    left: -10px;
+    z-index: 2;
+    padding: 10px 10px 10px 30px;
+    color: #fff;
+    text-align: left;
+    font-size: 19px;
+    font-weight: bold;
+}
+
+.ribbon-front, .ribbon-back-left, .ribbon-back-right {
+    -moz-box-shadow: 0px 0px 4px rgba(0,0,0,0.55);
+    -khtml-box-shadow: 0px 0px 4px rgba(0,0,0,0.55);
+    -webkit-box-shadow: 0px 0px 4px rgba(0,0,0,0.55);
+    -o-box-shadow: 0px 0px 4px rgba(0,0,0,0.55);
+}
+
+.ribbon-edge-topleft, .ribbon-edge-topright, .ribbon-edge-bottomleft, .ribbon-edge-bottomright {
+    position: absolute;
+    z-index: 1;
+    border-style: solid;
+    height: 0px;
+    width: 0px;
+}
+
+.ribbon-edge-topleft, .ribbon-edge-topright {
+}
+
+.ribbon-edge-bottomleft, .ribbon-edge-bottomright {
+    top: 40px;
+}
+
+.ribbon-edge-topleft, .ribbon-edge-bottomleft {
+    left: -10px;
+    border-color: transparent #034e87 transparent transparent;
+}
+
+.ribbon-edge-topleft {
+    top: -10px;
+    border-width: 10px 10px 0 0;
+}
+
+.ribbon-edge-bottomleft {
+    border-width: 0 10px 0px 0;
+}
+
+.ribbon-edge-topright, .ribbon-edge-bottomright {
+    left: 100px;
+    border-color: transparent transparent transparent #034e87;
+}
+
+.ribbon-edge-topright {
+    top: 0px;
+    border-width: 0px 0 0 0px;
+}
+
+.ribbon-edge-bottomright {
+    border-width: 0 0 0px 0px;
+}
+
+.ribbon-back-left {
+    position: absolute;
+    top: -10px;
+    left: -30px;
+    width: 30px;
+    height: 40px;
+    background-color: #034578;
+    z-index: 0;
+}
+
+.ribbon-back-right {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 0px;
+    height: 40px;
+    z-index: 0;
+}
+
+
+/*Custom Panel CSS*/
+
+.customRadPanelBar /*content*/ {
+    background: none !important;
+}
+
+    .customRadPanelBar .rpRootGroup {
+        border: none !important;
+        border: 1px solid #422F1E !important;
+        padding: 0 !important;
+    }
+
+    .customRadPanelBar .rpGroup a.rpLink, .customRadPanelBar .rpGroup a.rpLink .rpOut {
+        background: #3F2D1D !important;
+    }
+
+    .customRadPanelBar .rpGroup rpLink {
+        background: #422F1E !important;
+    }
+
+    /*Panel header styles*/
+    .customRadPanelBar div.rpHeaderTemplate, .customRadPanelBar a.rpLink {
+        background-image: none !important;
+        background-color: #D7D7D7 !important;
+        border: 1px solid #3777A8 !important;
+    }
+
+
+    .customRadPanelBar a.rpSelected {
+        background-color: #FFFFFF !important;
+    }
+
+
+    .customRadPanelBar a:hover {
+        background-color: #115F9B !important;
+        color: #fff !important;
+    }
+
+/* End of Custom Panel CSS*/
+
+/*RadConfirm Window manager styles*/
+.rwDialogPopup.radconfirm {
+    background-image: url(../images/warning-icon-32px.png) !important;
+    background-position: 0% 0% !important;
+}
+
+
+
+/*Rad grid*/
+/*for selected item*/
+.customRadGridStyle .rgMasterTable .rgSelectedCell, .customRadGridStyle .rgSelectedRow {
+    background: none repeat scroll 0 0 #3777A8 !important;
+}
+
+/*Rad Wizard*/
+.customRadWizardStyle {
+}
+
+    .customRadWizardStyle.RadWizard .rwzContent {
+        overflow: hidden;
+    }
+
+    .customRadWizardStyle.RadWizard_Default .rwzSelected .rwzLink {
+        font-size: 14px;
+        text-decoration: none;
+        border: 0px #e2e2e2 solid;
+        background: #0B5995;
+        color: #ffffff !important;
+    }
+
+        .customRadWizardStyle.RadWizard_Default .rwzSelected .rwzLink:before {
+            font-size: 14px;
+            text-decoration: none;
+            border: 0px #e2e2e2 solid;
+            background: #0B5995;
+            color: #ffffff !important;
+        }
+
+    .customRadWizardStyle.RadWizard_Default .rwzProgress {
+        border: 0px #e2e2e2 solid;
+        background: #0B5995;
+    }
+
+/*Notifications*/
+
+.customNotificationSkin {
+    background-color: #FFFFFF !important;
+    border: 4px solid #6A93CC !important;
+}
+
+    .customNotificationSkin .rnShadows {
+        box-shadow: 5px 5px 5px 4px #39667E !important;
+    }
+
+
+/*Notification overlay for above skin*/
+.customNotificationOverlay {
+    width: 100%;
+    height: 100%;
+    background-color: #045796;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    filter: alpha(opacity=90);
+    -moz-opacity: 0.9;
+    -khtml-opacity: 0.9;
+    opacity: 0.9;
+}
+
+
+/*For Session Time out Dialog Styling*/
+
+.timeOutWindow .ui-widget-header {
+    background: none;
+    border: none;
+}
+
+.timeOutWindow .ui-dialog-titlebar {
+    color: #045796;
+    text-align: left;
+    padding: 5px 5px 1px 5px;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0px 0 0 0;
+}
+
+
+
+.customImageLogo {
+    height: 80px;
+}
+
+.headerLogoWrap {
+}
+
+
+.regularTextBoxMode {
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    border: #AAA 1px solid;
+}
+
+
+    .regularTextBoxMode.multilineMode {
+        height: 200px;
+    }
+
+
+/* Question Result Action Buttons*/
+.actionButton.categorizeResultButton {
+    background-image: url(../Images/BahamaBlue/link2_32.png);
+    background-position: 5px 50%; /* Firefox does not support background-position-x or y */
+    background-repeat: no-repeat;
+}
+
+.actionButton.questionExportTool {
+    background-image: url(../Images/BahamaBlue/Download_32.png);
+    background-position: 5px 50%; /* Firefox does not support background-position-x or y */
+    background-repeat: no-repeat;
+}
+
+.actionButton.questionCloningTool {
+    background-image: url(../Images/BahamaBlue/Text_32.png);
+    background-position: 5px 50%; /* Firefox does not support background-position-x or y */
+    background-repeat: no-repeat;
+}
+
+.actionButton.copyQuestionIDs {
+    background-image: url(../Images/BahamaBlue/clipboardCheck_32.png);
+    background-position: 5px 50%; /* Firefox does not support background-position-x or y */
+    background-repeat: no-repeat;
+}
+
+.actionButton.questionSearchDirectLink {
+    background-image: url(../Images/BahamaBlue/Link_32.png);
+    background-position: 5px 50%; /* Firefox does not support background-position-x or y */
+    background-repeat: no-repeat;
+}
+
+.actionButton.categoryCount {
+    background-image: url(../Images/BahamaBlue/Web_vertical_32.png);
+    background-position: 5px 50%; /* Firefox does not support background-position-x or y */
+    background-repeat: no-repeat;
+}
+
+/************************* SPRITE 32PX *************************/
+.sprite32 {
+    background-image: url(../Images/BahamaBlue/Sprite32_tiny.png);
+    background-repeat: no-repeat;
+    display: inline-block;
+}
+
+.sprite32-Action_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -5px -5px;
+}
+
+.sprite32-Archive_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -47px -5px;
+}
+
+.sprite32-Back_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -89px -5px;
+}
+
+.sprite32-Chat_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -131px -5px;
+}
+
+.sprite32-Clipboard1_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -173px -5px;
+}
+
+.sprite32-Clipboard2_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -215px -5px;
+}
+
+.sprite32-Clipboard3_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -257px -5px;
+}
+
+.sprite32-Database3_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -5px -47px;
+}
+
+.sprite32-Dialouge_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -47px -47px;
+}
+
+.sprite32-Document_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -89px -47px;
+}
+
+.sprite32-DownloadCloud_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -131px -47px;
+}
+
+.sprite32-Download_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -173px -47px;
+}
+
+.sprite32-Email_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -215px -47px;
+}
+
+.sprite32-Favorite_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -257px -47px;
+}
+
+.sprite32-File4_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -5px -89px;
+}
+
+.sprite32-Home_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -47px -89px;
+}
+
+.sprite32-Internet_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -89px -89px;
+}
+
+.sprite32-Laptop_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -131px -89px;
+}
+
+.sprite32-Link_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -173px -89px;
+}
+
+.sprite32-List_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -215px -89px;
+}
+
+.sprite32-LostLink_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -257px -89px;
+}
+
+.sprite32-Mail_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -5px -131px;
+}
+
+.sprite32-Minus_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -47px -131px;
+}
+
+.sprite32-Network3_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -89px -131px;
+}
+
+.sprite32-Network_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -131px -131px;
+}
+
+.sprite32-News_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -173px -131px;
+}
+
+.sprite32-Next_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -215px -131px;
+}
+
+.sprite32-Numbers_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -257px -131px;
+}
+
+.sprite32-Play_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -5px -173px;
+}
+
+.sprite32-Plus_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -47px -173px;
+}
+
+.sprite32-Radio_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -89px -173px;
+}
+
+.sprite32-Search2_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -131px -173px;
+}
+
+.sprite32-SearchWeb_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -173px -173px;
+}
+
+.sprite32-Search_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -215px -173px;
+}
+
+.sprite32-Sync_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -257px -173px;
+}
+
+.sprite32-Table_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -5px -215px;
+}
+
+.sprite32-Text_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -47px -215px;
+}
+
+.sprite32-ToDo_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -89px -215px;
+}
+
+.sprite32-Trash_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -131px -215px;
+}
+
+.sprite32-UserID_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -173px -215px;
+}
+
+.sprite32-User_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -215px -215px;
+}
+
+.sprite32-Users_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -257px -215px;
+}
+
+.sprite32-Web_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -5px -257px;
+}
+
+.sprite32-Web_vertical_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -47px -257px;
+}
+
+.sprite32-clipboardCheck2_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -89px -257px;
+}
+
+.sprite32-clipboardCheck_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -131px -257px;
+}
+
+.sprite32-edit_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -173px -257px;
+}
+
+.sprite32-gear_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -215px -257px;
+}
+
+.sprite32-link2_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -257px -257px;
+}
+
+.sprite32-music_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -299px -5px;
+}
+
+.sprite32-portrait_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -299px -47px;
+}
+/************************* SPRITE 18PX *************************/
+.sprite18 {
+    background-image: url(../Images/BahamaBlue/Sprite18_tiny.png);
+    background-repeat: no-repeat;
+    display: inline-block;
+}
+
+.sprite18-Action_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -5px -5px;
+}
+
+.sprite18-Archive_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -33px -5px;
+}
+
+.sprite18-Back_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -61px -5px;
+}
+
+.sprite18-Chat_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -89px -5px;
+}
+
+.sprite18-Clipboard1_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -117px -5px;
+}
+
+.sprite18-Clipboard2_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -145px -5px;
+}
+
+.sprite18-Clipboard3_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -173px -5px;
+}
+
+.sprite18-Database3_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -5px -33px;
+}
+
+.sprite18-Dialouge_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -33px -33px;
+}
+
+.sprite18-Document_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -61px -33px;
+}
+
+.sprite18-DownloadCloud_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -89px -33px;
+}
+
+.sprite18-Download_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -117px -33px;
+}
+
+.sprite18-Email_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -145px -33px;
+}
+
+.sprite18-Favorite_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -173px -33px;
+}
+
+.sprite18-File4_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -5px -61px;
+}
+
+.sprite18-Home_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -33px -61px;
+}
+
+.sprite18-Internet_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -61px -61px;
+}
+
+.sprite18-Laptop_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -89px -61px;
+}
+
+.sprite18-Link_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -117px -61px;
+}
+
+.sprite18-List_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -145px -61px;
+}
+
+.sprite18-LostLink_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -173px -61px;
+}
+
+.sprite18-Mail_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -5px -89px;
+}
+
+.sprite18-Minus_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -33px -89px;
+}
+
+.sprite18-Network3_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -61px -89px;
+}
+
+.sprite18-Network_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -89px -89px;
+}
+
+.sprite18-News_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -117px -89px;
+}
+
+.sprite18-Next_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -145px -89px;
+}
+
+.sprite18-Numbers_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -173px -89px;
+}
+
+.sprite18-Play_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -5px -117px;
+}
+
+.sprite18-Plus_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -33px -117px;
+}
+
+.sprite18-Radio_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -61px -117px;
+}
+
+.sprite18-Search2_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -89px -117px;
+}
+
+.sprite18-SearchWeb_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -117px -117px;
+}
+
+.sprite18-Search_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -145px -117px;
+}
+
+.sprite18-Sync_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -173px -117px;
+}
+
+.sprite18-Table_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -5px -145px;
+}
+
+.sprite18-Text_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -33px -145px;
+}
+
+.sprite18-ToDo_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -61px -145px;
+}
+
+.sprite18-Trash_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -89px -145px;
+}
+
+.sprite18-UserID_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -117px -145px;
+}
+
+.sprite18-User_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -145px -145px;
+}
+
+.sprite18-Users_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -173px -145px;
+}
+
+.sprite18-Web_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -5px -173px;
+}
+
+.sprite18-Web_vertical_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -33px -173px;
+}
+
+.sprite18-clipboardCheck2_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -61px -173px;
+}
+
+.sprite18-clipboardCheck_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -89px -173px;
+}
+
+.sprite18-edit_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -117px -173px;
+}
+
+.sprite18-gear_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -145px -173px;
+}
+
+.sprite18-link2_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -173px -173px;
+}
+
+.sprite18-music_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -201px -5px;
+}
+
+.sprite18-portrait_18 {
+    width: 18px;
+    height: 18px;
+    background-position: -201px -33px;
+}
+
+
+/* Telerik Tabstrip & RadTab CSS */
+.factor360TabStrip {
+    font-family: inherit !important;
+}
+
+    .factor360TabStrip .rtsLink {
+        padding: 4px 7px !important;
+        margin-left: 3px;
+    }
+
+    .factor360TabStrip .rtsLevel1 {
+        border-bottom: 3px solid #0b5995 !important;
+    }
+
+        .factor360TabStrip .rtsLevel1 .rtsLink {
+            color: #5a5a5a !important;
+            border-color: #0b5995 !important;
+            border-bottom-color: transparent !important;
+        }
+
+        .factor360TabStrip .rtsLevel1 .rtsHovered .rtsLink {
+            border-color: #eeeeee;
+            color: #fff !important;
+            background-color: #0b5995 !important;
+            border-bottom: 1px solid #3b2b1b !important;
+        }
+
+        .factor360TabStrip .rtsLevel1 .rtsSelected .rtsLink {
+            border-color: #eeeeee;
+            color: #fff !important;
+            background-color: #0b5995 !important;
+            border-bottom: 1px solid #0b5995 !important;
+        }
+/* End of Telerik Tabstrip & RadTab CSS */
+/* MENU SPRITES */
+/* Note that we don't overwrite site.css sprite_menu because that contains non-selected images as well */
+/* If we overwrite it with theme-specific sprite_menu, then all non-selected images will be gone */
+/* 
+     background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+*/
+
+.sprite_menu-Achievement_selected_32 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -5px -5px;
+}
+
+.sprite_menu-Achievement_selected_48 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -47px -5px;
+}
+
+.sprite_menu-Calendar_selected_32 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -105px -5px;
+}
+
+.sprite_menu-Calendar_selected_48 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -147px -5px;
+}
+
+.sprite_menu-Discussion_selected_32 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -205px -5px;
+}
+
+.sprite_menu-Discussion_selected_48 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -205px -47px;
+}
+
+.sprite_menu-Donation_selected_32 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -5px -47px;
+}
+
+.sprite_menu-Donation_selected_48 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -5px -105px;
+}
+
+.sprite_menu-Examination_selected_32 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -105px -47px;
+}
+
+.sprite_menu-Examination_selected_48 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -63px -105px;
+}
+
+.sprite_menu-Exclamation_selected_32 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -121px -105px;
+}
+
+.sprite_menu-Exclamation_selected_48 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -163px -105px;
+}
+
+.sprite_menu-Feedback_selected_32 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -221px -105px;
+}
+
+.sprite_menu-Feedback_selected_48 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -221px -147px;
+}
+
+.sprite_menu-GradeBook_selected_32 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -121px -147px;
+}
+
+.sprite_menu-GradeBook_selected_48 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -5px -205px;
+}
+
+.sprite_menu-Help_selected_32 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -63px -205px;
+}
+
+.sprite_menu-Help_selected_48 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -105px -205px;
+}
+
+.sprite_menu-Home_selected_32 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -163px -205px;
+}
+
+.sprite_menu-Home_selected_48 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -205px -205px;
+}
+
+.sprite_menu-IDP_selected_32 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -247px -5px;
+}
+
+.sprite_menu-IDP_selected_48 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -263px -47px;
+}
+
+.sprite_menu-KnowledgeRepository_selected_32 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -263px -105px;
+}
+
+.sprite_menu-KnowledgeRepository_selected_48 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -263px -205px;
+}
+
+.sprite_menu-Leaderboard_selected_32 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -279px -147px;
+}
+
+.sprite_menu-Leaderboard_selected_48 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -5px -263px;
+}
+
+.sprite_menu-MyCourses_selected_32 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -63px -263px;
+}
+
+.sprite_menu-MyCourses_selected_48 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -105px -263px;
+}
+
+.sprite_menu-Transcript_selected_32 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -163px -263px;
+}
+
+.sprite_menu-Transcript_selected_48 {
+    background-image: url(../Images/BahamaBlue/menu/spritesheet_tiny.png?v=360.2.38.15);
+    background-position: -205px -263px;
+}
+
+/* End of SPRITE MENU*/
+
+/* Bootstrap panel primary override */
+.panel-primary {
+    border-color: #0B5995;
+}
+
+    .panel-primary > .panel-heading {
+        background-color: #0B5995;
+        border-color: #0B5995;
+    }
+/* End of Bootstrap panel primary override */
+.factor360UserQuestionNavigationTopFixed {
+    border-bottom-color: #0B5995;
+}
+/* css for UserDashboardItemWrapper */
+.sidebarItemWrapper.selected {
+    border-right: 5px solid #0B5995;
+}
+/* End of css for UserDashboardItemWrapper */
+/* custom card box colors */
+.factor360Card {
+    background: #0B5995 !important;
+    color: #ffffff !important;
+}
+
+    .factor360Card:hover {
+        color: #000 !important;
+        background: #cbcbcb !important;
+    }
+/* end of custom card box colors */
+.factor360CustomGridFooter, .rgFooter .factor360CustomGridFooter {
+    background: #0B5995 !important;
+}
+/* user dashboard semantic icons */
+.userDashboardItemIcon.selectedUserDashboard {
+    color: #0B5995;
+}
+.factor360ThemedSemanticIcon {
+    color: #0B5995;
+}
+/* end of user dashboard semantic icons */
+
+
+/*core competency side bar custom css*/
+
+.factor360CoreCompetencyTree {
+    background: #0B5995 !important;
+    color: #ffffff !important;
+}
+
+    .factor360CoreCompetencyTree .rtHover .rtIn, .factor360CoreCompetencyTree .rtSelected .rtIn {
+        color: #0B5995 !important;
+        background-color: #d4d4d4 !important;        
+    }
+/*end core competency side bar custom css*/
+
+
+/*filter tag item*/
+
+.filterTagItem {
+    background: inherit !important;
+    color: #0B5995 !important;
+    border: 2px solid #0B5995 !important;
+}
+/* end filter tag item*/
+
+/*factor 360 custom stack navbar*/
+.factor360CustomStackNavBar {
+    background: #0B5995 !important;
+    color: #ffffff !important;
+}
+/*  end of factor 360 custom stack navbar*/
+
+/*custom css for radmultiselect*/
+.factor360MultiSelectDropdown .k-multiselect-wrap li.k-button {
+    background: inherit !important;
+    color: #0B5995 !important;
+    border: 1.5px solid #0B5995 !important;
+}
+/*end of custom css for radmultiselect*/
+.userPageWithSideBar_hamburger {
+    background-color: #0B5995;
+}

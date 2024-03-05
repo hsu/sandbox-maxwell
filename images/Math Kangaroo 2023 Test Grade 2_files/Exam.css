@@ -1,0 +1,109 @@
+﻿/* Exam SPRITES */
+.sprite_exam {
+    background-image: url(../Images/Exam/spritesheet.png?v=360.2.38.15);
+    background-repeat: no-repeat;
+    display: inline-block;
+}
+
+.sprite_exam-AllowExamMode_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -5px -5px;
+}
+
+.sprite_exam-AllowLearningMode_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -47px -5px;
+}
+
+.sprite_exam-DynamicQuestionGeneration_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -89px -5px;
+}
+
+.sprite_exam-HasReset_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -131px -5px;
+}
+
+.sprite_exam-IsNotRandom_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -5px -47px;
+}
+
+.sprite_exam-IsRandom_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -47px -47px;
+}
+
+.sprite_exam-NoReset_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -89px -47px;
+}
+
+.sprite_exam-NormalScoring_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -131px -47px;
+}
+
+.sprite_exam-PracticeExam_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -5px -89px;
+}
+
+.sprite_exam-TimedExam_120Minutes_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -47px -89px;
+}
+
+.sprite_exam-TimedExam_30Minutes_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -89px -89px;
+}
+
+.sprite_exam-TimedExam_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -131px -89px;
+}
+
+.sprite_exam-TimedExam_60Minutes_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -5px -131px;
+}
+
+.sprite_exam-TimedExam_90Minutes_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -47px -131px;
+}
+
+.sprite_exam-UseOnlineProctor_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -89px -131px;
+}
+
+.sprite_exam-WeighedScoring_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -131px -131px;
+}
+
+.sprite_exam-WeightedDynamicQuestionGeneration_32 {
+    width: 32px;
+    height: 32px;
+    background-position: -173px -5px;
+}
+/* End of Exam SPRITES */

@@ -1,0 +1,161 @@
+﻿.learningActivityAssetFlashCardWrapperClass {
+    position: relative;
+   height: 300px;
+    perspective: 1000px;
+    padding-top: 5px; /*Sometimes the top element content somehow got cut off, so we are adding padding here*/
+    padding-bottom: 4px; /* so it will align with other asset box.*/
+}
+
+    .learningActivityAssetFlashCardWrapperClass.flipped .flashcardFlipper {
+        transform: rotateY(180deg);
+    }
+
+.flashcardFlipButton {
+    height: 48px;
+    cursor: pointer;
+}
+
+
+/* flip speed goes here */
+.flashcardFlipper {
+    transition: 0.6s;
+    transform-style: preserve-3d;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.flashCardTextDocumentFlipper_frontSide {
+    flex: 0 0 auto;
+    margin-top: 3px;
+    font-size: 28px;
+}
+
+.flashCardTextDocumentFlipper_backSide {
+    flex: 0 0 auto;
+    margin-top: 3px;
+    margin-left: 8px;
+    font-size: 28px;
+}
+
+/* hide back of pane during swap */
+.flashCardFront, .flashCardBack {
+    backface-visibility: hidden;
+    /* https://stackoverflow.com/questions/9604982/backface-visibility-not-working-properly-in-firefox-works-in-safari*/
+    transform: rotateX(0deg);
+    /* https://stackoverflow.com/questions/42744573/backface-visibility-not-working-in-safari */
+    -webkit-perspective: 0;
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translate3d(0,0,0);
+    visibility: visible;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border: 1px solid #303030;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* front pane, placed above back */
+.flashCardFront {
+    z-index: 2;
+    overflow: hidden;
+}
+
+.learningActivityAssetFlashCardWrapperClass .completionMark {
+    display: none;
+}
+
+.learningActivityAssetFlashCardWrapperClass.assetViewed .completionMark {
+    display: inline;
+}
+
+/* back, initially hidden pane */
+.flashCardBack {
+    overflow: hidden;
+    transform: rotateY(180deg);
+}
+
+.flashCardContent {
+    flex: 1 1 auto;
+    margin: 10px;
+    overflow-x: hidden;
+    overflow-y: hidden; /* made hidden so we don't see double vertical scrolls*/ 
+    height: 100%;
+   
+}
+    .flashCardContent img {
+        max-height: 100%;
+        max-width: 100%;
+    }
+
+.flashCardAdditionalResourceContainer {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: flex-end;
+    margin: 0 10px 0 10px;
+    justify-content: center;
+}
+
+.flashCardControlContainer {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: flex-end;
+    margin: 0 10px 0 10px;
+}
+
+    .flashCardControlContainer .flashCardControlLeft {
+        flex: 1 0 0;
+        color: #808080;
+    }
+
+    .flashCardControlContainer .flashCardControlCenter {
+        flex: 0 0 auto;
+    }
+
+    .flashCardControlContainer .flashCardControlRight {
+        flex: 1 0 0;
+        color: #808080;
+        text-align: right;
+    }
+
+
+.fancybox-nav span {
+    opacity: 1 !important;
+}
+
+.fancybox-next {
+    right: -80px !important;
+}
+
+.fancybox-prev {
+    left: -80px !important;
+}
+
+.scrollToDocumentIcon_frontSide,
+.scrollToDocumentIcon_backSide,
+.scrollToTextIcon_frontSide,
+.scrollToTextIcon_backSide {
+    cursor: pointer;
+    display: inline;
+}
+
+    .scrollToDocumentIcon_frontSide.scrollToIcon_active,
+    .scrollToDocumentIcon_backSide.scrollToIcon_active,
+    .scrollToTextIcon_frontSide.scrollToIcon_active,
+    .scrollToTextIcon_backSide.scrollToIcon_active {
+        opacity: 0.5;
+    }
+
+.flashCardCaption {
+    /*font no need to be as big as original*/
+    font-size: 0.5em;
+}
+
+    .flashCardCaption.maximizedFlashCardCaption {
+        /*font no need to be as big as original*/
+        font-size: 0.9em;
+    }

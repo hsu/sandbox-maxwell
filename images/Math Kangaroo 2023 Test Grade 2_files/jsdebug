@@ -1,0 +1,356 @@
+Type.registerNamespace('SelfAssessment.WebApp');
+SelfAssessment.WebApp.ExamServices=function() {
+SelfAssessment.WebApp.ExamServices.initializeBase(this);
+this._timeout = 0;
+this._userContext = null;
+this._succeeded = null;
+this._failed = null;
+}
+SelfAssessment.WebApp.ExamServices.prototype={
+_get_path:function() {
+ var p = this.get_path();
+ if (p) return p;
+ else return SelfAssessment.WebApp.ExamServices._staticInstance.get_path();},
+DeleteAnnotation:function(UserQuestionID,AnnotationID,succeededCallback, failedCallback, userContext) {
+/// <param name="UserQuestionID" type="Number">System.Int32</param>
+/// <param name="AnnotationID" type="String">System.String</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'DeleteAnnotation',false,{UserQuestionID:UserQuestionID,AnnotationID:AnnotationID},succeededCallback,failedCallback,userContext); },
+UserExamBreakUsedUp:function(EncryptedUserExamMapID,succeededCallback, failedCallback, userContext) {
+/// <param name="EncryptedUserExamMapID" type="String">System.String</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'UserExamBreakUsedUp',false,{EncryptedUserExamMapID:EncryptedUserExamMapID},succeededCallback,failedCallback,userContext); },
+SaveAnnotation:function(UserQuestionID,AnnotationID,TextQuote,TextPosition_Start,TextPosition_End,succeededCallback, failedCallback, userContext) {
+/// <param name="UserQuestionID" type="Number">System.Int32</param>
+/// <param name="AnnotationID" type="String">System.String</param>
+/// <param name="TextQuote" type="String">System.String</param>
+/// <param name="TextPosition_Start" type="Number">System.Int32</param>
+/// <param name="TextPosition_End" type="Number">System.Int32</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'SaveAnnotation',false,{UserQuestionID:UserQuestionID,AnnotationID:AnnotationID,TextQuote:TextQuote,TextPosition_Start:TextPosition_Start,TextPosition_End:TextPosition_End},succeededCallback,failedCallback,userContext); },
+SaveUserAnswer:function(UserAnswerOptionID,succeededCallback, failedCallback, userContext) {
+/// <param name="UserAnswerOptionID" type="Number">System.Int32</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'SaveUserAnswer',false,{UserAnswerOptionID:UserAnswerOptionID},succeededCallback,failedCallback,userContext); },
+StartExamQuestionMigration:function(SourceExamID,TargetExamID,ReplaceQuestions,succeededCallback, failedCallback, userContext) {
+/// <param name="SourceExamID" type="Number">System.Int32</param>
+/// <param name="TargetExamID" type="Number">System.Int32</param>
+/// <param name="ReplaceQuestions" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'StartExamQuestionMigration',false,{SourceExamID:SourceExamID,TargetExamID:TargetExamID,ReplaceQuestions:ReplaceQuestions},succeededCallback,failedCallback,userContext); },
+UpdateQuestionGenerationRule:function(EncryptedExamID,IsDynamicPooling,IsStaticList,succeededCallback, failedCallback, userContext) {
+/// <param name="EncryptedExamID" type="String">System.String</param>
+/// <param name="IsDynamicPooling" type="Boolean">System.Boolean</param>
+/// <param name="IsStaticList" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'UpdateQuestionGenerationRule',false,{EncryptedExamID:EncryptedExamID,IsDynamicPooling:IsDynamicPooling,IsStaticList:IsStaticList},succeededCallback,failedCallback,userContext); },
+UpdateGroupQuestionImagesForDisplay:function(QuestionID,Enable,succeededCallback, failedCallback, userContext) {
+/// <param name="QuestionID" type="Number">System.Int32</param>
+/// <param name="Enable" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'UpdateGroupQuestionImagesForDisplay',false,{QuestionID:QuestionID,Enable:Enable},succeededCallback,failedCallback,userContext); },
+UpdateGroupCommentaryImagesForDisplay:function(QuestionID,Enable,succeededCallback, failedCallback, userContext) {
+/// <param name="QuestionID" type="Number">System.Int32</param>
+/// <param name="Enable" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'UpdateGroupCommentaryImagesForDisplay',false,{QuestionID:QuestionID,Enable:Enable},succeededCallback,failedCallback,userContext); },
+UpdateLearnerTool:function(EncryptedExamID,LearnerToolEnum,EnableLearnerTool,succeededCallback, failedCallback, userContext) {
+/// <param name="EncryptedExamID" type="String">System.String</param>
+/// <param name="LearnerToolEnum" type="Number">System.Int32</param>
+/// <param name="EnableLearnerTool" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'UpdateLearnerTool',false,{EncryptedExamID:EncryptedExamID,LearnerToolEnum:LearnerToolEnum,EnableLearnerTool:EnableLearnerTool},succeededCallback,failedCallback,userContext); },
+ToggleCompetencyDiagnosis:function(EncryptedExamID,EnableCompetencyDiagnosis,succeededCallback, failedCallback, userContext) {
+/// <param name="EncryptedExamID" type="String">System.String</param>
+/// <param name="EnableCompetencyDiagnosis" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'ToggleCompetencyDiagnosis',false,{EncryptedExamID:EncryptedExamID,EnableCompetencyDiagnosis:EnableCompetencyDiagnosis},succeededCallback,failedCallback,userContext); },
+ToggleCompetencyDiagnosticField:function(EncryptedExamID,EnableCompetencyDiagnosticField,ExamCompetencyDiagnosticEnum,succeededCallback, failedCallback, userContext) {
+/// <param name="EncryptedExamID" type="String">System.String</param>
+/// <param name="EnableCompetencyDiagnosticField" type="Boolean">System.Boolean</param>
+/// <param name="ExamCompetencyDiagnosticEnum" type="Number">System.Int32</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'ToggleCompetencyDiagnosticField',false,{EncryptedExamID:EncryptedExamID,EnableCompetencyDiagnosticField:EnableCompetencyDiagnosticField,ExamCompetencyDiagnosticEnum:ExamCompetencyDiagnosticEnum},succeededCallback,failedCallback,userContext); },
+ToggleCompetencyDiagnosticDisplayScoreAgainstHistogram:function(EncryptedExamID,displayScoreAgainstHistogramEnum,succeededCallback, failedCallback, userContext) {
+/// <param name="EncryptedExamID" type="String">System.String</param>
+/// <param name="displayScoreAgainstHistogramEnum" type="Number">System.Int32</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'ToggleCompetencyDiagnosticDisplayScoreAgainstHistogram',false,{EncryptedExamID:EncryptedExamID,displayScoreAgainstHistogramEnum:displayScoreAgainstHistogramEnum},succeededCallback,failedCallback,userContext); },
+updateExamDisplayScore:function(EncryptedExamID,DisplayScore,succeededCallback, failedCallback, userContext) {
+/// <param name="EncryptedExamID" type="String">System.String</param>
+/// <param name="DisplayScore" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'updateExamDisplayScore',false,{EncryptedExamID:EncryptedExamID,DisplayScore:DisplayScore},succeededCallback,failedCallback,userContext); },
+updateExamQuestionRandomizationLevel:function(EncryptedExamID,QuestionRandomLevel,succeededCallback, failedCallback, userContext) {
+/// <param name="EncryptedExamID" type="String">System.String</param>
+/// <param name="QuestionRandomLevel" type="SelfAssessment.Core.Constant.QuestionRandomLevelEnum">SelfAssessment.Core.Constant.QuestionRandomLevelEnum</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'updateExamQuestionRandomizationLevel',false,{EncryptedExamID:EncryptedExamID,QuestionRandomLevel:QuestionRandomLevel},succeededCallback,failedCallback,userContext); },
+UpdateAllowQuestionSkipping:function(EncryptedExamID,Enable,succeededCallback, failedCallback, userContext) {
+/// <param name="EncryptedExamID" type="String">System.String</param>
+/// <param name="Enable" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'UpdateAllowQuestionSkipping',false,{EncryptedExamID:EncryptedExamID,Enable:Enable},succeededCallback,failedCallback,userContext); },
+UpdateAllowQuestionSkipping_Forward:function(EncryptedExamID,Enable,succeededCallback, failedCallback, userContext) {
+/// <param name="EncryptedExamID" type="String">System.String</param>
+/// <param name="Enable" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'UpdateAllowQuestionSkipping_Forward',false,{EncryptedExamID:EncryptedExamID,Enable:Enable},succeededCallback,failedCallback,userContext); },
+UpdateAllowQuestionSkipping_Backward:function(EncryptedExamID,Enable,succeededCallback, failedCallback, userContext) {
+/// <param name="EncryptedExamID" type="String">System.String</param>
+/// <param name="Enable" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'UpdateAllowQuestionSkipping_Backward',false,{EncryptedExamID:EncryptedExamID,Enable:Enable},succeededCallback,failedCallback,userContext); },
+AssignQuestionAvailability:function(TargetExamQuestionID,TargetStartDate,succeededCallback, failedCallback, userContext) {
+/// <param name="TargetExamQuestionID" type="Number">System.Int32</param>
+/// <param name="TargetStartDate" type="String">System.String</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'AssignQuestionAvailability',false,{TargetExamQuestionID:TargetExamQuestionID,TargetStartDate:TargetStartDate},succeededCallback,failedCallback,userContext); },
+AssignQuestionAvailability_AvailableOffset:function(TargetExamQuestionID,TargetDayOffset,succeededCallback, failedCallback, userContext) {
+/// <param name="TargetExamQuestionID" type="Number">System.Int32</param>
+/// <param name="TargetDayOffset" type="Number">System.Int32</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'AssignQuestionAvailability_AvailableOffset',false,{TargetExamQuestionID:TargetExamQuestionID,TargetDayOffset:TargetDayOffset},succeededCallback,failedCallback,userContext); },
+GetUserExamQuizConfidenceRate:function(EncryptedUserExamQuizID,TargetConfidenceScoreType,succeededCallback, failedCallback, userContext) {
+/// <param name="EncryptedUserExamQuizID" type="String">System.String</param>
+/// <param name="TargetConfidenceScoreType" type="SelfAssessment.Core.Constant.UserExamMap_ConfidenceScoreType">SelfAssessment.Core.Constant.UserExamMap+ConfidenceScoreType</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'GetUserExamQuizConfidenceRate',false,{EncryptedUserExamQuizID:EncryptedUserExamQuizID,TargetConfidenceScoreType:TargetConfidenceScoreType},succeededCallback,failedCallback,userContext); }}
+SelfAssessment.WebApp.ExamServices.registerClass('SelfAssessment.WebApp.ExamServices',Sys.Net.WebServiceProxy);
+SelfAssessment.WebApp.ExamServices._staticInstance = new SelfAssessment.WebApp.ExamServices();
+SelfAssessment.WebApp.ExamServices.set_path = function(value) {
+SelfAssessment.WebApp.ExamServices._staticInstance.set_path(value); }
+SelfAssessment.WebApp.ExamServices.get_path = function() { 
+/// <value type="String" mayBeNull="true">The service url.</value>
+return SelfAssessment.WebApp.ExamServices._staticInstance.get_path();}
+SelfAssessment.WebApp.ExamServices.set_timeout = function(value) {
+SelfAssessment.WebApp.ExamServices._staticInstance.set_timeout(value); }
+SelfAssessment.WebApp.ExamServices.get_timeout = function() { 
+/// <value type="Number">The service timeout.</value>
+return SelfAssessment.WebApp.ExamServices._staticInstance.get_timeout(); }
+SelfAssessment.WebApp.ExamServices.set_defaultUserContext = function(value) { 
+SelfAssessment.WebApp.ExamServices._staticInstance.set_defaultUserContext(value); }
+SelfAssessment.WebApp.ExamServices.get_defaultUserContext = function() { 
+/// <value mayBeNull="true">The service default user context.</value>
+return SelfAssessment.WebApp.ExamServices._staticInstance.get_defaultUserContext(); }
+SelfAssessment.WebApp.ExamServices.set_defaultSucceededCallback = function(value) { 
+ SelfAssessment.WebApp.ExamServices._staticInstance.set_defaultSucceededCallback(value); }
+SelfAssessment.WebApp.ExamServices.get_defaultSucceededCallback = function() { 
+/// <value type="Function" mayBeNull="true">The service default succeeded callback.</value>
+return SelfAssessment.WebApp.ExamServices._staticInstance.get_defaultSucceededCallback(); }
+SelfAssessment.WebApp.ExamServices.set_defaultFailedCallback = function(value) { 
+SelfAssessment.WebApp.ExamServices._staticInstance.set_defaultFailedCallback(value); }
+SelfAssessment.WebApp.ExamServices.get_defaultFailedCallback = function() { 
+/// <value type="Function" mayBeNull="true">The service default failed callback.</value>
+return SelfAssessment.WebApp.ExamServices._staticInstance.get_defaultFailedCallback(); }
+SelfAssessment.WebApp.ExamServices.set_enableJsonp = function(value) { SelfAssessment.WebApp.ExamServices._staticInstance.set_enableJsonp(value); }
+SelfAssessment.WebApp.ExamServices.get_enableJsonp = function() { 
+/// <value type="Boolean">Specifies whether the service supports JSONP for cross domain calling.</value>
+return SelfAssessment.WebApp.ExamServices._staticInstance.get_enableJsonp(); }
+SelfAssessment.WebApp.ExamServices.set_jsonpCallbackParameter = function(value) { SelfAssessment.WebApp.ExamServices._staticInstance.set_jsonpCallbackParameter(value); }
+SelfAssessment.WebApp.ExamServices.get_jsonpCallbackParameter = function() { 
+/// <value type="String">Specifies the parameter name that contains the callback function name for a JSONP request.</value>
+return SelfAssessment.WebApp.ExamServices._staticInstance.get_jsonpCallbackParameter(); }
+SelfAssessment.WebApp.ExamServices.set_path("/WebServices/ExamServices.asmx");
+SelfAssessment.WebApp.ExamServices.DeleteAnnotation= function(UserQuestionID,AnnotationID,onSuccess,onFailed,userContext) {
+/// <param name="UserQuestionID" type="Number">System.Int32</param>
+/// <param name="AnnotationID" type="String">System.String</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.ExamServices._staticInstance.DeleteAnnotation(UserQuestionID,AnnotationID,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.ExamServices.UserExamBreakUsedUp= function(EncryptedUserExamMapID,onSuccess,onFailed,userContext) {
+/// <param name="EncryptedUserExamMapID" type="String">System.String</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.ExamServices._staticInstance.UserExamBreakUsedUp(EncryptedUserExamMapID,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.ExamServices.SaveAnnotation= function(UserQuestionID,AnnotationID,TextQuote,TextPosition_Start,TextPosition_End,onSuccess,onFailed,userContext) {
+/// <param name="UserQuestionID" type="Number">System.Int32</param>
+/// <param name="AnnotationID" type="String">System.String</param>
+/// <param name="TextQuote" type="String">System.String</param>
+/// <param name="TextPosition_Start" type="Number">System.Int32</param>
+/// <param name="TextPosition_End" type="Number">System.Int32</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.ExamServices._staticInstance.SaveAnnotation(UserQuestionID,AnnotationID,TextQuote,TextPosition_Start,TextPosition_End,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.ExamServices.SaveUserAnswer= function(UserAnswerOptionID,onSuccess,onFailed,userContext) {
+/// <param name="UserAnswerOptionID" type="Number">System.Int32</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.ExamServices._staticInstance.SaveUserAnswer(UserAnswerOptionID,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.ExamServices.StartExamQuestionMigration= function(SourceExamID,TargetExamID,ReplaceQuestions,onSuccess,onFailed,userContext) {
+/// <param name="SourceExamID" type="Number">System.Int32</param>
+/// <param name="TargetExamID" type="Number">System.Int32</param>
+/// <param name="ReplaceQuestions" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.ExamServices._staticInstance.StartExamQuestionMigration(SourceExamID,TargetExamID,ReplaceQuestions,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.ExamServices.UpdateQuestionGenerationRule= function(EncryptedExamID,IsDynamicPooling,IsStaticList,onSuccess,onFailed,userContext) {
+/// <param name="EncryptedExamID" type="String">System.String</param>
+/// <param name="IsDynamicPooling" type="Boolean">System.Boolean</param>
+/// <param name="IsStaticList" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.ExamServices._staticInstance.UpdateQuestionGenerationRule(EncryptedExamID,IsDynamicPooling,IsStaticList,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.ExamServices.UpdateGroupQuestionImagesForDisplay= function(QuestionID,Enable,onSuccess,onFailed,userContext) {
+/// <param name="QuestionID" type="Number">System.Int32</param>
+/// <param name="Enable" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.ExamServices._staticInstance.UpdateGroupQuestionImagesForDisplay(QuestionID,Enable,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.ExamServices.UpdateGroupCommentaryImagesForDisplay= function(QuestionID,Enable,onSuccess,onFailed,userContext) {
+/// <param name="QuestionID" type="Number">System.Int32</param>
+/// <param name="Enable" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.ExamServices._staticInstance.UpdateGroupCommentaryImagesForDisplay(QuestionID,Enable,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.ExamServices.UpdateLearnerTool= function(EncryptedExamID,LearnerToolEnum,EnableLearnerTool,onSuccess,onFailed,userContext) {
+/// <param name="EncryptedExamID" type="String">System.String</param>
+/// <param name="LearnerToolEnum" type="Number">System.Int32</param>
+/// <param name="EnableLearnerTool" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.ExamServices._staticInstance.UpdateLearnerTool(EncryptedExamID,LearnerToolEnum,EnableLearnerTool,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.ExamServices.ToggleCompetencyDiagnosis= function(EncryptedExamID,EnableCompetencyDiagnosis,onSuccess,onFailed,userContext) {
+/// <param name="EncryptedExamID" type="String">System.String</param>
+/// <param name="EnableCompetencyDiagnosis" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.ExamServices._staticInstance.ToggleCompetencyDiagnosis(EncryptedExamID,EnableCompetencyDiagnosis,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.ExamServices.ToggleCompetencyDiagnosticField= function(EncryptedExamID,EnableCompetencyDiagnosticField,ExamCompetencyDiagnosticEnum,onSuccess,onFailed,userContext) {
+/// <param name="EncryptedExamID" type="String">System.String</param>
+/// <param name="EnableCompetencyDiagnosticField" type="Boolean">System.Boolean</param>
+/// <param name="ExamCompetencyDiagnosticEnum" type="Number">System.Int32</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.ExamServices._staticInstance.ToggleCompetencyDiagnosticField(EncryptedExamID,EnableCompetencyDiagnosticField,ExamCompetencyDiagnosticEnum,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.ExamServices.ToggleCompetencyDiagnosticDisplayScoreAgainstHistogram= function(EncryptedExamID,displayScoreAgainstHistogramEnum,onSuccess,onFailed,userContext) {
+/// <param name="EncryptedExamID" type="String">System.String</param>
+/// <param name="displayScoreAgainstHistogramEnum" type="Number">System.Int32</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.ExamServices._staticInstance.ToggleCompetencyDiagnosticDisplayScoreAgainstHistogram(EncryptedExamID,displayScoreAgainstHistogramEnum,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.ExamServices.updateExamDisplayScore= function(EncryptedExamID,DisplayScore,onSuccess,onFailed,userContext) {
+/// <param name="EncryptedExamID" type="String">System.String</param>
+/// <param name="DisplayScore" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.ExamServices._staticInstance.updateExamDisplayScore(EncryptedExamID,DisplayScore,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.ExamServices.updateExamQuestionRandomizationLevel= function(EncryptedExamID,QuestionRandomLevel,onSuccess,onFailed,userContext) {
+/// <param name="EncryptedExamID" type="String">System.String</param>
+/// <param name="QuestionRandomLevel" type="SelfAssessment.Core.Constant.QuestionRandomLevelEnum">SelfAssessment.Core.Constant.QuestionRandomLevelEnum</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.ExamServices._staticInstance.updateExamQuestionRandomizationLevel(EncryptedExamID,QuestionRandomLevel,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.ExamServices.UpdateAllowQuestionSkipping= function(EncryptedExamID,Enable,onSuccess,onFailed,userContext) {
+/// <param name="EncryptedExamID" type="String">System.String</param>
+/// <param name="Enable" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.ExamServices._staticInstance.UpdateAllowQuestionSkipping(EncryptedExamID,Enable,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.ExamServices.UpdateAllowQuestionSkipping_Forward= function(EncryptedExamID,Enable,onSuccess,onFailed,userContext) {
+/// <param name="EncryptedExamID" type="String">System.String</param>
+/// <param name="Enable" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.ExamServices._staticInstance.UpdateAllowQuestionSkipping_Forward(EncryptedExamID,Enable,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.ExamServices.UpdateAllowQuestionSkipping_Backward= function(EncryptedExamID,Enable,onSuccess,onFailed,userContext) {
+/// <param name="EncryptedExamID" type="String">System.String</param>
+/// <param name="Enable" type="Boolean">System.Boolean</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.ExamServices._staticInstance.UpdateAllowQuestionSkipping_Backward(EncryptedExamID,Enable,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.ExamServices.AssignQuestionAvailability= function(TargetExamQuestionID,TargetStartDate,onSuccess,onFailed,userContext) {
+/// <param name="TargetExamQuestionID" type="Number">System.Int32</param>
+/// <param name="TargetStartDate" type="String">System.String</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.ExamServices._staticInstance.AssignQuestionAvailability(TargetExamQuestionID,TargetStartDate,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.ExamServices.AssignQuestionAvailability_AvailableOffset= function(TargetExamQuestionID,TargetDayOffset,onSuccess,onFailed,userContext) {
+/// <param name="TargetExamQuestionID" type="Number">System.Int32</param>
+/// <param name="TargetDayOffset" type="Number">System.Int32</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.ExamServices._staticInstance.AssignQuestionAvailability_AvailableOffset(TargetExamQuestionID,TargetDayOffset,onSuccess,onFailed,userContext); }
+SelfAssessment.WebApp.ExamServices.GetUserExamQuizConfidenceRate= function(EncryptedUserExamQuizID,TargetConfidenceScoreType,onSuccess,onFailed,userContext) {
+/// <param name="EncryptedUserExamQuizID" type="String">System.String</param>
+/// <param name="TargetConfidenceScoreType" type="SelfAssessment.Core.Constant.UserExamMap_ConfidenceScoreType">SelfAssessment.Core.Constant.UserExamMap+ConfidenceScoreType</param>
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+SelfAssessment.WebApp.ExamServices._staticInstance.GetUserExamQuizConfidenceRate(EncryptedUserExamQuizID,TargetConfidenceScoreType,onSuccess,onFailed,userContext); }
+var gtc = Sys.Net.WebServiceProxy._generateTypedConstructor;
+Type.registerNamespace('SelfAssessment.Core.BusinessLogicLayer');
+if (typeof(SelfAssessment.Core.BusinessLogicLayer.ReturnMessage) === 'undefined') {
+SelfAssessment.Core.BusinessLogicLayer.ReturnMessage=gtc("SelfAssessment.Core.BusinessLogicLayer.ReturnMessage");
+SelfAssessment.Core.BusinessLogicLayer.ReturnMessage.registerClass('SelfAssessment.Core.BusinessLogicLayer.ReturnMessage');
+}
+Type.registerNamespace('SelfAssessment.Core.Constant');
+if (typeof(SelfAssessment.Core.Constant.QuestionRandomLevelEnum) === 'undefined') {
+SelfAssessment.Core.Constant.QuestionRandomLevelEnum = function() { throw Error.invalidOperation(); }
+SelfAssessment.Core.Constant.QuestionRandomLevelEnum.prototype = {Level0: 0,Level1: 1,Level2: 2,Level3: 3}
+SelfAssessment.Core.Constant.QuestionRandomLevelEnum.registerEnum('SelfAssessment.Core.Constant.QuestionRandomLevelEnum', true);
+}
+if (typeof(SelfAssessment.Core.Constant.ConfidenceScoreType) === 'undefined') {
+SelfAssessment.Core.Constant.ConfidenceScoreType = function() { throw Error.invalidOperation(); }
+SelfAssessment.Core.Constant.ConfidenceScoreType.prototype = {Overall: 1,Correct: 2,Incorrect: 3}
+SelfAssessment.Core.Constant.ConfidenceScoreType.registerEnum('SelfAssessment.Core.Constant.ConfidenceScoreType', true);
+}
