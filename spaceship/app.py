@@ -7,9 +7,9 @@ import uuid
 import time
 import random
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/spaceship/static')
 app.config['SECRET_KEY'] = 'space_secret_123'
-socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet')
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet', path='/spaceship/socket.io')
 
 # Game State
 PASSCODE = "spaceship123"
@@ -56,7 +56,8 @@ def handle_obs_dest(data):
     socketio.emit('obstacle_destroyed', {'obs_id': obs_id})
 
 
-@app.route('/')
+@app.route('/spaceship')
+@app.route('/spaceship/')
 def index():
     return render_template('index.html')
 
@@ -69,11 +70,11 @@ def handle_join(data):
 
     sid = request.sid
     name = data.get('name', 'Pilot')
-    team = data.get('team', 'red') 
+    team = data.get('team', 'red')
     ship_class = data.get('shipClass', 'fighter')
 
     stats = SHIP_STATS.get(ship_class, SHIP_STATS['fighter'])
-    
+
     if team == 'red':
         x, y = 100, MAP_HEIGHT / 2
     else:
@@ -94,7 +95,7 @@ def handle_join(data):
         'isDead': False,
         'coins': 0
     }
-    
+
     join_room(team) # for team chat
 
     emit('game_init', {
@@ -107,7 +108,7 @@ def handle_join(data):
     })
 
     socketio.emit('player_joined', players[sid], skip_sid=sid)
-    
+
 @socketio.on('disconnect')
 def handle_disconnect():
     sid = request.sid
@@ -138,7 +139,7 @@ def handle_shoot(data):
             dmg = 100
         else:
             dmg = players[sid]['damage']
-            
+
         bullet = {
             'id': str(uuid.uuid4()),
             'owner': sid,
@@ -155,13 +156,13 @@ def handle_shoot(data):
 def handle_hit(data):
     target_id = data.get('targetId')
     damage = data.get('damage', 10)
-    
+
     if target_id in players and not players[target_id]['isDead']:
         players[target_id]['hp'] -= damage
         if players[target_id]['hp'] <= 0:
             players[target_id]['hp'] = 0
             players[target_id]['isDead'] = True
-            
+
             shooter_id = data.get('shooterId')
             if shooter_id in players:
                 players[shooter_id]['coins'] += 20
@@ -169,7 +170,7 @@ def handle_hit(data):
                 if shooter_team in scores:
                     scores[shooter_team] += 1
                 socketio.emit('coins_update', {'coins': players[shooter_id]['coins']}, to=shooter_id)
-            
+
             socketio.emit('player_died', {'id': target_id, 'scores': scores})
             # waiting for request_respawn
         else:
@@ -181,7 +182,7 @@ def handle_respawn(data):
     if sid in players and players[sid]['isDead']:
         ship_class = data.get('shipClass', 'fighter')
         stats = SHIP_STATS.get(ship_class, SHIP_STATS['fighter'])
-        
+
         team = players[sid]['team']
         players[sid]['isDead'] = False
         players[sid]['shipClass'] = ship_class
@@ -189,12 +190,12 @@ def handle_respawn(data):
         players[sid]['hp'] = stats['hp']
         players[sid]['speed'] = stats['speed']
         players[sid]['damage'] = stats['damage']
-        
+
         if team == 'red':
             players[sid]['x'], players[sid]['y'] = 100, MAP_HEIGHT / 2
         else:
             players[sid]['x'], players[sid]['y'] = MAP_WIDTH - 100, MAP_HEIGHT / 2
-            
+
         socketio.emit('player_respawned', players[sid])
 
 # --- Chat System ---
@@ -203,21 +204,21 @@ def handle_chat(data):
     sid = request.sid
     msg = data.get('text')
     channel = data.get('channel', 'global')
-    
+
     if sid in players:
         name = players[sid]['name']
         team = players[sid]['team']
     else:
         name = "Spectator"
         team = "none"
-        
+
     chat_data = {
         'sender': name,
         'team': team,
         'text': msg,
         'channel': channel
     }
-    
+
     if channel == 'team' and team in ['red', 'blue']:
         socketio.emit('chat_message', chat_data, to=team)
     else:
@@ -238,10 +239,10 @@ def handle_buy_upgrade(data):
                 players[sid]['damage'] += 10
             elif upgrade == 'speed':
                 players[sid]['speed'] += 50
-                
+
             socketio.emit('upgrade_bought', {
-                'id': sid, 
-                'coins': players[sid]['coins'], 
+                'id': sid,
+                'coins': players[sid]['coins'],
                 'hp': players[sid]['hp'],
                 'maxHp': players[sid]['maxHp'],
                 'speed': players[sid]['speed'],

@@ -1,4 +1,4 @@
-const socket = io();
+const socket = io({ path: '/spaceship/socket.io' });
 
 const screens = {
     passcode: document.getElementById('passcode-screen'),
@@ -86,7 +86,7 @@ socket.on('match_reset', (data) => {
     scores = data.scores;
     mapObstacles = data.obstacles;
     players = data.players;
-    
+
     // Refresh stats if we exist
     if (players[myId]) {
         if (!players[myId].isDead) {
@@ -94,12 +94,12 @@ socket.on('match_reset', (data) => {
             canvas.style.display = 'block';
         }
     }
-    
+
     // Reset our heavy ammo naturally
     heavyAmmo = 3;
     isReloadingHeavy = false;
     document.getElementById('ui-reloading').style.display = 'none';
-        
+
     updateHUD();
 });
 
@@ -140,7 +140,7 @@ socket.on('game_init', (data) => {
     players = data.players;
     scores = data.scores;
     mapObstacles = data.obstacles || [];
-    
+
     showScreen('game');
     chatContainerGame.appendChild(chatComponent);
     canvas.style.display = 'block';
@@ -233,15 +233,15 @@ window.addEventListener('mousemove', e => {
     mouse.y = e.clientY;
 });
 canvas.addEventListener('contextmenu', e => e.preventDefault());
-window.addEventListener('mousedown', e => { 
+window.addEventListener('mousedown', e => {
     if(e.target === canvas) {
         if(e.button === 0) mouse.isDown = true;
         if(e.button === 2) mouse.isRightDown = true;
     }
 });
-window.addEventListener('mouseup', e => { 
-    if(e.button === 0) mouse.isDown = false; 
-    if(e.button === 2) mouse.isRightDown = false; 
+window.addEventListener('mouseup', e => {
+    if(e.button === 0) mouse.isDown = false;
+    if(e.button === 2) mouse.isRightDown = false;
 });
 window.addEventListener('resize', resizeCanvas);
 
@@ -267,22 +267,22 @@ function updateHUD() {
 
 function update(dt) {
     if (!players[myId] || players[myId].isDead) return;
-    
+
     const me = players[myId];
-    
+
     let dx = 0; let dy = 0;
     if (keys.w) dy -= 1;
     if (keys.s) dy += 1;
     if (keys.a) dx -= 1;
     if (keys.d) dx += 1;
-    
+
     if (dx !== 0 || dy !== 0) {
         const len = Math.hypot(dx, dy);
         let newX = me.x + (dx / len) * me.speed * dt;
         let newY = me.y + (dy / len) * me.speed * dt;
         newX = Math.max(0, Math.min(mapInfo.width, newX));
         newY = Math.max(0, Math.min(mapInfo.height, newY));
-        
+
         let radius = me.shipClass === 'juggernaut' ? 20 : (me.shipClass === 'scout' ? 12 : 15);
         let safe = true;
         for (let o of mapObstacles) {
@@ -308,7 +308,7 @@ function update(dt) {
         heavyAmmo--;
         updateHUD();
         socket.emit('player_shoot', { x: me.x, y: me.y, angle: me.angle, bullet_type: 'heavy' });
-        
+
         if (heavyAmmo <= 0) {
             isReloadingHeavy = true;
             document.getElementById('ui-reloading').style.display = 'inline';
@@ -366,12 +366,12 @@ function update(dt) {
         }
         b.currX = b.x + Math.cos(b.angle) * 1000 * age;
         b.currY = b.y + Math.sin(b.angle) * 1000 * age;
-        
+
         let bHitObj = false;
         let bRad = b.type === 'heavy' ? 15 : 5;
         for (let o of mapObstacles) {
             if (Math.hypot(b.currX - o.x, b.currY - o.y) < bRad + o.radius) {
-                bHitObj = true; 
+                bHitObj = true;
                 if (b.type === 'heavy' && b.owner === myId) {
                     socket.emit('obstacle_destroyed', {obs_id: o.id});
                 }
@@ -387,10 +387,10 @@ function update(dt) {
         for (let id in players) {
             let p = players[id];
             if (p.isDead || p.team === b.team) continue;
-            
+
             const dist = Math.hypot(p.x - b.currX, p.y - b.currY);
             let radius = p.shipClass === 'juggernaut' ? 20 : (p.shipClass === 'scout' ? 12 : 15);
-            
+
             if (dist < radius + bRad) {
                 if (b.owner === myId) {
                     socket.emit('bullet_hit', { targetId: id, shooterId: myId, damage: b.damage });
@@ -486,7 +486,7 @@ function draw() {
 
         ctx.save();
         ctx.translate(p.x, p.y);
-        
+
         ctx.fillStyle = 'white';
         ctx.font = '14px Orbitron';
         ctx.textAlign = 'center';
@@ -498,7 +498,7 @@ function draw() {
         ctx.fillRect(-20, -25, 40 * (p.hp / p.maxHp), 5);
 
         ctx.rotate(p.angle);
-        
+
         ctx.fillStyle = p.team === 'red' ? '#ff3366' : '#33ccff';
         let r = p.shipClass === 'juggernaut' ? 20 : (p.shipClass === 'scout' ? 12 : 15);
         ctx.beginPath();
@@ -519,7 +519,7 @@ function draw() {
 
 function gameLoop() {
     if (gameState !== 'game') return;
-    
+
     const now = performance.now();
     const dt = (now - lastTime) / 1000;
     lastTime = now;
