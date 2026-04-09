@@ -1,0 +1,53 @@
+<?php
+session_start();
+
+// Define your username and password for demonstration
+define('USERNAME', 'admin');
+define('PASSWORD', 'password');
+
+$login_error = '';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    // Simple authentication check
+    if ($username === USERNAME && $password === PASSWORD) {
+        $_SESSION['logged_in'] = true; // Start the session on successful login
+        header("Location: /spaceship"); // Redirect to the spaceship game proxy route
+        exit;
+    } else {
+        $login_error = 'Login failed: Invalid username or password.';
+        // Optionally log failed attempts here
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-form">
+            <h1>Sign in</h1>
+            <form action="login.php" method="POST">
+                <label for="username">Username:</label>
+                <!--input type="text" id="username" name="username" required-->
+                <!--input type="email" id="email" name="email" placeholder="email" required-->
+                <input type="username" id="username" name="username" autocomplete="email" required>
+                <label for="password">Password:</label>
+                <!--input type="password" id="password" name="password" required-->
+                <input type="password" id="password" name="password" autocomplete="password" required>
+                <button type="submit">Login</button>
+                <?php if ($login_error): ?>
+                    <p style="color: red;"><?php echo $login_error; ?></p>
+                <?php endif; ?>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
