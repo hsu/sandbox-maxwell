@@ -22,6 +22,9 @@ let mapObstacles = [];
 let currentChatChannel = 'global';
 
 const keys = { w: false, a: false, s: false, d: false };
+let isRelativeControl = false;
+let joyDx = 0, joyDy = 0, joyAngle = null, joyShooting = false;
+let leftJoyId = null, rightJoyId = null, lastDoubleTapTime = 0, nippleManager = null;
 let heavyAmmo = 3;
 let isReloadingHeavy = false;
 let lastHeavyShootTime = 0;
@@ -38,6 +41,7 @@ document.getElementById('passcode-btn').addEventListener('click', () => {
 });
 
 document.getElementById('deploy-btn').addEventListener('click', () => {
+    isRelativeControl = (document.getElementById('control-select').value === 'relative');
     socket.emit('join_game', {
         passcode: 'spaceship123',
         name: document.getElementById('pilot-name').value || 'Pilot',
@@ -145,6 +149,7 @@ socket.on('game_init', (data) => {
     chatContainerGame.appendChild(chatComponent);
     canvas.style.display = 'block';
     resizeCanvas();
+    initTouchControls();
     updateHUD();
     requestAnimationFrame(gameLoop);
 });
@@ -250,6 +255,70 @@ function resizeCanvas() {
     canvas.height = window.innerHeight;
 }
 
+function initTouchControls() {
+    if (!('ontouchstart' in window) && navigator.maxTouchPoints <= 0) return;
+    if (nippleManager) return;
+
+    const zone = document.getElementById('joystick-zone');
+    zone.style.display = 'block';
+
+    nippleManager = nipplejs.create({
+        zone: zone,
+        mode: 'dynamic',
+        multitouch: true,
+        maxNumberOfNipples: 2
+    });
+
+    nippleManager.on('start', (evt, data) => {
+        if (data.position.x < window.innerWidth / 2) {
+            leftJoyId = data.identifier;
+        } else {
+            rightJoyId = data.identifier;
+            const now = Date.now();
+            if (now - lastDoubleTapTime < 300) {
+                let me = players[myId];
+                if (!isReloadingHeavy && heavyAmmo > 0 && performance.now() - lastHeavyShootTime > 500) {
+                    lastHeavyShootTime = performance.now();
+                    heavyAmmo--;
+                    updateHUD();
+                    socket.emit('player_shoot', { x: me.x, y: me.y, angle: me.angle, bullet_type: 'heavy' });
+
+                    if (heavyAmmo <= 0) {
+                        isReloadingHeavy = true;
+                        document.getElementById('ui-reloading').style.display = 'inline';
+                        setTimeout(() => {
+                            heavyAmmo = 3;
+                            isReloadingHeavy = false;
+                            document.getElementById('ui-reloading').style.display = 'none';
+                            updateHUD();
+                        }, 5000);
+                    }
+                }
+            }
+            lastDoubleTapTime = now;
+        }
+    });
+
+    nippleManager.on('move', (evt, data) => {
+        if (!data.vector) return;
+        if (data.identifier === leftJoyId) {
+            joyDx = data.vector.x;
+            joyDy = -data.vector.y;
+        } else if (data.identifier === rightJoyId) {
+            joyAngle = Math.atan2(-data.vector.y, data.vector.x);
+            joyShooting = true;
+        }
+    });
+
+    nippleManager.on('end', (evt, data) => {
+        if (data.identifier === leftJoyId) {
+            joyDx = 0; joyDy = 0; leftJoyId = null;
+        } else if (data.identifier === rightJoyId) {
+            joyShooting = false; joyAngle = null; rightJoyId = null;
+        }
+    });
+}
+
 let lastTime = performance.now();
 let lastShootTime = 0;
 
@@ -271,15 +340,28 @@ function update(dt) {
     const me = players[myId];
 
     let dx = 0; let dy = 0;
-    if (keys.w) dy -= 1;
-    if (keys.s) dy += 1;
-    if (keys.a) dx -= 1;
-    if (keys.d) dx += 1;
+    let inputY = joyDy !== 0 ? joyDy : (keys.w ? -1 : (keys.s ? 1 : 0));
+    let inputX = joyDx !== 0 ? joyDx : (keys.a ? -1 : (keys.d ? 1 : 0));
+
+    if (isRelativeControl) {
+        if (inputX !== 0 && joyAngle === null) {
+            me.angle += inputX * 4.0 * dt;
+        }
+        if (inputY !== 0) {
+            let thrust = -inputY;
+            dx += Math.cos(me.angle) * thrust;
+            dy += Math.sin(me.angle) * thrust;
+        }
+    } else {
+        dx = inputX;
+        dy = inputY;
+    }
 
     if (dx !== 0 || dy !== 0) {
         const len = Math.hypot(dx, dy);
-        let newX = me.x + (dx / len) * me.speed * dt;
-        let newY = me.y + (dy / len) * me.speed * dt;
+        let moveMult = len > 1 ? 1 : len;
+        let newX = me.x + (dx / len) * me.speed * moveMult * dt;
+        let newY = me.y + (dy / len) * me.speed * moveMult * dt;
         newX = Math.max(0, Math.min(mapInfo.width, newX));
         newY = Math.max(0, Math.min(mapInfo.height, newY));
 
@@ -295,11 +377,21 @@ function update(dt) {
         }
     }
 
-    const cx = window.innerWidth / 2;
-    const cy = window.innerHeight / 2;
-    me.angle = Math.atan2(mouse.y - cy, mouse.x - cx);
+    if (!isRelativeControl) {
+        if (joyAngle !== null) {
+            me.angle = joyAngle;
+        } else {
+            const cx = window.innerWidth / 2;
+            const cy = window.innerHeight / 2;
+            me.angle = Math.atan2(mouse.y - cy, mouse.x - cx);
+        }
+    } else {
+        if (joyAngle !== null) {
+            me.angle = joyAngle;
+        }
+    }
 
-    if (mouse.isDown && performance.now() - lastShootTime > 300) {
+    if ((mouse.isDown || joyShooting) && performance.now() - lastShootTime > 300) {
         lastShootTime = performance.now();
         socket.emit('player_shoot', { x: me.x, y: me.y, angle: me.angle, bullet_type: 'normal' });
     }

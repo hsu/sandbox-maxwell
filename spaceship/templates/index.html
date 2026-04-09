@@ -6,6 +6,7 @@
     <title>Galactic Showdown</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nipplejs/0.10.1/nipplejs.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -41,6 +42,12 @@
                         <option value="scout">Scout (Fast & Fragile)</option>
                         <option value="juggernaut">Juggernaut (Slow & Tanky)</option>
                     </select>
+
+                    <label>Flight Mode</label>
+                    <select id="control-select">
+                        <option value="absolute">Absolute (WASD move absolute)</option>
+                        <option value="relative">Asteroid (W moves forward, A/D rotate)</option>
+                    </select>
                     <button id="deploy-btn" class="glow-btn large" style="margin-top: 15px;">DEPLOY</button>
                 </div>
                 <!-- Mini chat integrated into lobby -->
@@ -55,7 +62,7 @@
             <button id="restart-match-btn" class="glow-btn small" style="border-color:#ffcc00; color:#ffcc00;">Restart Match</button>
         </div>
         <div id="scoreboard">
-            <span class="red-score">Red: <span id="score-red">0</span></span> | 
+            <span class="red-score">Red: <span id="score-red">0</span></span> |
             <span class="blue-score">Blue: <span id="score-blue">0</span></span>
         </div>
         <div id="player-stats" class="glass-panel" style="position: absolute; top: 20px; right: 20px; text-align: right; line-height: 1.8; font-size: 14px; padding: 15px; border-radius: 8px;">
@@ -67,7 +74,7 @@
             <div style="color: #ff3366;">Heavy AMMO: <span id="ui-ammo" style="color:#fff;">3</span> <span id="ui-reloading" style="color:#ff3366; display:none; margin-left:5px; font-weight:bold; font-size:12px;">(RELOAD 5s)</span></div>
             <button id="shop-toggle-btn" class="glow-btn small" style="margin-top: 10px; width: 100%;">Open Shop</button>
         </div>
-        
+
         <!-- Interactive Shop -->
         <div id="shop-panel" class="glass-panel hidden" style="position: absolute; top: 280px; right: 20px; width: 300px; z-index: 30;">
             <h3 style="margin-top: 0; color: #0f0;">Black Market</h3>
@@ -106,7 +113,7 @@
         </div>
     </div>
 
-    
+
     <!-- Death Screen -->
     <div id="death-screen" class="screen full-center" style="background: rgba(10,0,0,0.8); z-index: 50;">
         <div class="glass-panel" style="border-color: #ff3366; box-shadow: 0 0 20px #ff3366;">
@@ -121,6 +128,8 @@
             <button id="respawn-btn" class="glow-btn large" style="border-color: #ff3366; color: #ff3366;">DEPLOY</button>
         </div>
     </div>
+
+    <div id="joystick-zone" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; z-index:15; touch-action:none;"></div>
 
     <canvas id="gameCanvas"></canvas>
 
