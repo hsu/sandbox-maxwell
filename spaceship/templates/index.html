@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galactic Showdown</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Passcode Gate -->
+    <div id="passcode-screen" class="screen full-center active">
+        <div class="glass-panel" style="max-width: 400px; width: 100%;">
+            <h1 style="color: #00f0ff; letter-spacing: 2px;">Orbital Access</h1>
+            <input type="password" id="passcode-input" placeholder="Enter Passcode" style="width: 90%; margin-bottom: 20px;">
+            <button id="passcode-btn" class="glow-btn">Authenticate</button>
+            <p id="passcode-error" class="error"></p>
+        </div>
+    </div>
+
+    <!-- Lobby / Hangar screen -->
+    <div id="lobby-screen" class="screen full-center">
+        <div class="glass-panel wide">
+            <h1 style="border-bottom: 2px solid #00f0ff; padding-bottom: 10px;">Hangar Protocol</h1>
+            <div class="split-layout">
+                <div class="config-col">
+                    <label>Pilot Name</label>
+                    <input type="text" id="pilot-name" placeholder="Ace">
+
+                    <label>Faction</label>
+                    <select id="team-select">
+                        <option value="red">Red Vanguard</option>
+                        <option value="blue">Blue Syndicate</option>
+                    </select>
+
+                    <label>Ship Class</label>
+                    <select id="ship-select">
+                        <option value="fighter">Fighter (Balanced)</option>
+                        <option value="scout">Scout (Fast & Fragile)</option>
+                        <option value="juggernaut">Juggernaut (Slow & Tanky)</option>
+                    </select>
+                    <button id="deploy-btn" class="glow-btn large" style="margin-top: 15px;">DEPLOY</button>
+                </div>
+                <!-- Mini chat integrated into lobby -->
+                <div class="chat-col" id="lobby-chat-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game HUD -->
+    <div id="game-ui" class="screen">
+        <div id="match-controls" style="position: absolute; top: 20px; left: 20px; z-index: 20;">
+            <button id="restart-match-btn" class="glow-btn small" style="border-color:#ffcc00; color:#ffcc00;">Restart Match</button>
+        </div>
+        <div id="scoreboard">
+            <span class="red-score">Red: <span id="score-red">0</span></span> | 
+            <span class="blue-score">Blue: <span id="score-blue">0</span></span>
+        </div>
+        <div id="player-stats" class="glass-panel" style="position: absolute; top: 20px; right: 20px; text-align: right; line-height: 1.8; font-size: 14px; padding: 15px; border-radius: 8px;">
+            <div style="color: #00f0ff;">Scrap Coins: <span id="ui-coins" style="color:#fff;">0</span></div>
+            <div style="color: #0f0;">Hull Integrity: <span id="ui-hp" style="color:#fff;">100</span></div>
+            <div style="color: #ffcc00;">Engine Speed: <span id="ui-speed" style="color:#fff;">0</span></div>
+            <div style="color: #33ccff;">Laser DMG: <span id="ui-damage" style="color:#fff;">0</span></div>
+            <div style="color: #fffc00;">Heavy DMG: <span style="color:#fff;">100</span></div>
+            <div style="color: #ff3366;">Heavy AMMO: <span id="ui-ammo" style="color:#fff;">3</span> <span id="ui-reloading" style="color:#ff3366; display:none; margin-left:5px; font-weight:bold; font-size:12px;">(RELOAD 5s)</span></div>
+            <button id="shop-toggle-btn" class="glow-btn small" style="margin-top: 10px; width: 100%;">Open Shop</button>
+        </div>
+        
+        <!-- Interactive Shop -->
+        <div id="shop-panel" class="glass-panel hidden" style="position: absolute; top: 280px; right: 20px; width: 300px; z-index: 30;">
+            <h3 style="margin-top: 0; color: #0f0;">Black Market</h3>
+            <div class="shop-item">
+                <span style="font-weight: bold;">Hull Repair</span>
+                <button class="buy-btn glow-btn small" data-upgrade="heal">100C</button>
+            </div>
+            <div class="shop-item">
+                <span style="font-weight: bold;">Weapon Overclock</span>
+                <button class="buy-btn glow-btn small" data-upgrade="damage">100C</button>
+            </div>
+            <div class="shop-item">
+                <span style="font-weight: bold;">Thruster Boost</span>
+                <button class="buy-btn glow-btn small" data-upgrade="speed">100C</button>
+            </div>
+        </div>
+
+        <div id="game-chat-wrapper"></div>
+    </div>
+
+    <!-- Chat Component Interface -->
+    <div id="chat-component" class="glass-panel" style="display:flex; flex-direction:column; background: rgba(10,15,30,0.85); transition: all 0.3s ease;">
+        <div class="chat-tabs" style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
+            <div>
+                <button class="chat-tab active" data-channel="global" style="margin-right: 5px;">Global Radio</button>
+                <button class="chat-tab" data-channel="team">Team Channel</button>
+            </div>
+            <button id="chat-minimize-btn" style="background:transparent; color:#00f0ff; border:1px solid #00f0ff; border-radius:4px; font-weight:bold; cursor:pointer;" title="Minimize Chat">_</button>
+        </div>
+        <div id="chat-body" style="display:flex; flex-direction:column; height: 280px;">
+            <div id="chat-messages" class="chat-messages" style="flex:1; margin-bottom: 10px;"></div>
+            <div class="chat-input-row" style="display:flex; gap:10px;">
+                <input type="text" id="chat-input" placeholder="Transmit..." autocomplete="off" style="flex:1;">
+                <button id="chat-send" class="glow-btn small">Send</button>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- Death Screen -->
+    <div id="death-screen" class="screen full-center" style="background: rgba(10,0,0,0.8); z-index: 50;">
+        <div class="glass-panel" style="border-color: #ff3366; box-shadow: 0 0 20px #ff3366;">
+            <h1 style="color: #ff3366;">SHIP DESTROYED</h1>
+            <p>Select a new ship class.</p>
+            <select id="death-ship-select" style="margin-bottom: 20px; text-align: center;">
+                <option value="fighter">Fighter</option>
+                <option value="scout">Scout</option>
+                <option value="juggernaut">Juggernaut</option>
+            </select>
+            <br>
+            <button id="respawn-btn" class="glow-btn large" style="border-color: #ff3366; color: #ff3366;">DEPLOY</button>
+        </div>
+    </div>
+
+    <canvas id="gameCanvas"></canvas>
+
+    <script src="{{ url_for('static', filename='game.js') }}"></script>
+</body>
+</html>
