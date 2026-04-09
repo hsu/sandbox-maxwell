@@ -38,4 +38,11 @@ This app is explicitly configured to gracefully run natively under the `/spacesh
 - Proxy the `/spaceship` context to internal port `5000`.
 - Ensure standard WebSockets connection upgrade (`Upgrade: websocket`) works correctly on the proxy to prevent falling back to HTTP long polling.
 
+**Required Apache2 Modules:**
+Ensure that your server has the correct proxy and websocket modules enabled before applying the VirtualHost configurations:
+```bash
+sudo a2enmod proxy proxy_http proxy_wstunnel rewrite
+sudo systemctl restart apache2
+```
+
 You can find the reference `Apache2` VirtualHost files pre-configured inside the `deploy/` directory of this repository!
