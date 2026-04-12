@@ -64,6 +64,7 @@
         <div id="match-controls" style="position: absolute; top: 20px; left: 20px; z-index: 20;">
             <button id="restart-match-btn" class="glow-btn small" style="border-color:#ffcc00; color:#ffcc00;">Restart
                 Match</button>
+            <button id="admin-settings-btn" class="glow-btn small" style="border-color:#fff; color:#fff; margin-left: 10px;">⚙️ Admin</button>
         </div>
         <div id="scoreboard">
             <span class="red-score">Red: <span id="score-red">0</span></span> |
@@ -102,7 +103,21 @@
             </div>
         </div>
 
-        <button id="mobile-heavy-btn" class="glow-btn large" style="display:none; position:absolute; bottom:50px; left:50%; transform:translateX(-50%); z-index:30; border-color:#fffc00; color:#fffc00; padding:15px 30px; font-size:18px; touch-action:none; pointer-events:auto; box-shadow: 0 0 15px rgba(255, 252, 0, 0.5);">FIRE HEAVY</button>
+        <!-- Admin Cheats Modal -->
+        <div id="admin-settings-panel" class="glass-panel hidden" style="position: absolute; top: 100px; left: 50%; transform: translateX(-50%); width: 320px; z-index: 40;">
+            <h3 style="margin-top: 0; color: #fff;">Admin Override</h3>
+            <input type="password" id="admin-password" placeholder="Passcode..." style="width: 90%; margin-bottom: 15px;">
+            <div style="text-align: left; margin-bottom: 10px;">
+                <label>Fire Rate (ms limit):</label>
+                <input type="number" id="admin-fire-rate" value="300" style="width: 100%;">
+            </div>
+            <div style="text-align: left; margin-bottom: 15px;">
+                <label>Bullet Speed:</label>
+                <input type="number" id="admin-bullet-speed" value="1000" style="width: 100%;">
+            </div>
+            <button id="admin-apply-btn" class="glow-btn small" style="width: 100%; border-color: #0f0; color: #0f0;">Inject Override</button>
+            <p id="admin-error" class="error" style="margin-top: 10px;"></p>
+        </div>
 
         <div id="game-chat-wrapper"></div>
     </div>

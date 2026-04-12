@@ -147,6 +147,7 @@ def handle_shoot(data):
             'x': data.get('x'),
             'y': data.get('y'),
             'angle': data.get('angle'),
+            'speed': data.get('speed', 1000),
             'damage': dmg,
             'type': bullet_type
         }

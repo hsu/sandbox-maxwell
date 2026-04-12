@@ -20,6 +20,8 @@ let bullets = {};
 let scores = { red: 0, blue: 0 };
 let mapObstacles = [];
 let currentChatChannel = 'global';
+let myFireRate = 300;
+let myBulletSpeed = 1000;
 
 const keys = { w: false, a: false, s: false, d: false };
 let isRelativeControl = false;
@@ -52,6 +54,27 @@ document.getElementById('deploy-btn').addEventListener('click', () => {
 
 document.getElementById('shop-toggle-btn').addEventListener('click', () => {
     document.getElementById('shop-panel').classList.toggle('hidden');
+});
+
+document.getElementById('admin-settings-btn').addEventListener('click', () => {
+    document.getElementById('admin-settings-panel').classList.toggle('hidden');
+});
+
+document.getElementById('admin-apply-btn').addEventListener('click', () => {
+    const pw = document.getElementById('admin-password').value;
+    if (pw === 'hahaha') {
+        myFireRate = parseInt(document.getElementById('admin-fire-rate').value) || 300;
+        myBulletSpeed = parseInt(document.getElementById('admin-bullet-speed').value) || 1000;
+        document.getElementById('admin-error').innerText = 'Cheats injected!';
+        document.getElementById('admin-error').style.color = '#0f0';
+        setTimeout(() => {
+            document.getElementById('admin-settings-panel').classList.add('hidden');
+            document.getElementById('admin-error').innerText = '';
+        }, 1000);
+    } else {
+        document.getElementById('admin-error').innerText = 'Invalid Passcode';
+        document.getElementById('admin-error').style.color = '#ff3366';
+    }
 });
 
 document.querySelectorAll('.buy-btn').forEach(btn => {
@@ -262,15 +285,7 @@ function initTouchControls() {
     const zone = document.getElementById('joystick-zone');
     zone.style.display = 'block';
 
-    const heavyBtn = document.getElementById('mobile-heavy-btn');
-    if (heavyBtn) {
-        heavyBtn.style.display = 'block';
-        heavyBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            fireHeavyWeapon();
-        });
-    }
+    let lastLeftTapTime = 0;
 
     nippleManager = nipplejs.create({
         zone: zone,
@@ -282,6 +297,11 @@ function initTouchControls() {
     nippleManager.on('start', (evt, data) => {
         if (data.position.x < window.innerWidth / 2) {
             leftJoyId = data.identifier;
+            const now = Date.now();
+            if (now - lastLeftTapTime < 300) {
+                fireHeavyWeapon();
+            }
+            lastLeftTapTime = now;
         } else {
             rightJoyId = data.identifier;
         }
@@ -379,9 +399,9 @@ function update(dt) {
         }
     }
 
-    if ((mouse.isDown || joyShooting) && performance.now() - lastShootTime > 300) {
+    if ((mouse.isDown || joyShooting) && performance.now() - lastShootTime > myFireRate) {
         lastShootTime = performance.now();
-        socket.emit('player_shoot', { x: me.x, y: me.y, angle: me.angle, bullet_type: 'normal' });
+        socket.emit('player_shoot', { x: me.x, y: me.y, angle: me.angle, bullet_type: 'normal', speed: myBulletSpeed });
     }
     if (mouse.isRightDown) {
         fireHeavyWeapon();
@@ -430,8 +450,9 @@ function update(dt) {
             delete bullets[bid];
             continue;
         }
-        b.currX = b.x + Math.cos(b.angle) * 1000 * age;
-        b.currY = b.y + Math.sin(b.angle) * 1000 * age;
+        let speed = b.speed || 1000;
+        b.currX = b.x + Math.cos(b.angle) * speed * age;
+        b.currY = b.y + Math.sin(b.angle) * speed * age;
 
         let bHitObj = false;
         let bRad = b.type === 'heavy' ? 15 : 5;
@@ -604,7 +625,7 @@ function fireHeavyWeapon() {
         lastHeavyShootTime = performance.now();
         heavyAmmo--;
         updateHUD();
-        socket.emit('player_shoot', { x: me.x, y: me.y, angle: me.angle, bullet_type: 'heavy' });
+        socket.emit('player_shoot', { x: me.x, y: me.y, angle: me.angle, bullet_type: 'heavy', speed: myBulletSpeed });
 
         if (heavyAmmo <= 0) {
             isReloadingHeavy = true;
