@@ -165,7 +165,7 @@ def handle_hit(data):
 
             shooter_id = data.get('shooterId')
             if shooter_id in players:
-                players[shooter_id]['coins'] += 20
+                players[shooter_id]['coins'] += 50
                 shooter_team = players[shooter_id]['team']
                 if shooter_team in scores:
                     scores[shooter_team] += 1

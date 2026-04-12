@@ -262,6 +262,16 @@ function initTouchControls() {
     const zone = document.getElementById('joystick-zone');
     zone.style.display = 'block';
 
+    const heavyBtn = document.getElementById('mobile-heavy-btn');
+    if (heavyBtn) {
+        heavyBtn.style.display = 'block';
+        heavyBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            fireHeavyWeapon();
+        });
+    }
+
     nippleManager = nipplejs.create({
         zone: zone,
         mode: 'dynamic',
@@ -274,28 +284,6 @@ function initTouchControls() {
             leftJoyId = data.identifier;
         } else {
             rightJoyId = data.identifier;
-            const now = Date.now();
-            if (now - lastDoubleTapTime < 300) {
-                let me = players[myId];
-                if (!isReloadingHeavy && heavyAmmo > 0 && performance.now() - lastHeavyShootTime > 500) {
-                    lastHeavyShootTime = performance.now();
-                    heavyAmmo--;
-                    updateHUD();
-                    socket.emit('player_shoot', { x: me.x, y: me.y, angle: me.angle, bullet_type: 'heavy' });
-
-                    if (heavyAmmo <= 0) {
-                        isReloadingHeavy = true;
-                        document.getElementById('ui-reloading').style.display = 'inline';
-                        setTimeout(() => {
-                            heavyAmmo = 3;
-                            isReloadingHeavy = false;
-                            document.getElementById('ui-reloading').style.display = 'none';
-                            updateHUD();
-                        }, 5000);
-                    }
-                }
-            }
-            lastDoubleTapTime = now;
         }
     });
 
@@ -395,22 +383,8 @@ function update(dt) {
         lastShootTime = performance.now();
         socket.emit('player_shoot', { x: me.x, y: me.y, angle: me.angle, bullet_type: 'normal' });
     }
-    if (mouse.isRightDown && !isReloadingHeavy && heavyAmmo > 0 && performance.now() - lastHeavyShootTime > 500) {
-        lastHeavyShootTime = performance.now();
-        heavyAmmo--;
-        updateHUD();
-        socket.emit('player_shoot', { x: me.x, y: me.y, angle: me.angle, bullet_type: 'heavy' });
-
-        if (heavyAmmo <= 0) {
-            isReloadingHeavy = true;
-            document.getElementById('ui-reloading').style.display = 'inline';
-            setTimeout(() => {
-                heavyAmmo = 3;
-                isReloadingHeavy = false;
-                document.getElementById('ui-reloading').style.display = 'none';
-                updateHUD();
-            }, 5000);
-        }
+    if (mouse.isRightDown) {
+        fireHeavyWeapon();
     }
 
     socket.emit('player_move', { x: me.x, y: me.y, angle: me.angle });
@@ -620,4 +594,27 @@ function gameLoop() {
     draw();
 
     requestAnimationFrame(gameLoop);
+}
+
+function fireHeavyWeapon() {
+    let me = players[myId];
+    if (!me || me.isDead) return;
+
+    if (!isReloadingHeavy && heavyAmmo > 0 && performance.now() - lastHeavyShootTime > 500) {
+        lastHeavyShootTime = performance.now();
+        heavyAmmo--;
+        updateHUD();
+        socket.emit('player_shoot', { x: me.x, y: me.y, angle: me.angle, bullet_type: 'heavy' });
+
+        if (heavyAmmo <= 0) {
+            isReloadingHeavy = true;
+            document.getElementById('ui-reloading').style.display = 'inline';
+            setTimeout(() => {
+                heavyAmmo = 3;
+                isReloadingHeavy = false;
+                document.getElementById('ui-reloading').style.display = 'none';
+                updateHUD();
+            }, 5000);
+        }
+    }
 }

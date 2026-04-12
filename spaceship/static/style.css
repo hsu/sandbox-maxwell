@@ -5,7 +5,7 @@ body {
 
 canvas { display: none; background: radial-gradient(circle, #0a0f25 0%, #000000 100%); position: absolute; top: 0; left: 0; z-index: 0; }
 
-.screen { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 10; display: none; }
+.screen { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh; z-index: 10; display: none; }
 .screen.active { display: flex; }
 .full-center { justify-content: center; align-items: center; }
 
@@ -73,4 +73,4 @@ input:focus, select:focus { box-shadow: 0 0 10px #00f0ff; }
 .chat-msg.red { color: #ff3366; }
 .chat-msg.blue { color: #33ccff; }
 .chat-msg.system { color: #0f0; font-style: italic; }
-#game-chat-wrapper { position: absolute; bottom: 20px; left: 20px; width: 400px; height: auto; }
+#game-chat-wrapper { position: absolute; bottom: 40px; left: 20px; width: 400px; height: auto; max-width: 90vw; }
