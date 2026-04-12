@@ -1,5 +1,69 @@
 const socket = io({ path: '/spaceship/socket.io' });
 
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function playSound(type) {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    
+    const osc = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    
+    osc.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    
+    const now = audioCtx.currentTime;
+    
+    if (type === 'shoot') {
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(880, now);
+        osc.frequency.exponentialRampToValueAtTime(110, now + 0.1);
+        gainNode.gain.setValueAtTime(0.05, now);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+        osc.start(now);
+        osc.stop(now + 0.1);
+    } else if (type === 'heavy') {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(150, now);
+        osc.frequency.exponentialRampToValueAtTime(40, now + 0.3);
+        gainNode.gain.setValueAtTime(0.1, now);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+        osc.start(now);
+        osc.stop(now + 0.3);
+    } else if (type === 'hit') {
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(100, now);
+        osc.frequency.exponentialRampToValueAtTime(20, now + 0.1);
+        gainNode.gain.setValueAtTime(0.05, now);
+        gainNode.gain.linearRampToValueAtTime(0, now + 0.1);
+        osc.start(now);
+        osc.stop(now + 0.1);
+    } else if (type === 'explosion') {
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(100, now);
+        osc.frequency.exponentialRampToValueAtTime(10, now + 0.5);
+        gainNode.gain.setValueAtTime(0.2, now);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+        osc.start(now);
+        osc.stop(now + 0.5);
+    } else if (type === 'coin') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(800, now);
+        osc.frequency.setValueAtTime(1200, now + 0.05);
+        gainNode.gain.setValueAtTime(0.1, now);
+        gainNode.gain.linearRampToValueAtTime(0, now + 0.1);
+        osc.start(now);
+        osc.stop(now + 0.1);
+    } else if (type === 'upgrade') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(400, now);
+        osc.frequency.linearRampToValueAtTime(800, now + 0.2);
+        gainNode.gain.setValueAtTime(0.1, now);
+        gainNode.gain.linearRampToValueAtTime(0, now + 0.2);
+        osc.start(now);
+        osc.stop(now + 0.2);
+    }
+}
+
 const screens = {
     passcode: document.getElementById('passcode-screen'),
     lobby: document.getElementById('lobby-screen'),
@@ -189,6 +253,7 @@ socket.on('player_moved', (data) => {
 });
 
 socket.on('player_died', (data) => {
+    playSound('explosion');
     if (players[data.id]) players[data.id].isDead = true;
     scores = data.scores;
     if (data.id === myId) {
@@ -199,12 +264,14 @@ socket.on('player_died', (data) => {
 });
 socket.on('coins_update', (data) => {
     if (players[myId]) {
+        if (data.coins > players[myId].coins) playSound('coin');
         players[myId].coins = data.coins;
         updateHUD();
     }
 });
 
 socket.on('player_damaged', (data) => {
+    if (players[data.id] && data.hp < players[data.id].hp) playSound('hit');
     if (players[data.id]) players[data.id].hp = data.hp;
     if (data.id === myId) updateHUD();
 });
@@ -219,10 +286,13 @@ socket.on('player_respawned', (p) => {
 socket.on('bullet_spawned', (b) => {
     b.createdAt = Date.now();
     bullets[b.id] = b;
+    if (b.type === 'heavy') playSound('heavy');
+    else playSound('shoot');
 });
 
 socket.on('upgrade_bought', (data) => {
     if (players[data.id]) {
+        if (data.id === myId) playSound('upgrade');
         players[data.id].coins = data.coins;
         players[data.id].hp = data.hp;
         players[data.id].maxHp = data.maxHp;
