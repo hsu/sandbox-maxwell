@@ -29,7 +29,11 @@ socket.on('connect', () => {
             passcode: 'spaceship123',
             name: me ? me.name : document.getElementById('pilot-name').value || 'Pilot',
             team: me ? me.team : document.getElementById('team-select').value,
-            shipClass: me ? me.shipClass : document.getElementById('ship-select').value
+            shipClass: me ? me.shipClass : document.getElementById('ship-select').value,
+            lastX: me ? me.x : null,
+            lastY: me ? me.y : null,
+            lastHp: me ? me.hp : null,
+            lastCoins: me ? me.coins : null
         });
     }
 });

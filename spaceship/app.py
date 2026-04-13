@@ -75,7 +75,9 @@ def handle_join(data):
 
     stats = SHIP_STATS.get(ship_class, SHIP_STATS['fighter'])
 
-    if team == 'red':
+    if data.get('lastX') is not None and data.get('lastY') is not None:
+        x, y = data.get('lastX'), data.get('lastY')
+    elif team == 'red':
         x, y = 100, MAP_HEIGHT / 2
     else:
         x, y = MAP_WIDTH - 100, MAP_HEIGHT / 2
@@ -88,12 +90,12 @@ def handle_join(data):
         'x': x,
         'y': y,
         'angle': 0,
-        'hp': stats['hp'],
+        'hp': data.get('lastHp') if data.get('lastHp') is not None else stats['hp'],
         'maxHp': stats['hp'],
         'speed': stats['speed'],
         'damage': stats['damage'],
         'isDead': False,
-        'coins': 0,
+        'coins': data.get('lastCoins', 0),
         'immuneUntil': time.time() + 5
     }
 
