@@ -93,7 +93,8 @@ def handle_join(data):
         'speed': stats['speed'],
         'damage': stats['damage'],
         'isDead': False,
-        'coins': 0
+        'coins': 0,
+        'immuneUntil': time.time() + 5
     }
 
     join_room(team) # for team chat
@@ -159,6 +160,9 @@ def handle_hit(data):
     damage = data.get('damage', 10)
 
     if target_id in players and not players[target_id]['isDead']:
+        if time.time() < players[target_id].get('immuneUntil', 0):
+            return
+
         players[target_id]['hp'] -= damage
         if players[target_id]['hp'] <= 0:
             players[target_id]['hp'] = 0
@@ -191,6 +195,7 @@ def handle_respawn(data):
         players[sid]['hp'] = stats['hp']
         players[sid]['speed'] = stats['speed']
         players[sid]['damage'] = stats['damage']
+        players[sid]['immuneUntil'] = time.time() + 5
 
         if team == 'red':
             players[sid]['x'], players[sid]['y'] = 100, MAP_HEIGHT / 2

@@ -229,6 +229,7 @@ socket.on('game_init', (data) => {
     myId = data.myId;
     mapInfo = {width: data.mapWidth, height: data.mapHeight};
     players = data.players;
+    if (players[myId]) players[myId].spawnTime = Date.now();
     scores = data.scores;
     mapObstacles = data.obstacles || [];
 
@@ -241,7 +242,10 @@ socket.on('game_init', (data) => {
     requestAnimationFrame(gameLoop);
 });
 
-socket.on('player_joined', (p) => players[p.id] = p);
+socket.on('player_joined', (p) => {
+    p.spawnTime = Date.now();
+    players[p.id] = p;
+});
 socket.on('player_left', (data) => delete players[data.id]);
 
 socket.on('player_moved', (data) => {
@@ -276,6 +280,7 @@ socket.on('player_damaged', (data) => {
     if (data.id === myId) updateHUD();
 });
 socket.on('player_respawned', (p) => {
+    p.spawnTime = Date.now();
     players[p.id] = p;
     if (p.id === myId) {
         document.getElementById('death-screen').classList.remove('active');
@@ -664,6 +669,10 @@ function draw() {
 
         ctx.rotate(p.angle);
 
+        if (p.spawnTime && Date.now() - p.spawnTime < 5000) {
+            ctx.globalAlpha = 0.4 + Math.abs(Math.sin(Date.now() / 150)) * 0.4;
+        }
+
         ctx.fillStyle = p.team === 'red' ? '#ff3366' : '#33ccff';
         let r = p.shipClass === 'juggernaut' ? 20 : (p.shipClass === 'scout' ? 12 : 15);
         ctx.beginPath();
@@ -675,6 +684,8 @@ function draw() {
         ctx.strokeStyle = 'rgba(255,255,255,0.5)';
         ctx.lineWidth = 2;
         ctx.stroke();
+
+        ctx.globalAlpha = 1.0;
 
         ctx.restore();
     }
