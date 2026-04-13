@@ -264,7 +264,7 @@ def handle_admin_spawn_bot(data):
         bot_id = f'bot_{uuid.uuid4()}'
         ship_class = random.choice(list(SHIP_STATS.keys()))
         stats = SHIP_STATS[ship_class]
-        bot_team = random.choice(['red', 'blue'])
+        bot_team = 'green'
         players[bot_id] = {
             'id': bot_id,
             'name': f'Bot-{bot_id[:4]}',

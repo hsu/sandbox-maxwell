@@ -730,7 +730,7 @@ function draw() {
     for (let bid in bullets) {
         let b = bullets[bid];
         if(!b.currX) continue;
-        ctx.fillStyle = b.team === 'red' ? '#ff3366' : '#33ccff';
+        ctx.fillStyle = b.team === 'red' ? '#ff3366' : (b.team === 'green' ? '#33ff33' : '#33ccff');
         let bRad = b.size || (b.type === 'heavy' ? 15 : 5);
         if (b.type === 'heavy') ctx.fillStyle = '#fffc00';
         ctx.beginPath();
@@ -768,7 +768,7 @@ function draw() {
             ctx.globalAlpha = 0.3;
         }
 
-        ctx.fillStyle = p.team === 'red' ? '#ff3366' : '#33ccff';
+        ctx.fillStyle = p.team === 'red' ? '#ff3366' : (p.team === 'green' ? '#33ff33' : '#33ccff');
         let r = p.shipClass === 'juggernaut' ? 20 : (p.shipClass === 'scout' ? 12 : 15);
         ctx.beginPath();
         ctx.moveTo(r * 1.5, 0);
