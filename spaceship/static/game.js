@@ -412,6 +412,19 @@ window.addEventListener('mouseup', e => {
     if(e.button === 2) mouse.isRightDown = false;
 });
 window.addEventListener('resize', resizeCanvas);
+window.addEventListener('orientationchange', () => {
+    setTimeout(() => {
+        resizeCanvas();
+        // Clear joysticks on rotation to prevent getting stuck
+        joyShooting = false;
+        joyDx = 0; joyDy = 0;
+        leftJoyId = null;
+        rightJoyId = null;
+        if(document.querySelectorAll) {
+            document.querySelectorAll('.nipple').forEach(n => n.remove());
+        }
+    }, 250);
+});
 
 function resizeCanvas() {
     canvas.width = window.innerWidth;
