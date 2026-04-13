@@ -654,6 +654,9 @@ function update(dt) {
             if (dist < radius + bRad) {
                 if (b.owner === myId) {
                     socket.emit('bullet_hit', { targetId: id, shooterId: myId, damage: b.damage });
+                } else if (id === myId && b.owner.startsWith('bot_')) {
+                    // Bots don't have clients to report their successful shots, so the target must report it
+                    socket.emit('bullet_hit', { targetId: id, shooterId: b.owner, damage: b.damage });
                 }
                 hitPlayer = true;
                 break;
