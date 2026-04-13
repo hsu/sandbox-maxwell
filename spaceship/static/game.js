@@ -375,6 +375,7 @@ function initTouchControls() {
             lastLeftTapTime = now;
         } else {
             rightJoyId = data.identifier;
+            joyShooting = true;
         }
     });
 
@@ -384,7 +385,9 @@ function initTouchControls() {
             joyDx = data.vector.x;
             joyDy = -data.vector.y;
         } else if (data.identifier === rightJoyId) {
-            joyAngle = Math.atan2(-data.vector.y, data.vector.x);
+            if (data.vector && Math.hypot(data.vector.x, data.vector.y) > 0.01) {
+                joyAngle = Math.atan2(-data.vector.y, data.vector.x);
+            }
             joyShooting = true;
         }
     });
