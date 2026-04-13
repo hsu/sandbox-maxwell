@@ -188,6 +188,18 @@ document.getElementById('admin-apply-btn').addEventListener('click', () => {
     }
 });
 
+document.getElementById('admin-spawn-bot-btn').addEventListener('click', () => {
+    const pw = document.getElementById('admin-password').value;
+    if (pw === 'hahaha') {
+        socket.emit('admin_spawn_bot', { password: pw });
+        document.getElementById('admin-error').innerText = 'Bot generated!';
+        document.getElementById('admin-error').style.color = '#ffcc00';
+    } else {
+        document.getElementById('admin-error').innerText = 'Invalid Passcode';
+        document.getElementById('admin-error').style.color = '#ff3366';
+    }
+});
+
 document.querySelectorAll('.buy-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
         socket.emit('buy_upgrade', { upgrade: e.target.dataset.upgrade });

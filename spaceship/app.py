@@ -172,15 +172,21 @@ def handle_hit(data):
             players[target_id]['isDead'] = True
 
             shooter_id = data.get('shooterId')
+            coin_reward = 20 if players[target_id].get('isBot') else 50
             if shooter_id in players:
-                players[shooter_id]['coins'] += 50
+                players[shooter_id]['coins'] += coin_reward
                 shooter_team = players[shooter_id]['team']
-                if shooter_team in scores:
+                if shooter_team in scores and not players[target_id].get('isBot'):
                     scores[shooter_team] += 1
                 socketio.emit('coins_update', {'coins': players[shooter_id]['coins']}, to=shooter_id)
 
             socketio.emit('player_died', {'id': target_id, 'scores': scores})
-            # waiting for request_respawn
+            
+            if players[target_id].get('isBot'):
+                # remove the bot immediately from the game memory so it doesn't leak memory or stay rendered
+                del players[target_id]
+                socketio.emit('player_left', {'id': target_id})
+            # waiting for request_respawn for normal players
         else:
             socketio.emit('player_damaged', {'id': target_id, 'hp': players[target_id]['hp']})
 
@@ -251,6 +257,34 @@ def handle_admin_cheats(data):
             
         socketio.emit('player_cheated', players[sid])
 
+@socketio.on('admin_spawn_bot')
+def handle_admin_spawn_bot(data):
+    sid = request.sid
+    if data.get('password') == 'hahaha' and sid in players:
+        bot_id = f'bot_{uuid.uuid4()}'
+        ship_class = random.choice(list(SHIP_STATS.keys()))
+        stats = SHIP_STATS[ship_class]
+        bot_team = random.choice(['red', 'blue'])
+        players[bot_id] = {
+            'id': bot_id,
+            'name': f'Bot-{bot_id[:4]}',
+            'team': bot_team,
+            'shipClass': ship_class,
+            'x': random.randint(100, MAP_WIDTH - 100),
+            'y': random.randint(100, MAP_HEIGHT - 100),
+            'angle': random.uniform(0, 3.14 * 2),
+            'hp': stats['hp'],
+            'maxHp': stats['hp'],
+            'speed': stats['speed'] * 0.5, # give bot 50% speed
+            'damage': stats['damage'],
+            'isDead': False,
+            'coins': 0,
+            'isBot': True,
+            'immuneUntil': 0,
+            'spawnTime': time.time()
+        }
+        socketio.emit('player_joined', players[bot_id])
+
 # --- Shop Purchases ---
 @socketio.on('buy_upgrade')
 def handle_buy_upgrade(data):
@@ -275,6 +309,53 @@ def handle_buy_upgrade(data):
                 'speed': players[sid]['speed'],
                 'damage': players[sid]['damage']
             })
+
+import math
+def bot_manager_loop():
+    while True:
+        eventlet.sleep(0.1)  # 10Hz tick rate
+        for pid in list(players.keys()):
+            p = players.get(pid)
+            if not p or not p.get('isBot') or p.get('isDead'):
+                continue
+                
+            # Random slight change in direction
+            if random.random() < 0.1:
+                p['angle'] += random.uniform(-0.5, 0.5)
+            
+            p['x'] += math.cos(p['angle']) * p['speed'] * 0.1
+            p['y'] += math.sin(p['angle']) * p['speed'] * 0.1
+            
+            # Simple bounds bounce
+            if p['x'] < 50 or p['x'] > MAP_WIDTH - 50 or p['y'] < 50 or p['y'] > MAP_HEIGHT - 50:
+                p['angle'] += math.pi
+                p['x'] = max(50, min(MAP_WIDTH - 50, p['x']))
+                p['y'] = max(50, min(MAP_HEIGHT - 50, p['y']))
+                
+            socketio.emit('player_moved', {
+                'id': pid,
+                'x': p['x'],
+                'y': p['y'],
+                'angle': p['angle']
+            })
+            
+            # Occasionally shoot randomly
+            if random.random() < 0.05:  # ~1 shot per 2 seconds
+                bullet = {
+                    'id': str(uuid.uuid4()),
+                    'owner': pid,
+                    'team': p['team'],
+                    'x': p['x'],
+                    'y': p['y'],
+                    'angle': p['angle'] + random.uniform(-0.1, 0.1),
+                    'speed': 800,
+                    'size': 5,
+                    'damage': p['damage'],
+                    'type': 'normal'
+                }
+                socketio.emit('bullet_spawned', bullet)
+
+socketio.start_background_task(bot_manager_loop)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, host='0.0.0.0', port=5000)
