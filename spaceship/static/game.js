@@ -262,14 +262,21 @@ socket.on('game_init', (data) => {
     resizeCanvas();
     initTouchControls();
     updateHUD();
-    requestAnimationFrame(gameLoop);
+    
+    if (!window.loopRunning) {
+        window.loopRunning = true;
+        requestAnimationFrame(gameLoop);
+    }
 });
 
 socket.on('player_joined', (p) => {
     p.spawnTime = Date.now();
     players[p.id] = p;
 });
-socket.on('player_left', (data) => delete players[data.id]);
+socket.on('player_left', (data) => {
+    if (data.id === myId) return;
+    delete players[data.id];
+});
 
 socket.on('player_moved', (data) => {
     if (players[data.id]) {
@@ -570,8 +577,8 @@ function update(dt) {
 }
 
 function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (!players[myId]) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const me = players[myId];
     const cameraX = me.x - canvas.width / 2;
