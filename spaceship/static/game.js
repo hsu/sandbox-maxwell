@@ -329,6 +329,7 @@ window.addEventListener('keyup', e => {
 window.addEventListener('mousemove', e => {
     mouse.x = e.clientX;
     mouse.y = e.clientY;
+    joyAngle = null;
 });
 canvas.addEventListener('contextmenu', e => e.preventDefault());
 window.addEventListener('mousedown', e => {
@@ -392,7 +393,7 @@ function initTouchControls() {
         if (data.identifier === leftJoyId) {
             joyDx = 0; joyDy = 0; leftJoyId = null;
         } else if (data.identifier === rightJoyId) {
-            joyShooting = false; joyAngle = null; rightJoyId = null;
+            joyShooting = false; rightJoyId = null;
         }
     });
 }
@@ -494,12 +495,14 @@ function update(dt) {
             ctx.beginPath(); ctx.arc(o.radius*0.3, -o.radius*0.2, o.radius*0.2, 0, Math.PI*2); ctx.fill();
             ctx.beginPath(); ctx.arc(-o.radius*0.4, o.radius*0.4, o.radius*0.15, 0, Math.PI*2); ctx.fill();
         } else if (o.type === 'metal_crate') {
-            ctx.fillStyle = '#2c3e50';
+            ctx.fillStyle = '#cd853f'; // Peru/Wood color
             ctx.fillRect(-o.radius*0.8, -o.radius*0.8, o.radius*1.6, o.radius*1.6);
-            ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 4;
+            ctx.strokeStyle = '#8b4513'; ctx.lineWidth = 4; // SaddleBrown border
             ctx.strokeRect(-o.radius*0.8, -o.radius*0.8, o.radius*1.6, o.radius*1.6);
-            ctx.beginPath(); ctx.moveTo(-o.radius*0.8, -o.radius*0.8); ctx.lineTo(o.radius*0.8, o.radius*0.8); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(-o.radius*0.8, o.radius*0.8); ctx.lineTo(o.radius*0.8, -o.radius*0.8); ctx.stroke();
+            // Draw horizontal wooden slats instead of an X
+            ctx.beginPath(); ctx.moveTo(-o.radius*0.8, -o.radius*0.4); ctx.lineTo(o.radius*0.8, -o.radius*0.4); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(-o.radius*0.8, 0); ctx.lineTo(o.radius*0.8, 0); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(-o.radius*0.8, o.radius*0.4); ctx.lineTo(o.radius*0.8, o.radius*0.4); ctx.stroke();
         } else if (o.type === 'mushroom') {
             ctx.fillStyle = '#dfd3c3';
             ctx.fillRect(-o.radius*0.4, 0, o.radius*0.8, o.radius*0.9);
@@ -603,12 +606,14 @@ function draw() {
             ctx.beginPath(); ctx.arc(o.radius*0.3, -o.radius*0.2, o.radius*0.2, 0, Math.PI*2); ctx.fill();
             ctx.beginPath(); ctx.arc(-o.radius*0.4, o.radius*0.4, o.radius*0.15, 0, Math.PI*2); ctx.fill();
         } else if (o.type === 'metal_crate') {
-            ctx.fillStyle = '#2c3e50';
+            ctx.fillStyle = '#cd853f'; // Peru/Wood color
             ctx.fillRect(-o.radius*0.8, -o.radius*0.8, o.radius*1.6, o.radius*1.6);
-            ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 4;
+            ctx.strokeStyle = '#8b4513'; ctx.lineWidth = 4; // SaddleBrown border
             ctx.strokeRect(-o.radius*0.8, -o.radius*0.8, o.radius*1.6, o.radius*1.6);
-            ctx.beginPath(); ctx.moveTo(-o.radius*0.8, -o.radius*0.8); ctx.lineTo(o.radius*0.8, o.radius*0.8); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(-o.radius*0.8, o.radius*0.8); ctx.lineTo(o.radius*0.8, -o.radius*0.8); ctx.stroke();
+            // Draw horizontal wooden slats instead of an X
+            ctx.beginPath(); ctx.moveTo(-o.radius*0.8, -o.radius*0.4); ctx.lineTo(o.radius*0.8, -o.radius*0.4); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(-o.radius*0.8, 0); ctx.lineTo(o.radius*0.8, 0); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(-o.radius*0.8, o.radius*0.4); ctx.lineTo(o.radius*0.8, o.radius*0.4); ctx.stroke();
         } else if (o.type === 'mushroom') {
             ctx.fillStyle = '#dfd3c3';
             ctx.fillRect(-o.radius*0.4, 0, o.radius*0.8, o.radius*0.9);
