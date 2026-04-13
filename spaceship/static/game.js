@@ -86,6 +86,7 @@ let mapObstacles = [];
 let currentChatChannel = 'global';
 let myFireRate = 300;
 let myBulletSpeed = 1000;
+let myBulletSize = 5;
 
 const keys = { w: false, a: false, s: false, d: false };
 let isRelativeControl = false;
@@ -129,6 +130,16 @@ document.getElementById('admin-apply-btn').addEventListener('click', () => {
     if (pw === 'hahaha') {
         myFireRate = parseInt(document.getElementById('admin-fire-rate').value) || 300;
         myBulletSpeed = parseInt(document.getElementById('admin-bullet-speed').value) || 1000;
+        myBulletSize = parseInt(document.getElementById('admin-bullet-size').value) || 5;
+
+        socket.emit('apply_admin_cheats', {
+            password: pw,
+            hp: document.getElementById('admin-hp').value,
+            speed: document.getElementById('admin-speed').value,
+            damage: document.getElementById('admin-damage').value,
+            invisible: document.getElementById('admin-invisible').checked
+        });
+
         document.getElementById('admin-error').innerText = 'Cheats injected!';
         document.getElementById('admin-error').style.color = '#0f0';
         setTimeout(() => {
@@ -287,6 +298,10 @@ socket.on('player_respawned', (p) => {
         canvas.style.display = 'block';
         updateHUD();
     }
+});
+socket.on('player_cheated', (p) => {
+    players[p.id] = p;
+    if (p.id === myId) updateHUD();
 });
 socket.on('bullet_spawned', (b) => {
     b.createdAt = Date.now();
@@ -480,7 +495,7 @@ function update(dt) {
 
     if ((mouse.isDown || joyShooting) && performance.now() - lastShootTime > myFireRate) {
         lastShootTime = performance.now();
-        socket.emit('player_shoot', { x: me.x, y: me.y, angle: me.angle, bullet_type: 'normal', speed: myBulletSpeed });
+        socket.emit('player_shoot', { x: me.x, y: me.y, angle: me.angle, bullet_type: 'normal', speed: myBulletSpeed, size: myBulletSize });
     }
     if (mouse.isRightDown) {
         fireHeavyWeapon();
@@ -536,7 +551,7 @@ function update(dt) {
         b.currY = b.y + Math.sin(b.angle) * speed * age;
 
         let bHitObj = false;
-        let bRad = b.type === 'heavy' ? 15 : 5;
+        let bRad = b.size || (b.type === 'heavy' ? 15 : 5);
         for (let o of mapObstacles) {
             if (Math.hypot(b.currX - o.x, b.currY - o.y) < bRad + o.radius) {
                 bHitObj = true;
@@ -554,7 +569,7 @@ function update(dt) {
         let hitPlayer = false;
         for (let id in players) {
             let p = players[id];
-            if (p.isDead || p.team === b.team) continue;
+            if (p.isDead || p.team === b.team || p.isInvisible) continue;
 
             const dist = Math.hypot(p.x - b.currX, p.y - b.currY);
             let radius = p.shipClass === 'juggernaut' ? 20 : (p.shipClass === 'scout' ? 12 : 15);
@@ -639,7 +654,7 @@ function draw() {
         let b = bullets[bid];
         if(!b.currX) continue;
         ctx.fillStyle = b.team === 'red' ? '#ff3366' : '#33ccff';
-        let bRad = b.type === 'heavy' ? 15 : 5;
+        let bRad = b.size || (b.type === 'heavy' ? 15 : 5);
         if (b.type === 'heavy') ctx.fillStyle = '#fffc00';
         ctx.beginPath();
         ctx.arc(b.currX, b.currY, bRad, 0, Math.PI * 2);
@@ -653,6 +668,7 @@ function draw() {
     for (let id in players) {
         let p = players[id];
         if (p.isDead) continue;
+        if (p.isInvisible && p.id !== myId) continue;
 
         ctx.save();
         ctx.translate(p.x, p.y);
@@ -671,6 +687,8 @@ function draw() {
 
         if (p.spawnTime && Date.now() - p.spawnTime < 5000) {
             ctx.globalAlpha = 0.4 + Math.abs(Math.sin(Date.now() / 150)) * 0.4;
+        } else if (p.isInvisible) {
+            ctx.globalAlpha = 0.3;
         }
 
         ctx.fillStyle = p.team === 'red' ? '#ff3366' : '#33ccff';
@@ -714,7 +732,7 @@ function fireHeavyWeapon() {
         lastHeavyShootTime = performance.now();
         heavyAmmo--;
         updateHUD();
-        socket.emit('player_shoot', { x: me.x, y: me.y, angle: me.angle, bullet_type: 'heavy', speed: myBulletSpeed });
+        socket.emit('player_shoot', { x: me.x, y: me.y, angle: me.angle, bullet_type: 'heavy', speed: myBulletSpeed, size: Math.max(15, myBulletSize * 3) });
 
         if (heavyAmmo <= 0) {
             isReloadingHeavy = true;

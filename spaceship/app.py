@@ -149,6 +149,7 @@ def handle_shoot(data):
             'y': data.get('y'),
             'angle': data.get('angle'),
             'speed': data.get('speed', 1000),
+            'size': data.get('size'),
             'damage': dmg,
             'type': bullet_type
         }
@@ -229,6 +230,24 @@ def handle_chat(data):
         socketio.emit('chat_message', chat_data, to=team)
     else:
         socketio.emit('chat_message', chat_data)
+
+# --- God Mode Cheats ---
+@socketio.on('apply_admin_cheats')
+def handle_admin_cheats(data):
+    sid = request.sid
+    if data.get('password') == 'hahaha' and sid in players:
+        if 'hp' in data:
+            players[sid]['hp'] = int(data['hp'])
+            if players[sid]['hp'] > players[sid]['maxHp']:
+                players[sid]['maxHp'] = players[sid]['hp']
+        if 'speed' in data:
+            players[sid]['speed'] = int(data['speed'])
+        if 'damage' in data:
+            players[sid]['damage'] = int(data['damage'])
+        if 'invisible' in data:
+            players[sid]['isInvisible'] = bool(data['invisible'])
+            
+        socketio.emit('player_cheated', players[sid])
 
 # --- Shop Purchases ---
 @socketio.on('buy_upgrade')
