@@ -2,6 +2,18 @@ const socket = io({ path: '/spaceship/socket.io' });
 
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
+socket.on('connect', () => {
+    if (gameState === 'game') {
+        let me = players && myId ? players[myId] : null;
+        socket.emit('join_game', {
+            passcode: 'spaceship123',
+            name: me ? me.name : document.getElementById('pilot-name').value || 'Pilot',
+            team: me ? me.team : document.getElementById('team-select').value,
+            shipClass: me ? me.shipClass : document.getElementById('ship-select').value
+        });
+    }
+});
+
 function playSound(type) {
     if (audioCtx.state === 'suspended') audioCtx.resume();
     
@@ -504,40 +516,6 @@ function update(dt) {
     socket.emit('player_move', { x: me.x, y: me.y, angle: me.angle });
 
     const now = Date.now();
-    // Draw Obstacles
-    for (let o of mapObstacles) {
-        ctx.save();
-        ctx.translate(o.x, o.y);
-        ctx.lineJoin = 'round';
-        if (o.type === 'rock') {
-            ctx.fillStyle = '#555';
-            ctx.beginPath(); ctx.arc(0, 0, o.radius, 0, Math.PI*2); ctx.fill();
-            ctx.strokeStyle = '#333'; ctx.lineWidth = 4; ctx.stroke();
-            // simple craters
-            ctx.fillStyle = '#444';
-            ctx.beginPath(); ctx.arc(o.radius*0.3, -o.radius*0.2, o.radius*0.2, 0, Math.PI*2); ctx.fill();
-            ctx.beginPath(); ctx.arc(-o.radius*0.4, o.radius*0.4, o.radius*0.15, 0, Math.PI*2); ctx.fill();
-        } else if (o.type === 'metal_crate') {
-            ctx.fillStyle = '#cd853f'; // Peru/Wood color
-            ctx.fillRect(-o.radius*0.8, -o.radius*0.8, o.radius*1.6, o.radius*1.6);
-            ctx.strokeStyle = '#8b4513'; ctx.lineWidth = 4; // SaddleBrown border
-            ctx.strokeRect(-o.radius*0.8, -o.radius*0.8, o.radius*1.6, o.radius*1.6);
-            // Draw horizontal wooden slats instead of an X
-            ctx.beginPath(); ctx.moveTo(-o.radius*0.8, -o.radius*0.4); ctx.lineTo(o.radius*0.8, -o.radius*0.4); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(-o.radius*0.8, 0); ctx.lineTo(o.radius*0.8, 0); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(-o.radius*0.8, o.radius*0.4); ctx.lineTo(o.radius*0.8, o.radius*0.4); ctx.stroke();
-        } else if (o.type === 'mushroom') {
-            ctx.fillStyle = '#dfd3c3';
-            ctx.fillRect(-o.radius*0.4, 0, o.radius*0.8, o.radius*0.9);
-            ctx.fillStyle = '#f03e3e';
-            ctx.beginPath(); ctx.arc(0, 0, o.radius, Math.PI, 2*Math.PI); ctx.fill();
-            ctx.fillStyle = '#fff';
-            ctx.beginPath(); ctx.arc(o.radius*0.5, -o.radius*0.4, o.radius*0.25, 0, Math.PI*2); ctx.fill();
-            ctx.beginPath(); ctx.arc(-o.radius*0.6, -o.radius*0.3, o.radius*0.18, 0, Math.PI*2); ctx.fill();
-            ctx.beginPath(); ctx.arc(0, -o.radius*0.7, o.radius*0.22, 0, Math.PI*2); ctx.fill();
-        }
-        ctx.restore();
-    }
 
     for (let bid in bullets) {
         let b = bullets[bid];
