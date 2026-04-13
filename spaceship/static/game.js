@@ -475,6 +475,29 @@ function initTouchControls() {
         leftJoyId = null;
         rightJoyId = null;
     });
+
+    document.addEventListener("visibilitychange", () => {
+        debugLog('SYS: Visibility changed. active=' + !document.hidden);
+        if (document.hidden) {
+            joyShooting = false;
+            joyDx = 0; joyDy = 0;
+            leftJoyId = null;
+            rightJoyId = null;
+        }
+    });
+
+    window.addEventListener('touchend', (e) => {
+        // Safe check. If there are no more active physical touches on the screen, natively rip all Nipple locks.
+        if (e.touches && e.touches.length === 0) {
+            if (joyShooting || leftJoyId !== null || rightJoyId !== null) {
+                debugLog('SYS: 0 active touches detected. Ripcording joysticks.');
+                joyShooting = false;
+                joyDx = 0; joyDy = 0;
+                leftJoyId = null;
+                rightJoyId = null;
+            }
+        }
+    });
 }
 
 let lastTime = performance.now();
