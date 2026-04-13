@@ -347,6 +347,7 @@ socket.on('player_cheated', (p) => {
     if (p.id === myId) updateHUD();
 });
 socket.on('bullet_spawned', (b) => {
+    debugLog('NET: Rcv BULLET id=' + b.id.substring(0,5));
     b.createdAt = Date.now();
     bullets[b.id] = b;
     if (b.type === 'heavy') playSound('heavy');
@@ -466,14 +467,13 @@ function initTouchControls() {
         }
     });
     
-    // NippleJS sometimes ignores touchcancel on Android when system UI interrupts
-    // e.g. swiping navigation bar or pulling down control center.
     window.addEventListener('touchcancel', () => {
         debugLog('SYS: touchcancel intercepted. Force clearing joysticks.');
         joyShooting = false;
         joyDx = 0; joyDy = 0;
         leftJoyId = null;
         rightJoyId = null;
+        document.querySelectorAll('.nipple').forEach(n => n.remove());
     });
 
     document.addEventListener("visibilitychange", () => {
@@ -483,11 +483,11 @@ function initTouchControls() {
             joyDx = 0; joyDy = 0;
             leftJoyId = null;
             rightJoyId = null;
+            document.querySelectorAll('.nipple').forEach(n => n.remove());
         }
     });
 
     window.addEventListener('touchend', (e) => {
-        // Safe check. If there are no more active physical touches on the screen, natively rip all Nipple locks.
         if (e.touches && e.touches.length === 0) {
             if (joyShooting || leftJoyId !== null || rightJoyId !== null) {
                 debugLog('SYS: 0 active touches detected. Ripcording joysticks.');
@@ -495,6 +495,7 @@ function initTouchControls() {
                 joyDx = 0; joyDy = 0;
                 leftJoyId = null;
                 rightJoyId = null;
+                document.querySelectorAll('.nipple').forEach(n => n.remove());
             }
         }
     });
@@ -574,6 +575,7 @@ function update(dt) {
 
     if ((mouse.isDown || joyShooting) && performance.now() - lastShootTime > myFireRate) {
         lastShootTime = performance.now();
+        debugLog('NET: Emitting shot packet v1');
         socket.emit('player_shoot', { x: me.x, y: me.y, angle: me.angle, bullet_type: 'normal', speed: myBulletSpeed, size: myBulletSize });
     }
     if (mouse.isRightDown) {
