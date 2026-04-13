@@ -121,3 +121,16 @@ input, select, textarea {
     #game-chat-wrapper { bottom: 5px !important; width: 280px !important; }
     .split-layout { flex-direction: row; }
 }
+
+/* Hard disable all zooming and double tap behaviors on iOS */
+html, body {
+    touch-action: none;
+}
+
+.chat-messages, #mobile-debug, .glass-panel.wide {
+    touch-action: pan-y !important;
+}
+
+button, .glow-btn, a, input, select, textarea, .glass-panel {
+    touch-action: manipulation !important;
+}
