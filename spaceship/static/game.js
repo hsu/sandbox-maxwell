@@ -1,4 +1,4 @@
-const socket = io({ path: '/spaceship/socket.io' });
+const socket = io({ path: '/spaceship/socket.io', transports: ['websocket'] });
 
 const debugConsole = document.getElementById('mobile-debug');
 document.getElementById('toggle-debug-btn').addEventListener('click', () => {
@@ -269,6 +269,7 @@ function showScreen(name) {
 socket.on('join_error', (data) => alert(data.message));
 
 socket.on('game_init', (data) => {
+    debugLog('<span style="color:yellow">SYS: Received game_init payload from server!</span>');
     myId = data.myId;
     mapInfo = {width: data.mapWidth, height: data.mapHeight};
     players = data.players;
