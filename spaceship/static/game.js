@@ -1,5 +1,19 @@
 const socket = io({ path: '/spaceship/socket.io' });
 
+const debugConsole = document.getElementById('mobile-debug');
+document.getElementById('toggle-debug-btn').addEventListener('click', () => {
+    debugConsole.style.display = debugConsole.style.display === 'none' ? 'block' : 'none';
+});
+function debugLog(msg) {
+    if(!debugConsole) return;
+    const d = new Date();
+    const ts = d.getMinutes() + ':' + d.getSeconds() + '.' + d.getMilliseconds();
+    debugConsole.innerHTML = `<div>[${ts}] ${msg}</div>` + debugConsole.innerHTML;
+}
+console.log = function(...args) { debugLog('LOG: ' + args.join(' ')); };
+console.warn = function(...args) { debugLog('<span style="color:yellow">WARN: ' + args.join(' ') + '</span>'); };
+console.error = function(...args) { debugLog('<span style="color:red">ERR: ' + args.join(' ') + '</span>'); };
+
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 socket.on('connect', () => {
@@ -405,6 +419,7 @@ function initTouchControls() {
     });
 
     nippleManager.on('start', (evt, data) => {
+        debugLog(`Joy START id=${data.identifier} pos=${Math.floor(data.position.x)},${Math.floor(data.position.y)}`);
         if (data.position.x < window.innerWidth / 2) {
             leftJoyId = data.identifier;
             const now = Date.now();
@@ -432,6 +447,7 @@ function initTouchControls() {
     });
 
     nippleManager.on('end', (evt, data) => {
+        debugLog(`Joy END id=${data.identifier}`);
         if (data.identifier === leftJoyId) {
             joyDx = 0; joyDy = 0; leftJoyId = null;
         } else if (data.identifier === rightJoyId) {
