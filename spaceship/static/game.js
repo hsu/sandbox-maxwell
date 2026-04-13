@@ -14,9 +14,15 @@ console.log = function(...args) { debugLog('LOG: ' + args.join(' ')); };
 console.warn = function(...args) { debugLog('<span style="color:yellow">WARN: ' + args.join(' ') + '</span>'); };
 console.error = function(...args) { debugLog('<span style="color:red">ERR: ' + args.join(' ') + '</span>'); };
 
+window.onerror = function(msg, url, lineNo, columnNo, error) {
+    debugLog(`<span style="color:red">SYS ERR: ${msg} at ${lineNo}:${columnNo}</span>`);
+    return false;
+};
+
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 socket.on('connect', () => {
+    debugLog('<span style="color:yellow">SYS: Socket Connected</span>');
     if (gameState === 'game') {
         let me = players && myId ? players[myId] : null;
         socket.emit('join_game', {
@@ -323,6 +329,10 @@ socket.on('player_damaged', (data) => {
     if (players[data.id]) players[data.id].hp = data.hp;
     if (data.id === myId) updateHUD();
 });
+
+socket.on('disconnect', () => {
+    debugLog('<span style="color:red">SYS: Socket DISCONNECTED from server!</span>');
+});
 socket.on('player_respawned', (p) => {
     p.spawnTime = Date.now();
     players[p.id] = p;
@@ -454,6 +464,16 @@ function initTouchControls() {
         } else if (data.identifier === rightJoyId) {
             joyShooting = false; rightJoyId = null;
         }
+    });
+    
+    // NippleJS sometimes ignores touchcancel on Android when system UI interrupts
+    // e.g. swiping navigation bar or pulling down control center.
+    window.addEventListener('touchcancel', () => {
+        debugLog('SYS: touchcancel intercepted. Force clearing joysticks.');
+        joyShooting = false;
+        joyDx = 0; joyDy = 0;
+        leftJoyId = null;
+        rightJoyId = null;
     });
 }
 
