@@ -409,7 +409,7 @@ function initTouchControls() {
     const zone = document.getElementById('joystick-zone');
     zone.style.display = 'block';
 
-    let lastLeftTapTime = 0;
+    let lastRightTapTime = 0;
 
     nippleManager = nipplejs.create({
         zone: zone,
@@ -422,14 +422,15 @@ function initTouchControls() {
         debugLog(`Joy START id=${data.identifier} pos=${Math.floor(data.position.x)},${Math.floor(data.position.y)}`);
         if (data.position.x < window.innerWidth / 2) {
             leftJoyId = data.identifier;
-            const now = Date.now();
-            if (now - lastLeftTapTime < 300) {
-                fireHeavyWeapon();
-            }
-            lastLeftTapTime = now;
         } else {
             rightJoyId = data.identifier;
             joyShooting = true;
+            
+            const now = Date.now();
+            if (now - lastRightTapTime < 300) {
+                fireHeavyWeapon();
+            }
+            lastRightTapTime = now;
         }
     });
 
