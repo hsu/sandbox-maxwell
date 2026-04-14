@@ -17,18 +17,31 @@ players = {}
 scores = {"red": 0, "blue": 0}
 
 SHIP_STATS = {
-    "fighter": {"hp": 100, "speed": 400, "damage": 20, "radius": 15},
-    "scout": {"hp": 60, "speed": 600, "damage": 15, "radius": 12},
-    "juggernaut": {"hp": 200, "speed": 250, "damage": 30, "radius": 20}
+    "fighter": {"hp": 100, "speed": 400, "damage": 20, "radius": 15, "fireDelay": 300},
+    "scout": {"hp": 60, "speed": 600, "damage": 30, "radius": 12, "fireDelay": 500},
+    "juggernaut": {"hp": 200, "speed": 250, "damage": 10, "radius": 20, "fireDelay": 150}
 }
 MAP_WIDTH = 2000
 MAP_HEIGHT = 1500
 
 OBSTACLE_TYPES = ['rock', 'metal_crate', 'mushroom']
+animated_obstacles_enabled = False
+
 def generate_obstacles():
     obs = []
     for _ in range(15):
-        obs.append({ 'id': str(uuid.uuid4()), 'x': random.randint(300, MAP_WIDTH - 300), 'y': random.randint(200, MAP_HEIGHT - 200), 'radius': random.randint(30, 80), 'type': random.choice(OBSTACLE_TYPES) })
+        base_r = random.randint(30, 80)
+        obs.append({
+            'id': str(uuid.uuid4()),
+            'x': random.randint(300, MAP_WIDTH - 300),
+            'y': random.randint(200, MAP_HEIGHT - 200),
+            'radius': base_r,
+            'base_r': base_r,
+            'vx': random.uniform(-30, 30),
+            'vy': random.uniform(-30, 30),
+            'pulse_time': random.uniform(0, 6.28),
+            'type': random.choice(OBSTACLE_TYPES)
+        })
     return obs
 
 OBSTACLES = generate_obstacles()
@@ -94,6 +107,9 @@ def handle_join(data):
         'maxHp': stats['hp'],
         'speed': stats['speed'],
         'damage': stats['damage'],
+        'fireDelay': stats['fireDelay'],
+        'upgrades': {'hp': 0, 'speed': 0, 'damage': 0},
+        'shieldHits': 0,
         'isDead': False,
         'coins': data.get('lastCoins', 0),
         'immuneUntil': time.time() + 5
@@ -126,11 +142,13 @@ def handle_move(data):
         players[sid]['x'] = data.get('x', players[sid]['x'])
         players[sid]['y'] = data.get('y', players[sid]['y'])
         players[sid]['angle'] = data.get('angle', players[sid]['angle'])
+        players[sid]['laserDist'] = data.get('laserDist', 0)
         socketio.emit('player_moved', {
             'id': sid,
             'x': players[sid]['x'],
             'y': players[sid]['y'],
-            'angle': players[sid]['angle']
+            'angle': players[sid]['angle'],
+            'laserDist': players[sid]['laserDist']
         }, skip_sid=sid)
 
 @socketio.on('player_shoot')
@@ -166,6 +184,11 @@ def handle_hit(data):
         if time.time() < players[target_id].get('immuneUntil', 0):
             return
 
+        if players[target_id].get('shieldHits', 0) > 0:
+            players[target_id]['shieldHits'] -= 1
+            socketio.emit('player_damaged', {'id': target_id, 'hp': players[target_id]['hp']})
+            return
+
         players[target_id]['hp'] -= damage
         if players[target_id]['hp'] <= 0:
             players[target_id]['hp'] = 0
@@ -181,7 +204,7 @@ def handle_hit(data):
                 socketio.emit('coins_update', {'coins': players[shooter_id]['coins']}, to=shooter_id)
 
             socketio.emit('player_died', {'id': target_id, 'scores': scores})
-            
+
             if players[target_id].get('isBot'):
                 # remove the bot immediately from the game memory so it doesn't leak memory or stay rendered
                 del players[target_id]
@@ -198,12 +221,15 @@ def handle_respawn(data):
         stats = SHIP_STATS.get(ship_class, SHIP_STATS['fighter'])
 
         team = players[sid]['team']
+        upgrades = players[sid].get('upgrades', {'hp': 0, 'speed': 0, 'damage': 0})
         players[sid]['isDead'] = False
         players[sid]['shipClass'] = ship_class
-        players[sid]['maxHp'] = stats['hp']
-        players[sid]['hp'] = stats['hp']
-        players[sid]['speed'] = stats['speed']
-        players[sid]['damage'] = stats['damage']
+        players[sid]['maxHp'] = stats['hp'] + upgrades['hp']
+        players[sid]['hp'] = players[sid]['maxHp']
+        players[sid]['speed'] = stats['speed'] + upgrades['speed']
+        players[sid]['damage'] = stats['damage'] + upgrades['damage']
+        players[sid]['fireDelay'] = stats['fireDelay']
+        players[sid]['shieldHits'] = 0
         players[sid]['immuneUntil'] = time.time() + 5
 
         if team == 'red':
@@ -254,7 +280,11 @@ def handle_admin_cheats(data):
             players[sid]['damage'] = int(data['damage'])
         if 'invisible' in data:
             players[sid]['isInvisible'] = bool(data['invisible'])
-            
+
+        global animated_obstacles_enabled
+        if 'anim_obs' in data:
+            animated_obstacles_enabled = bool(data['anim_obs'])
+
         socketio.emit('player_cheated', players[sid])
 
 @socketio.on('admin_spawn_bot')
@@ -285,6 +315,13 @@ def handle_admin_spawn_bot(data):
         }
         socketio.emit('player_joined', players[bot_id])
 
+@socketio.on('activate_shield')
+def handle_activate_shield():
+    sid = request.sid
+    if sid in players and not players[sid]['isDead']:
+        players[sid]['shieldHits'] = 2
+        socketio.emit('player_shielded', {'id': sid})
+
 # --- Shop Purchases ---
 @socketio.on('buy_upgrade')
 def handle_buy_upgrade(data):
@@ -298,8 +335,10 @@ def handle_buy_upgrade(data):
                 players[sid]['hp'] = players[sid]['maxHp']
             elif upgrade == 'damage':
                 players[sid]['damage'] += 10
+                players[sid]['upgrades']['damage'] += 10
             elif upgrade == 'speed':
                 players[sid]['speed'] += 50
+                players[sid]['upgrades']['speed'] += 50
 
             socketio.emit('upgrade_bought', {
                 'id': sid,
@@ -314,31 +353,56 @@ import math
 def bot_manager_loop():
     while True:
         eventlet.sleep(0.1)  # 10Hz tick rate
+
+        global animated_obstacles_enabled, OBSTACLES
+        if animated_obstacles_enabled:
+            for obs in OBSTACLES:
+                obs['x'] += obs.get('vx', 0) * 0.1
+                obs['y'] += obs.get('vy', 0) * 0.1
+
+                if obs['x'] < obs['radius']:
+                    obs['x'] = obs['radius']
+                    obs['vx'] *= -1
+                elif obs['x'] > MAP_WIDTH - obs['radius']:
+                    obs['x'] = MAP_WIDTH - obs['radius']
+                    obs['vx'] *= -1
+
+                if obs['y'] < obs['radius']:
+                    obs['y'] = obs['radius']
+                    obs['vy'] *= -1
+                elif obs['y'] > MAP_HEIGHT - obs['radius']:
+                    obs['y'] = MAP_HEIGHT - obs['radius']
+                    obs['vy'] *= -1
+
+                obs['pulse_time'] = obs.get('pulse_time', 0) + 0.1
+                obs['radius'] = obs.get('base_r', obs['radius']) + math.sin(obs['pulse_time']) * 10.0
+            socketio.emit('obstacles_moved', OBSTACLES)
+
         for pid in list(players.keys()):
             p = players.get(pid)
             if not p or not p.get('isBot') or p.get('isDead'):
                 continue
-                
+
             # Random slight change in direction
             if random.random() < 0.1:
                 p['angle'] += random.uniform(-0.5, 0.5)
-            
+
             p['x'] += math.cos(p['angle']) * p['speed'] * 0.1
             p['y'] += math.sin(p['angle']) * p['speed'] * 0.1
-            
+
             # Simple bounds bounce
             if p['x'] < 50 or p['x'] > MAP_WIDTH - 50 or p['y'] < 50 or p['y'] > MAP_HEIGHT - 50:
                 p['angle'] += math.pi
                 p['x'] = max(50, min(MAP_WIDTH - 50, p['x']))
                 p['y'] = max(50, min(MAP_HEIGHT - 50, p['y']))
-                
+
             socketio.emit('player_moved', {
                 'id': pid,
                 'x': p['x'],
                 'y': p['y'],
                 'angle': p['angle']
             })
-            
+
             # Occasionally shoot randomly
             if random.random() < 0.05:  # ~1 shot per 2 seconds
                 bullet = {

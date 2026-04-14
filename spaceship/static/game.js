@@ -40,15 +40,15 @@ socket.on('connect', () => {
 
 function playSound(type) {
     if (audioCtx.state === 'suspended') audioCtx.resume();
-    
+
     const osc = audioCtx.createOscillator();
     const gainNode = audioCtx.createGain();
-    
+
     osc.connect(gainNode);
     gainNode.connect(audioCtx.destination);
-    
+
     const now = audioCtx.currentTime;
-    
+
     if (type === 'shoot') {
         osc.type = 'square';
         osc.frequency.setValueAtTime(880, now);
@@ -131,6 +131,9 @@ let leftJoyId = null, rightJoyId = null, lastDoubleTapTime = 0, nippleManager = 
 let heavyAmmo = 3;
 let isReloadingHeavy = false;
 let lastHeavyShootTime = 0;
+let laserMode = false;
+let laserBank = 60.0;
+let lastShieldTime = 0;
 const mouse = { x: 0, y: 0, worldX: 0, worldY: 0, isDown: false, isRightDown: false };
 
 document.getElementById('passcode-btn').addEventListener('click', () => {
@@ -173,7 +176,8 @@ document.getElementById('admin-apply-btn').addEventListener('click', () => {
             hp: document.getElementById('admin-hp').value,
             speed: document.getElementById('admin-speed').value,
             damage: document.getElementById('admin-damage').value,
-            invisible: document.getElementById('admin-invisible').checked
+            invisible: document.getElementById('admin-invisible').checked,
+            anim_obs: document.getElementById('admin-anim-obs').checked
         });
 
         document.getElementById('admin-error').innerText = 'Cheats injected!';
@@ -198,6 +202,35 @@ document.getElementById('admin-spawn-bot-btn').addEventListener('click', () => {
         document.getElementById('admin-error').innerText = 'Invalid Passcode';
         document.getElementById('admin-error').style.color = '#ff3366';
     }
+});
+
+document.getElementById('shield-activate-btn').addEventListener('click', () => {
+    if (Date.now() - lastShieldTime > 30000) {
+        lastShieldTime = Date.now();
+        socket.emit('activate_shield');
+        const btn = document.getElementById('shield-activate-btn');
+        btn.innerText = 'Shield Active';
+        btn.style.color = '#fff';
+        btn.style.borderColor = '#fff';
+
+        let cd = 30;
+        let intv = setInterval(() => {
+            cd--;
+            btn.innerText = `Shield Cooldown (${cd}s)`;
+            if (cd <= 0) {
+                clearInterval(intv);
+                btn.innerText = 'Activate Shield (Ready)';
+                btn.style.color = '#00f0ff';
+                btn.style.borderColor = '#00f0ff';
+            }
+        }, 1000);
+    }
+});
+
+document.getElementById('laser-toggle-btn').addEventListener('click', () => {
+    laserMode = !laserMode;
+    const btn = document.getElementById('laser-toggle-btn');
+    btn.innerText = `Laser [${laserMode ? 'ON' : 'OFF'}] (${Math.max(0, laserBank).toFixed(1)}s)`;
 });
 
 document.querySelectorAll('.buy-btn').forEach(btn => {
@@ -234,6 +267,9 @@ socket.on('obstacle_destroyed', (data) => {
 
 socket.on('match_reset', (data) => {
     scores = data.scores;
+    laserBank = 60.0;
+    laserMode = false;
+    document.getElementById('laser-toggle-btn').innerText = `Laser [OFF] (60.0s)`;
     mapObstacles = data.obstacles;
     players = data.players;
 
@@ -288,6 +324,7 @@ socket.on('game_init', (data) => {
     debugLog('<span style="color:yellow">SYS: Received game_init payload from server!</span>');
     myId = data.myId;
     mapInfo = {width: data.mapWidth, height: data.mapHeight};
+    if (players[myId]) myFireRate = players[myId].fireDelay || 300;
     players = data.players;
     if (players[myId]) players[myId].spawnTime = Date.now();
     scores = data.scores;
@@ -299,7 +336,7 @@ socket.on('game_init', (data) => {
     resizeCanvas();
     initTouchControls();
     updateHUD();
-    
+
     if (!window.loopRunning) {
         window.loopRunning = true;
         requestAnimationFrame(gameLoop);
@@ -315,11 +352,16 @@ socket.on('player_left', (data) => {
     delete players[data.id];
 });
 
+socket.on('obstacles_moved', (obs) => {
+    mapObstacles = obs;
+});
+
 socket.on('player_moved', (data) => {
     if (players[data.id]) {
         players[data.id].x = data.x;
         players[data.id].y = data.y;
         players[data.id].angle = data.angle;
+        if (data.laserDist !== undefined) players[data.id].laserDist = data.laserDist;
     }
 });
 
@@ -341,10 +383,24 @@ socket.on('coins_update', (data) => {
     }
 });
 
+socket.on('player_shielded', (data) => {
+    if (players[data.id]) {
+        players[data.id].shieldActive = 2;
+    }
+});
+
 socket.on('player_damaged', (data) => {
-    if (players[data.id] && data.hp < players[data.id].hp) playSound('hit');
-    if (players[data.id]) players[data.id].hp = data.hp;
-    if (data.id === myId) updateHUD();
+    if (players[data.id]) {
+        let p = players[data.id];
+        if (p.hp === data.hp && p.shieldActive > 0) {
+            p.shieldActive--;
+            playSound('hit');
+        } else if (data.hp < p.hp) {
+            playSound('hit');
+            p.hp = data.hp;
+        }
+        if (data.id === myId) updateHUD();
+    }
 });
 
 socket.on('disconnect', () => {
@@ -354,6 +410,7 @@ socket.on('player_respawned', (p) => {
     p.spawnTime = Date.now();
     players[p.id] = p;
     if (p.id === myId) {
+        myFireRate = p.fireDelay || 300;
         document.getElementById('death-screen').classList.remove('active');
         canvas.style.display = 'block';
         updateHUD();
@@ -379,6 +436,7 @@ socket.on('upgrade_bought', (data) => {
         players[data.id].maxHp = data.maxHp;
         players[data.id].speed = data.speed;
         if (data.damage !== undefined) players[data.id].damage = data.damage;
+        if (data.fireDelay !== undefined && data.id === myId) myFireRate = data.fireDelay;
         if (data.id === myId) updateHUD();
     }
 });
@@ -466,7 +524,7 @@ function initTouchControls() {
         } else {
             rightJoyId = data.identifier;
             joyShooting = true;
-            
+
             const now = Date.now();
             if (now - lastRightTapTime < 300) {
                 fireHeavyWeapon();
@@ -496,7 +554,7 @@ function initTouchControls() {
             joyShooting = false; rightJoyId = null;
         }
     });
-    
+
     window.addEventListener('touchcancel', () => {
         debugLog('SYS: touchcancel intercepted. Force clearing joysticks.');
         joyShooting = false;
@@ -603,16 +661,71 @@ function update(dt) {
         }
     }
 
-    if ((mouse.isDown || joyShooting) && performance.now() - lastShootTime > myFireRate) {
-        lastShootTime = performance.now();
-        debugLog('NET: Emitting shot packet v1');
-        socket.emit('player_shoot', { x: me.x, y: me.y, angle: me.angle, bullet_type: 'normal', speed: myBulletSpeed, size: myBulletSize });
+    if (laserMode && laserBank > 0 && (mouse.isDown || joyShooting)) {
+        laserBank -= dt;
+        if (laserBank < 0) {
+            laserBank = 0;
+            laserMode = false;
+        }
+        document.getElementById('laser-toggle-btn').innerText = `Laser [${laserMode ? 'ON' : 'OFF'}] (${laserBank.toFixed(1)}s)`;
+
+        let lx = me.x;
+        let ly = me.y;
+        let hitDist = 1000;
+
+        for (let st = 20; st <= 1000; st += 20) {
+            let cx = lx + Math.cos(me.angle) * st;
+            let cy = ly + Math.sin(me.angle) * st;
+
+            if (cx < 0 || cy < 0 || cx > mapInfo.width || cy > mapInfo.height) {
+                hitDist = st;
+                break;
+            }
+
+            let hitObs = false;
+            for (let obs of mapObstacles) {
+                if (Math.hypot(cx - obs.x, cy - obs.y) < obs.radius) {
+                    hitObs = true;
+                    hitDist = st;
+                    break;
+                }
+            }
+            if (hitObs) break;
+
+            let hitP = null;
+            for (let pid in players) {
+                let p = players[pid];
+                if (p.isDead || p.team === me.team || p.isInvisible || pid === myId) continue;
+                let pr = p.shipClass === 'juggernaut' ? 20 : (p.shipClass === 'scout' ? 12 : 15);
+                if (Math.hypot(cx - p.x, cy - p.y) < pr) {
+                    hitP = pid;
+                    hitDist = st;
+                    break;
+                }
+            }
+            if (hitP) {
+                if (Math.random() < (dt * 10)) {
+                    socket.emit('bullet_hit', { targetId: hitP, shooterId: myId, damage: me.damage * 0.15 });
+                }
+                break;
+            }
+        }
+
+        me.laserDist = hitDist;
+    } else {
+        me.laserDist = 0;
+        if ((mouse.isDown || joyShooting) && performance.now() - lastShootTime > myFireRate) {
+            lastShootTime = performance.now();
+            debugLog('NET: Emitting shot packet v1');
+            socket.emit('player_shoot', { x: me.x, y: me.y, angle: me.angle, bullet_type: 'normal', speed: myBulletSpeed, size: myBulletSize });
+        }
     }
+
     if (mouse.isRightDown) {
         fireHeavyWeapon();
     }
 
-    socket.emit('player_move', { x: me.x, y: me.y, angle: me.angle });
+    socket.emit('player_move', { x: me.x, y: me.y, angle: me.angle, laserDist: me.laserDist });
 
     const now = Date.now();
 
@@ -782,6 +895,34 @@ function draw() {
         ctx.strokeStyle = 'rgba(255,255,255,0.5)';
         ctx.lineWidth = 2;
         ctx.stroke();
+
+        if (p.laserDist > 0) {
+            ctx.strokeStyle = p.team === 'red' ? '#ff3366' : (p.team === 'green' ? '#33ff33' : '#33ccff');
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(r * 1.5, 0);
+            ctx.lineTo(r * 1.5 + p.laserDist, 0);
+            ctx.stroke();
+
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(r * 1.5, 0);
+            ctx.lineTo(r * 1.5 + p.laserDist, 0);
+            ctx.stroke();
+        }
+
+        if (p.shieldActive > 0) {
+            ctx.strokeStyle = '#00f0ff';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.arc(0, 0, r + 15, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.fillStyle = 'rgba(0, 240, 255, 0.2)';
+            ctx.beginPath();
+            ctx.arc(0, 0, r + 15, 0, Math.PI * 2);
+            ctx.fill();
+        }
 
         ctx.globalAlpha = 1.0;
 
