@@ -56,7 +56,7 @@ input:focus, select:focus { box-shadow: 0 0 10px #00f0ff; }
 .hidden { display: none !important; }
 
 /* CHAT STYLES */
-#chat-component { 
+#chat-component {
     height: auto; max-height: 80vh;
 }
 .chat-tabs { display: flex; justify-content: space-between; margin-bottom: 15px; }
@@ -94,7 +94,7 @@ input, select, textarea {
         top: 5px !important; left: 5px !important;
     }
     .glow-btn.small { padding: 3px 6px; font-size: 10px; }
-    
+
     #shop-panel {
         top: auto !important; bottom: 60px !important; right: 5px !important; width: 220px !important;
         font-size: 12px;
@@ -104,7 +104,7 @@ input, select, textarea {
         z-index: 40;
     }
     #chat-body { height: 120px !important; }
-    
+
     #admin-settings-panel {
         top: 40px !important; width: 260px !important; font-size: 12px;
     }
@@ -133,4 +133,31 @@ html, body {
 
 button, .glow-btn, a, input, select, textarea, .glass-panel {
     touch-action: manipulation !important;
+}
+
+.round-action-btn {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 11px !important;
+    padding: 5px !important;
+    white-space: normal;
+    word-wrap: break-word;
+    box-shadow: 0 0 10px;
+    line-height: 1.2;
+    cursor: pointer;
+}
+.round-action-btn.shield-btn {
+    border-color: #00f0ff;
+    color: #00f0ff;
+    box-shadow: 0 0 15px rgba(0,240,255,0.5);
+}
+.round-action-btn.laser-btn {
+    border-color: #33ff33;
+    color: #33ff33;
+    box-shadow: 0 0 15px rgba(51,255,51,0.5);
 }
