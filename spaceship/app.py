@@ -315,12 +315,7 @@ def handle_admin_spawn_bot(data):
         }
         socketio.emit('player_joined', players[bot_id])
 
-@socketio.on('activate_shield')
-def handle_activate_shield():
-    sid = request.sid
-    if sid in players and not players[sid]['isDead']:
-        players[sid]['shieldHits'] = 2
-        socketio.emit('player_shielded', {'id': sid})
+# activate_shield removed — shield is now a shop purchase
 
 # --- Shop Purchases ---
 @socketio.on('buy_upgrade')
@@ -328,10 +323,13 @@ def handle_buy_upgrade(data):
     sid = request.sid
     if sid in players:
         upgrade = data.get('upgrade')
-        cost = 100
+        cost = 20 if upgrade == 'shield' else 100
         if players[sid]['coins'] >= cost:
             players[sid]['coins'] -= cost
-            if upgrade == 'heal':
+            if upgrade == 'shield':
+                players[sid]['shieldHits'] = 2
+                socketio.emit('player_shielded', {'id': sid})
+            elif upgrade == 'heal':
                 players[sid]['hp'] = players[sid]['maxHp']
             elif upgrade == 'damage':
                 players[sid]['damage'] += 10

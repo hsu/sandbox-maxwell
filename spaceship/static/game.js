@@ -204,28 +204,8 @@ document.getElementById('admin-spawn-bot-btn').addEventListener('click', () => {
     }
 });
 
-document.getElementById('shield-activate-btn').addEventListener('click', () => {
-    if (Date.now() - lastShieldTime > 30000) {
-        lastShieldTime = Date.now();
-        socket.emit('activate_shield');
-        const btn = document.getElementById('shield-activate-btn');
-        btn.innerText = 'Shield Active';
-        btn.style.color = '#fff';
-        btn.style.borderColor = '#fff';
 
-        let cd = 30;
-        let intv = setInterval(() => {
-            cd--;
-            btn.innerText = `Shield Cooldown (${cd}s)`;
-            if (cd <= 0) {
-                clearInterval(intv);
-                btn.innerText = 'Activate Shield (Ready)';
-                btn.style.color = '#00f0ff';
-                btn.style.borderColor = '#00f0ff';
-            }
-        }, 1000);
-    }
-});
+
 
 document.getElementById('laser-toggle-btn').addEventListener('click', () => {
     laserMode = !laserMode;
