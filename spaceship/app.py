@@ -18,7 +18,7 @@ scores = {"red": 0, "blue": 0}
 
 SHIP_STATS = {
     "fighter": {"hp": 100, "speed": 400, "damage": 20, "radius": 15, "fireDelay": 300},
-    "scout": {"hp": 60, "speed": 600, "damage": 30, "radius": 12, "fireDelay": 500},
+    "scout": {"hp": 60, "speed": 600, "damage": 50, "radius": 12, "fireDelay": 550},
     "juggernaut": {"hp": 200, "speed": 250, "damage": 10, "radius": 20, "fireDelay": 150}
 }
 MAP_WIDTH = 2000

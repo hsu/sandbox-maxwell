@@ -854,7 +854,7 @@ function draw() {
         ctx.fillStyle = 'red';
         ctx.fillRect(-20, -25, 40, 5);
         ctx.fillStyle = '#0f0';
-        ctx.fillRect(-20, -25, 40 * (p.hp / p.maxHp), 5);
+        ctx.fillRect(-20, -25, 40 * Math.min(1, p.hp / p.maxHp), 5);
 
         ctx.rotate(p.angle);
 
