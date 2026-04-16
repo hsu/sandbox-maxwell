@@ -195,6 +195,7 @@ document.getElementById('admin-apply-btn').addEventListener('click', () => {
             speed: document.getElementById('admin-speed').value,
             damage: document.getElementById('admin-damage').value,
             fireDelay: myFireRate,
+            targetBotCount: document.getElementById('admin-target-bot-count').value,
             invisible: document.getElementById('admin-invisible').checked,
             anim_obs: document.getElementById('admin-anim-obs').checked
         });
@@ -205,18 +206,6 @@ document.getElementById('admin-apply-btn').addEventListener('click', () => {
             document.getElementById('admin-settings-panel').classList.add('hidden');
             document.getElementById('admin-error').innerText = '';
         }, 1000);
-    } else {
-        document.getElementById('admin-error').innerText = 'Invalid Passcode';
-        document.getElementById('admin-error').style.color = '#ff3366';
-    }
-});
-
-document.getElementById('admin-spawn-bot-btn').addEventListener('click', () => {
-    const pw = document.getElementById('admin-password').value;
-    if (pw === 'hahaha') {
-        socket.emit('admin_spawn_bot', { password: pw });
-        document.getElementById('admin-error').innerText = 'Bot generated!';
-        document.getElementById('admin-error').style.color = '#ffcc00';
     } else {
         document.getElementById('admin-error').innerText = 'Invalid Passcode';
         document.getElementById('admin-error').style.color = '#ff3366';

@@ -26,6 +26,7 @@ MAP_HEIGHT = 1500
 
 OBSTACLE_TYPES = ['rock', 'metal_crate', 'mushroom']
 animated_obstacles_enabled = False
+TARGET_BOT_COUNT = 0
 
 def generate_obstacles():
     obs = []
@@ -283,9 +284,11 @@ def handle_admin_cheats(data):
         if 'invisible' in data:
             players[sid]['isInvisible'] = bool(data['invisible'])
 
-        global animated_obstacles_enabled
+        global animated_obstacles_enabled, TARGET_BOT_COUNT
         if 'anim_obs' in data:
             animated_obstacles_enabled = bool(data['anim_obs'])
+        if 'targetBotCount' in data:
+            TARGET_BOT_COUNT = int(data['targetBotCount'])
 
         socketio.emit('player_cheated', players[sid])
 
@@ -335,33 +338,7 @@ def handle_bootleg_cheats(data):
 
         socketio.emit('player_cheated', p)
 
-@socketio.on('admin_spawn_bot')
-def handle_admin_spawn_bot(data):
-    sid = request.sid
-    if data.get('password') == 'hahaha' and sid in players:
-        bot_id = f'bot_{uuid.uuid4()}'
-        ship_class = random.choice(list(SHIP_STATS.keys()))
-        stats = SHIP_STATS[ship_class]
-        bot_team = 'green'
-        players[bot_id] = {
-            'id': bot_id,
-            'name': f'Bot-{bot_id[:4]}',
-            'team': bot_team,
-            'shipClass': ship_class,
-            'x': random.randint(100, MAP_WIDTH - 100),
-            'y': random.randint(100, MAP_HEIGHT - 100),
-            'angle': random.uniform(0, 3.14 * 2),
-            'hp': stats['hp'],
-            'maxHp': stats['hp'],
-            'speed': stats['speed'] * 0.5, # give bot 50% speed
-            'damage': stats['damage'],
-            'isDead': False,
-            'coins': 0,
-            'isBot': True,
-            'immuneUntil': 0,
-            'spawnTime': time.time()
-        }
-        socketio.emit('player_joined', players[bot_id])
+
 
 # activate_shield removed — shield is now a shop purchase
 
@@ -400,7 +377,41 @@ def bot_manager_loop():
     while True:
         eventlet.sleep(0.1)  # 10Hz tick rate
 
-        global animated_obstacles_enabled, OBSTACLES
+        global animated_obstacles_enabled, OBSTACLES, TARGET_BOT_COUNT
+
+        current_bots = [pid for pid, p in players.items() if p.get('isBot') and not p.get('isDead') and pid.startswith('bot_')]
+
+        while len(current_bots) < TARGET_BOT_COUNT:
+            bot_id = f'bot_{uuid.uuid4()}'
+            stats = SHIP_STATS['fighter']
+            players[bot_id] = {
+                'id': bot_id,
+                'name': f'Bot-{bot_id[:4]}',
+                'team': 'red',
+                'shipClass': 'fighter',
+                'x': random.randint(100, MAP_WIDTH - 100),
+                'y': random.randint(100, MAP_HEIGHT - 100),
+                'angle': random.uniform(0, 3.14 * 2),
+                'hp': stats['hp'],
+                'maxHp': stats['hp'],
+                'speed': stats['speed'] * 0.5,
+                'damage': stats['damage'],
+                'isDead': False,
+                'coins': 0,
+                'isBot': True,
+                'immuneUntil': 0,
+                'spawnTime': time.time()
+            }
+            socketio.emit('player_joined', players[bot_id])
+            current_bots.append(bot_id)
+
+        while len(current_bots) > TARGET_BOT_COUNT:
+            pid = current_bots.pop()
+            if pid in players:
+                players[pid]['hp'] = 0
+                players[pid]['isDead'] = True
+                socketio.emit('player_died', {'id': pid, 'scores': scores})
+
         if animated_obstacles_enabled:
             for obs in OBSTACLES:
                 obs['x'] += obs.get('vx', 0) * 0.1
