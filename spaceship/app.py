@@ -389,7 +389,7 @@ def bot_manager_loop():
             players[bot_id] = {
                 'id': bot_id,
                 'name': f'Bot-{bot_id[:4]}',
-                'team': 'red',
+                'team': 'green',
                 'shipClass': 'fighter',
                 'x': random.randint(100, MAP_WIDTH - 100),
                 'y': random.randint(100, MAP_HEIGHT - 100),
