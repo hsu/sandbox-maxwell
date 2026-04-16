@@ -714,6 +714,12 @@ function update(dt) {
 
         me.laserDist = hitDist;
     } else {
+        if (laserBank < 60.0) {
+            laserBank += dt * 0.5; // recharge slowly
+            if (laserBank > 60.0) laserBank = 60.0;
+            document.getElementById('laser-toggle-btn').innerText = `Laser [${laserMode ? 'ON' : 'OFF'}] (${laserBank.toFixed(1)}s)`;
+        }
+
         me.laserDist = 0;
         if ((mouse.isDown || joyShooting) && performance.now() - lastShootTime > myFireRate) {
             lastShootTime = performance.now();
