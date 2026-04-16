@@ -129,6 +129,14 @@ def handle_join(data):
 
     socketio.emit('player_joined', players[sid], skip_sid=sid)
 
+@socketio.on('update_profile')
+def handle_update_profile(data):
+    sid = request.sid
+    if sid in players and not players[sid]['isDead']:
+        players[sid]['name'] = data.get('name', players[sid]['name'])
+        players[sid]['team'] = data.get('team', players[sid]['team'])
+        socketio.emit('player_cheated', players[sid])
+
 @socketio.on('disconnect')
 def handle_disconnect():
     sid = request.sid

@@ -182,6 +182,27 @@ document.querySelectorAll('.bootleg-action').forEach(btn => {
     });
 });
 
+document.getElementById('profile-settings-btn').addEventListener('click', () => {
+    let me = players[myId];
+    if (!me) return;
+    document.getElementById('profile-name').value = me.name;
+    document.getElementById('profile-team').value = me.team;
+    document.getElementById('profile-settings-panel').classList.toggle('hidden');
+});
+document.getElementById('profile-close-btn').addEventListener('click', () => {
+    document.getElementById('profile-settings-panel').classList.add('hidden');
+});
+document.getElementById('profile-apply-btn').addEventListener('click', () => {
+    let me = players[myId];
+    if (!me) return;
+    const newName = document.getElementById('profile-name').value || me.name;
+    const newTeam = document.getElementById('profile-team').value;
+    me.name = newName;
+    me.team = newTeam;
+    socket.emit('update_profile', { name: newName, team: newTeam });
+    document.getElementById('profile-settings-panel').classList.add('hidden');
+});
+
 document.getElementById('admin-apply-btn').addEventListener('click', () => {
     const pw = document.getElementById('admin-password').value;
     if (pw === 'hahaha') {
