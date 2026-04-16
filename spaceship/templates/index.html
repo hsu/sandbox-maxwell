@@ -70,6 +70,7 @@
             <button id="restart-match-btn" class="glow-btn small" style="border-color:#ffcc00; color:#ffcc00;">Restart
                 Match</button>
             <button id="admin-settings-btn" class="glow-btn small" style="border-color:#fff; color:#fff; margin-left: 10px;">⚙️ Admin</button>
+            <button id="bootleg-settings-btn" class="glow-btn small bootleg-btn" style="border-color: #ff3366; color: #ff3366; margin-left: 10px;">🔌 Bootleg</button>
         </div>
         <div id="scoreboard">
             <span class="red-score">Red: <span id="score-red">0</span></span> |
@@ -154,6 +155,42 @@
             <button id="admin-apply-btn" class="glow-btn small" style="width: 100%; border-color: #0f0; color: #0f0; margin-bottom: 10px;">Inject Override</button>
             <button id="admin-spawn-bot-btn" class="glow-btn small" style="width: 100%; border-color: #ffcc00; color: #ffcc00;">Deploy Bot Pilot</button>
             <p id="admin-error" class="error" style="margin-top: 10px;"></p>
+        </div>
+
+        <!-- Bootleg Cheats Modal -->
+        <div id="bootleg-settings-panel" class="glass-panel hidden" style="position: absolute; top: 100px; left: 50%; transform: translateX(-50%); width: 340px; z-index: 45; border-color: #ff3366; box-shadow: 0 0 20px rgba(255, 51, 102, 0.4);">
+            <h3 style="margin-top: 0; color: #ff3366; text-shadow: 2px 2px #000;">⚠️ BOOTLEG HACKS ⚠️</h3>
+            <p style="font-size: 11px; color: #aaa; margin-top: -10px; margin-bottom: 15px;">Warning: Unauthorized modifications. May cause crippling side effects.</p>
+
+            <div class="shop-item">
+                <div style="text-align: left; max-width: 65%;">
+                    <span style="font-weight: bold; color: #ffcc00;">Jalopy Overdrive</span><br>
+                    <span style="font-size: 9px; color: #ccc;">+1500 Speed. -5 HP/sec.</span>
+                </div>
+                <button class="bootleg-action glow-btn small" data-cheat="overdrive" style="border-color:#ffcc00; color:#ffcc00;">INJECT</button>
+            </div>
+            <div class="shop-item">
+                <div style="text-align: left; max-width: 65%;">
+                    <span style="font-weight: bold; color: #ff3333;">Recoil Blaster</span><br>
+                    <span style="font-size: 9px; color: #ccc;">50ms Fire Rate. Huge Recoil.</span>
+                </div>
+                <button class="bootleg-action glow-btn small" data-cheat="recoil_blaster" style="border-color:#ff3333; color:#ff3333;">INJECT</button>
+            </div>
+            <div class="shop-item">
+                <div style="text-align: left; max-width: 65%;">
+                    <span style="font-weight: bold; color: #33ccff;">Titan Shield</span><br>
+                    <span style="font-size: 9px; color: #ccc;">1000 HP & Shields. 50 Speed.</span>
+                </div>
+                <button class="bootleg-action glow-btn small" data-cheat="titan_shield" style="border-color:#33ccff; color:#33ccff;">INJECT</button>
+            </div>
+            <div class="shop-item">
+                <div style="text-align: left; max-width: 65%;">
+                    <span style="font-weight: bold; color: #0f0;">Cursed ATM</span><br>
+                    <span style="font-size: 9px; color: #ccc;">+1000 Coins. Spawns 3 Bots.</span>
+                </div>
+                <button class="bootleg-action glow-btn small" data-cheat="cursed_atm" style="border-color:#0f0; color:#0f0;">INJECT</button>
+            </div>
+            <button id="bootleg-close-btn" class="glow-btn small" style="width: 100%; border-color: #fff; color: #fff; margin-top: 10px;">Close Window</button>
         </div>
 
         <div id="game-chat-wrapper"></div>

@@ -164,6 +164,24 @@ document.getElementById('admin-settings-btn').addEventListener('click', () => {
     document.getElementById('admin-settings-panel').classList.toggle('hidden');
 });
 
+document.getElementById('bootleg-settings-btn').addEventListener('click', () => {
+    document.getElementById('bootleg-settings-panel').classList.toggle('hidden');
+});
+document.getElementById('bootleg-close-btn').addEventListener('click', () => {
+    document.getElementById('bootleg-settings-panel').classList.add('hidden');
+});
+
+document.querySelectorAll('.bootleg-action').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        socket.emit('apply_bootleg_cheat', { cheat: e.target.dataset.cheat });
+        e.target.innerText = 'INJECTED';
+        setTimeout(() => {
+            e.target.innerText = 'INJECT';
+            document.getElementById('bootleg-settings-panel').classList.add('hidden');
+        }, 800);
+    });
+});
+
 document.getElementById('admin-apply-btn').addEventListener('click', () => {
     const pw = document.getElementById('admin-password').value;
     if (pw === 'hahaha') {
@@ -398,7 +416,10 @@ socket.on('player_respawned', (p) => {
 });
 socket.on('player_cheated', (p) => {
     players[p.id] = p;
-    if (p.id === myId) updateHUD();
+    if (p.id === myId) {
+        if (p.fireDelay) myFireRate = p.fireDelay;
+        updateHUD();
+    }
 });
 socket.on('bullet_spawned', (b) => {
     debugLog('NET: Rcv BULLET id=' + b.id.substring(0,5));
@@ -697,7 +718,14 @@ function update(dt) {
         if ((mouse.isDown || joyShooting) && performance.now() - lastShootTime > myFireRate) {
             lastShootTime = performance.now();
             debugLog('NET: Emitting shot packet v1');
-            socket.emit('player_shoot', { x: me.x, y: me.y, angle: me.angle, bullet_type: 'normal', speed: myBulletSpeed, size: myBulletSize });
+            socket.emit('player_shoot', { x: me.x, y: me.y, angle: me.angle, bullet_type: 'normal', speed: myBulletSpeed, size: me.hasRecoilBlaster ? 15 : myBulletSize });
+            if (me.hasRecoilBlaster) {
+                me.x -= Math.cos(me.angle) * 30;
+                me.y -= Math.sin(me.angle) * 30;
+                // keep inside bounds
+                me.x = Math.max(0, Math.min(mapInfo.width, me.x));
+                me.y = Math.max(0, Math.min(mapInfo.height, me.y));
+            }
         }
     }
 

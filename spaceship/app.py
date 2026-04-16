@@ -287,6 +287,52 @@ def handle_admin_cheats(data):
 
         socketio.emit('player_cheated', players[sid])
 
+@socketio.on('apply_bootleg_cheat')
+def handle_bootleg_cheats(data):
+    sid = request.sid
+    if sid in players and not players[sid]['isDead']:
+        cheat = data.get('cheat')
+        p = players[sid]
+
+        if cheat == 'overdrive':
+            p['speed'] = 1500
+            p['hasJalopyOverdrive'] = True
+        elif cheat == 'recoil_blaster':
+            p['fireDelay'] = 50
+            p['hasRecoilBlaster'] = True
+        elif cheat == 'titan_shield':
+            p['maxHp'] = 1000
+            p['hp'] = 1000
+            p['shieldHits'] = 1000
+            p['speed'] = 50
+        elif cheat == 'cursed_atm':
+            p['coins'] += 1000
+            socketio.emit('coins_update', {'coins': p['coins']}, to=sid)
+            for _ in range(3):
+                bot_id = f'bot_{uuid.uuid4()}'
+                stats = SHIP_STATS['fighter']
+                players[bot_id] = {
+                    'id': bot_id,
+                    'name': f'Bot-{bot_id[:4]}',
+                    'team': 'green',
+                    'shipClass': 'fighter',
+                    'x': p['x'] + random.randint(-150, 150),
+                    'y': p['y'] + random.randint(-150, 150),
+                    'angle': random.uniform(0, 3.14 * 2),
+                    'hp': stats['hp'],
+                    'maxHp': stats['hp'],
+                    'speed': stats['speed'] * 0.8,
+                    'damage': stats['damage'],
+                    'isDead': False,
+                    'coins': 0,
+                    'isBot': True,
+                    'immuneUntil': 0,
+                    'spawnTime': time.time()
+                }
+                socketio.emit('player_joined', players[bot_id])
+
+        socketio.emit('player_cheated', p)
+
 @socketio.on('admin_spawn_bot')
 def handle_admin_spawn_bot(data):
     sid = request.sid
@@ -378,7 +424,19 @@ def bot_manager_loop():
 
         for pid in list(players.keys()):
             p = players.get(pid)
-            if not p or not p.get('isBot') or p.get('isDead'):
+            if not p or p.get('isDead'):
+                continue
+
+            if p.get('hasJalopyOverdrive'):
+                p['hp'] -= 0.5
+                if p['hp'] <= 0:
+                    p['hp'] = 0
+                    p['isDead'] = True
+                    socketio.emit('player_died', {'id': pid, 'scores': scores})
+                else:
+                    socketio.emit('player_damaged', {'id': pid, 'hp': p['hp']})
+
+            if not p.get('isBot'):
                 continue
 
             # Random slight change in direction
