@@ -278,6 +278,8 @@ def handle_admin_cheats(data):
             players[sid]['speed'] = int(data['speed'])
         if 'damage' in data:
             players[sid]['damage'] = int(data['damage'])
+        if 'fireDelay' in data:
+            players[sid]['fireDelay'] = int(data['fireDelay'])
         if 'invisible' in data:
             players[sid]['isInvisible'] = bool(data['invisible'])
 

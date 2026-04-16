@@ -194,6 +194,7 @@ document.getElementById('admin-apply-btn').addEventListener('click', () => {
             hp: document.getElementById('admin-hp').value,
             speed: document.getElementById('admin-speed').value,
             damage: document.getElementById('admin-damage').value,
+            fireDelay: myFireRate,
             invisible: document.getElementById('admin-invisible').checked,
             anim_obs: document.getElementById('admin-anim-obs').checked
         });
