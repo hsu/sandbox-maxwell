@@ -197,6 +197,7 @@ document.getElementById('admin-apply-btn').addEventListener('click', () => {
             fireDelay: myFireRate,
             targetBotCount: document.getElementById('admin-target-bot-count').value,
             invisible: document.getElementById('admin-invisible').checked,
+            autoAim: document.getElementById('admin-auto-aim').checked,
             anim_obs: document.getElementById('admin-anim-obs').checked
         });
 
@@ -649,6 +650,23 @@ function update(dt) {
     } else {
         if (joyAngle !== null) {
             me.angle = joyAngle;
+        }
+    }
+
+    if (me.hasAutoAim) {
+        let bestDist = Infinity;
+        let bestAng = null;
+        for (let pid in players) {
+            let p = players[pid];
+            if (p.isDead || p.team === me.team || p.isInvisible || pid === myId) continue;
+            let dist = Math.hypot(p.x - me.x, p.y - me.y);
+            if (dist < bestDist) {
+                bestDist = dist;
+                bestAng = Math.atan2(p.y - me.y, p.x - me.x);
+            }
+        }
+        if (bestAng !== null) {
+            me.angle = bestAng;
         }
     }
 

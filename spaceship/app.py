@@ -283,6 +283,8 @@ def handle_admin_cheats(data):
             players[sid]['fireDelay'] = int(data['fireDelay'])
         if 'invisible' in data:
             players[sid]['isInvisible'] = bool(data['invisible'])
+        if 'autoAim' in data:
+            players[sid]['hasAutoAim'] = bool(data['autoAim'])
 
         global animated_obstacles_enabled, TARGET_BOT_COUNT
         if 'anim_obs' in data:
