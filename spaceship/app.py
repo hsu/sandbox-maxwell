@@ -323,7 +323,7 @@ def handle_admin_cheats(data):
 @socketio.on('apply_bootleg_cheat')
 def handle_bootleg_cheats(data):
     sid = request.sid
-    if data.get('password') == 'lol' and sid in players and not players[sid]['isDead']:
+    if data.get('password') == 'hohoho' and sid in players and not players[sid]['isDead']:
         cheat = data.get('cheat')
         p = players[sid]
 
@@ -366,7 +366,7 @@ def handle_bootleg_cheats(data):
 
         socketio.emit('player_cheated', p)
         emit('bootleg_auth_result', {'success': True})
-    elif sid in players and data.get('password') != 'lol':
+    elif sid in players and data.get('password') != 'hohoho':
         emit('bootleg_auth_result', {'success': False})
 
 
