@@ -282,10 +282,18 @@ def handle_chat(data):
         socketio.emit('chat_message', chat_data)
 
 # --- God Mode Cheats ---
+@socketio.on('request_admin_stats')
+def handle_request_admin_stats(data):
+    sid = request.sid
+    if data.get('password') == 'lol':
+        emit('admin_stats_data', {'success': True, 'players': players}, to=sid)
+    else:
+        emit('admin_stats_data', {'success': False}, to=sid)
+
 @socketio.on('apply_admin_cheats')
 def handle_admin_cheats(data):
     sid = request.sid
-    if data.get('password') == 'hahaha' and sid in players:
+    if data.get('password') == 'lol' and sid in players:
         if 'hp' in data:
             players[sid]['hp'] = int(data['hp'])
             if players[sid]['hp'] > players[sid]['maxHp']:
@@ -315,7 +323,7 @@ def handle_admin_cheats(data):
 @socketio.on('apply_bootleg_cheat')
 def handle_bootleg_cheats(data):
     sid = request.sid
-    if data.get('password') == 'hahaha' and sid in players and not players[sid]['isDead']:
+    if data.get('password') == 'lol' and sid in players and not players[sid]['isDead']:
         cheat = data.get('cheat')
         p = players[sid]
 
@@ -358,7 +366,7 @@ def handle_bootleg_cheats(data):
 
         socketio.emit('player_cheated', p)
         emit('bootleg_auth_result', {'success': True})
-    elif sid in players and data.get('password') != 'hahaha':
+    elif sid in players and data.get('password') != 'lol':
         emit('bootleg_auth_result', {'success': False})
 
 

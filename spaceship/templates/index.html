@@ -161,7 +161,29 @@
                 <label><input type="checkbox" id="admin-anim-obs"> Animated Obstacles</label>
             </div>
             <button id="admin-apply-btn" class="glow-btn small" style="width: 100%; border-color: #0f0; color: #0f0; margin-bottom: 10px;">Inject Override</button>
+            <button id="admin-view-stats-btn" class="glow-btn small" style="width: 100%; border-color: #00f0ff; color: #00f0ff; margin-bottom: 10px;">View Player Stats</button>
             <p id="admin-error" class="error" style="margin-top: 10px;"></p>
+        </div>
+
+        <!-- Admin Stats Panel -->
+        <div id="admin-stats-panel" class="glass-panel hidden" style="position: absolute; top: 100px; left: 50%; transform: translateX(-50%); width: 500px; z-index: 50; border-color: #00f0ff; box-shadow: 0 0 20px rgba(0, 240, 255, 0.4); max-height: 400px; overflow-y: auto;">
+            <h3 style="margin-top: 0; color: #00f0ff;">Live Ship Diagnostics</h3>
+            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 12px; margin-bottom: 15px;">
+                <thead>
+                    <tr style="border-bottom: 1px solid #00f0ff;">
+                        <th>Type</th>
+                        <th>Name</th>
+                        <th>Team</th>
+                        <th>HP</th>
+                        <th>Speed</th>
+                        <th>DMG</th>
+                        <th>Coins</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-stats-table-body">
+                </tbody>
+            </table>
+            <button id="admin-stats-close-btn" class="glow-btn small" style="width: 100%; border-color: #fff; color: #fff;">Close Diagnostics</button>
         </div>
 
         <!-- Bootleg Cheats Modal -->

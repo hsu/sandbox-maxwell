@@ -249,6 +249,55 @@ socket.on('admin_auth_result', (data) => {
     }
 });
 
+document.getElementById('admin-view-stats-btn').addEventListener('click', () => {
+    const pw = document.getElementById('admin-password').value;
+    socket.emit('request_admin_stats', { password: pw });
+});
+
+document.getElementById('admin-stats-close-btn').addEventListener('click', () => {
+    document.getElementById('admin-stats-panel').classList.add('hidden');
+});
+
+socket.on('admin_stats_data', (data) => {
+    if (data.success) {
+        document.getElementById('admin-settings-panel').classList.add('hidden');
+        document.getElementById('admin-stats-panel').classList.remove('hidden');
+        const tbody = document.getElementById('admin-stats-table-body');
+        tbody.innerHTML = '';
+        for (let pid in data.players) {
+            let p = data.players[pid];
+            let row = document.createElement('tr');
+            row.style.borderBottom = '1px solid #444';
+            let typeCell = document.createElement('td');
+            typeCell.innerText = p.isBot ? '🤖 Bot' : '🧑 Player';
+            let nameCell = document.createElement('td');
+            nameCell.innerText = p.name;
+            let teamCell = document.createElement('td');
+            teamCell.innerText = p.team;
+            teamCell.style.color = p.team === 'red' ? '#ff3366' : (p.team === 'blue' ? '#33ccff' : '#0f0');
+            let hpCell = document.createElement('td');
+            hpCell.innerText = `${p.hp}/${p.maxHp}`;
+            let speedCell = document.createElement('td');
+            speedCell.innerText = p.speed;
+            let dmgCell = document.createElement('td');
+            dmgCell.innerText = p.damage;
+            let coinsCell = document.createElement('td');
+            coinsCell.innerText = p.coins;
+            row.appendChild(typeCell);
+            row.appendChild(nameCell);
+            row.appendChild(teamCell);
+            row.appendChild(hpCell);
+            row.appendChild(speedCell);
+            row.appendChild(dmgCell);
+            row.appendChild(coinsCell);
+            tbody.appendChild(row);
+        }
+    } else {
+        document.getElementById('admin-error').innerText = 'Invalid Passcode';
+        document.getElementById('admin-error').style.color = '#ff3366';
+    }
+});
+
 
 
 
