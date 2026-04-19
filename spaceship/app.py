@@ -75,6 +75,13 @@ def handle_obs_dest(data):
 def index():
     return render_template('index.html')
 
+@socketio.on('verify_passcode')
+def handle_verify_passcode(data):
+    if data.get('passcode') == PASSCODE:
+        emit('passcode_result', {'success': True})
+    else:
+        emit('passcode_result', {'success': False})
+
 @socketio.on('join_game')
 def handle_join(data):
     passcode = data.get('passcode')
@@ -301,11 +308,14 @@ def handle_admin_cheats(data):
             TARGET_BOT_COUNT = int(data['targetBotCount'])
 
         socketio.emit('player_cheated', players[sid])
+        emit('admin_auth_result', {'success': True})
+    else:
+        emit('admin_auth_result', {'success': False})
 
 @socketio.on('apply_bootleg_cheat')
 def handle_bootleg_cheats(data):
     sid = request.sid
-    if sid in players and not players[sid]['isDead']:
+    if data.get('password') == 'hahaha' and sid in players and not players[sid]['isDead']:
         cheat = data.get('cheat')
         p = players[sid]
 
@@ -347,7 +357,9 @@ def handle_bootleg_cheats(data):
                 socketio.emit('player_joined', players[bot_id])
 
         socketio.emit('player_cheated', p)
-
+        emit('bootleg_auth_result', {'success': True})
+    elif sid in players and data.get('password') != 'hahaha':
+        emit('bootleg_auth_result', {'success': False})
 
 
 # activate_shield removed — shield is now a shop purchase

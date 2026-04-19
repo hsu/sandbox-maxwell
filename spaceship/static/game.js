@@ -138,7 +138,11 @@ const mouse = { x: 0, y: 0, worldX: 0, worldY: 0, isDown: false, isRightDown: fa
 
 document.getElementById('passcode-btn').addEventListener('click', () => {
     const pw = document.getElementById('passcode-input').value;
-    if (pw === 'spaceship123') {
+    socket.emit('verify_passcode', { passcode: pw });
+});
+
+socket.on('passcode_result', (data) => {
+    if (data.success) {
         showScreen('lobby');
         chatContainerLobby.appendChild(chatComponent);
     } else {
@@ -149,7 +153,7 @@ document.getElementById('passcode-btn').addEventListener('click', () => {
 document.getElementById('deploy-btn').addEventListener('click', () => {
     isRelativeControl = (document.getElementById('control-select').value === 'relative');
     socket.emit('join_game', {
-        passcode: 'spaceship123',
+        passcode: document.getElementById('passcode-input').value,
         name: document.getElementById('pilot-name').value || 'Pilot',
         team: document.getElementById('team-select').value,
         shipClass: document.getElementById('ship-select').value
@@ -173,13 +177,22 @@ document.getElementById('bootleg-close-btn').addEventListener('click', () => {
 
 document.querySelectorAll('.bootleg-action').forEach(btn => {
     btn.addEventListener('click', (e) => {
-        socket.emit('apply_bootleg_cheat', { cheat: e.target.dataset.cheat });
+        const pw = document.getElementById('bootleg-password').value;
+        socket.emit('apply_bootleg_cheat', { cheat: e.target.dataset.cheat, password: pw });
         e.target.innerText = 'INJECTED';
         setTimeout(() => {
             e.target.innerText = 'INJECT';
             document.getElementById('bootleg-settings-panel').classList.add('hidden');
+            document.getElementById('bootleg-error').innerText = '';
         }, 800);
     });
+});
+
+socket.on('bootleg_auth_result', (data) => {
+    if (!data.success) {
+        document.getElementById('bootleg-error').innerText = 'Invalid Passcode';
+        document.getElementById('bootleg-settings-panel').classList.remove('hidden');
+    }
 });
 
 document.getElementById('profile-settings-btn').addEventListener('click', () => {
@@ -205,23 +218,25 @@ document.getElementById('profile-apply-btn').addEventListener('click', () => {
 
 document.getElementById('admin-apply-btn').addEventListener('click', () => {
     const pw = document.getElementById('admin-password').value;
-    if (pw === 'hahaha') {
-        myFireRate = parseInt(document.getElementById('admin-fire-rate').value) || 300;
-        myBulletSpeed = parseInt(document.getElementById('admin-bullet-speed').value) || 1000;
-        myBulletSize = parseInt(document.getElementById('admin-bullet-size').value) || 5;
+    myFireRate = parseInt(document.getElementById('admin-fire-rate').value) || 300;
+    myBulletSpeed = parseInt(document.getElementById('admin-bullet-speed').value) || 1000;
+    myBulletSize = parseInt(document.getElementById('admin-bullet-size').value) || 5;
 
-        socket.emit('apply_admin_cheats', {
-            password: pw,
-            hp: document.getElementById('admin-hp').value,
-            speed: document.getElementById('admin-speed').value,
-            damage: document.getElementById('admin-damage').value,
-            fireDelay: myFireRate,
-            targetBotCount: document.getElementById('admin-target-bot-count').value,
-            invisible: document.getElementById('admin-invisible').checked,
-            autoAim: document.getElementById('admin-auto-aim').checked,
-            anim_obs: document.getElementById('admin-anim-obs').checked
-        });
+    socket.emit('apply_admin_cheats', {
+        password: pw,
+        hp: document.getElementById('admin-hp').value,
+        speed: document.getElementById('admin-speed').value,
+        damage: document.getElementById('admin-damage').value,
+        fireDelay: myFireRate,
+        targetBotCount: document.getElementById('admin-target-bot-count').value,
+        invisible: document.getElementById('admin-invisible').checked,
+        autoAim: document.getElementById('admin-auto-aim').checked,
+        anim_obs: document.getElementById('admin-anim-obs').checked
+    });
+});
 
+socket.on('admin_auth_result', (data) => {
+    if (data.success) {
         document.getElementById('admin-error').innerText = 'Cheats injected!';
         document.getElementById('admin-error').style.color = '#0f0';
         setTimeout(() => {
