@@ -231,7 +231,8 @@ document.getElementById('admin-apply-btn').addEventListener('click', () => {
         targetBotCount: document.getElementById('admin-target-bot-count').value,
         invisible: document.getElementById('admin-invisible').checked,
         autoAim: document.getElementById('admin-auto-aim').checked,
-        anim_obs: document.getElementById('admin-anim-obs').checked
+        anim_obs: document.getElementById('admin-anim-obs').checked,
+        hardcoreBots: document.getElementById('admin-hardcore-bots').checked
     });
 });
 

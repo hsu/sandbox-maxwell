@@ -27,6 +27,7 @@ MAP_HEIGHT = 1500
 OBSTACLE_TYPES = ['rock', 'metal_crate', 'mushroom']
 animated_obstacles_enabled = False
 TARGET_BOT_COUNT = 0
+HARDCORE_BOTS = False
 
 def generate_obstacles():
     obs = []
@@ -309,9 +310,11 @@ def handle_admin_cheats(data):
         if 'autoAim' in data:
             players[sid]['hasAutoAim'] = bool(data['autoAim'])
 
-        global animated_obstacles_enabled, TARGET_BOT_COUNT
+        global animated_obstacles_enabled, TARGET_BOT_COUNT, HARDCORE_BOTS
         if 'anim_obs' in data:
             animated_obstacles_enabled = bool(data['anim_obs'])
+        if 'hardcoreBots' in data:
+            HARDCORE_BOTS = bool(data['hardcoreBots'])
         if 'targetBotCount' in data:
             TARGET_BOT_COUNT = int(data['targetBotCount'])
 
@@ -407,7 +410,7 @@ def bot_manager_loop():
     while True:
         eventlet.sleep(0.1)  # 10Hz tick rate
 
-        global animated_obstacles_enabled, OBSTACLES, TARGET_BOT_COUNT
+        global animated_obstacles_enabled, OBSTACLES, TARGET_BOT_COUNT, HARDCORE_BOTS
 
         current_bots = [pid for pid, p in players.items() if p.get('isBot') and not p.get('isDead') and pid.startswith('bot_')]
 
@@ -482,12 +485,33 @@ def bot_manager_loop():
             if not p.get('isBot'):
                 continue
 
-            # Random slight change in direction
-            if random.random() < 0.1:
-                p['angle'] += random.uniform(-0.5, 0.5)
+            if HARDCORE_BOTS:
+                best_dist = float('inf')
+                best_target = None
+                for tid, target in players.items():
+                    if target.get('isDead') or not target: continue
+                    if target.get('team') == p.get('team'): continue
+                    if target.get('isInvisible'): continue
+                    
+                    dx = target['x'] - p['x']
+                    dy = target['y'] - p['y']
+                    dist = math.hypot(dx, dy)
+                    if dist < best_dist:
+                        best_dist = dist
+                        best_target = target
+                
+                if best_target:
+                    p['angle'] = math.atan2(best_target['y'] - p['y'], best_target['x'] - p['x'])
+                
+                actual_speed = p['speed'] * 1.5
+            else:
+                # Random slight change in direction
+                if random.random() < 0.1:
+                    p['angle'] += random.uniform(-0.5, 0.5)
+                actual_speed = p['speed']
 
-            p['x'] += math.cos(p['angle']) * p['speed'] * 0.1
-            p['y'] += math.sin(p['angle']) * p['speed'] * 0.1
+            p['x'] += math.cos(p['angle']) * actual_speed * 0.1
+            p['y'] += math.sin(p['angle']) * actual_speed * 0.1
 
             # Simple bounds bounce
             if p['x'] < 50 or p['x'] > MAP_WIDTH - 50 or p['y'] < 50 or p['y'] > MAP_HEIGHT - 50:
@@ -502,18 +526,18 @@ def bot_manager_loop():
                 'angle': p['angle']
             })
 
-            # Occasionally shoot randomly
-            if random.random() < 0.05:  # ~1 shot per 2 seconds
+            shoot_chance = 0.2 if HARDCORE_BOTS else 0.05
+            if random.random() < shoot_chance:
                 bullet = {
                     'id': str(uuid.uuid4()),
                     'owner': pid,
                     'team': p['team'],
                     'x': p['x'],
                     'y': p['y'],
-                    'angle': p['angle'] + random.uniform(-0.1, 0.1),
-                    'speed': 800,
-                    'size': 5,
-                    'damage': p['damage'],
+                    'angle': p['angle'] + (random.uniform(-0.02, 0.02) if HARDCORE_BOTS else random.uniform(-0.1, 0.1)),
+                    'speed': 1200 if HARDCORE_BOTS else 800,
+                    'size': 7 if HARDCORE_BOTS else 5,
+                    'damage': p['damage'] * 2 if HARDCORE_BOTS else p['damage'],
                     'type': 'normal'
                 }
                 socketio.emit('bullet_spawned', bullet)
