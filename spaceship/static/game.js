@@ -136,6 +136,13 @@ let laserBank = 60.0;
 let lastShieldTime = 0;
 const mouse = { x: 0, y: 0, worldX: 0, worldY: 0, isDown: false, isRightDown: false };
 
+// --- Gamepad state ---
+let gamepadIndex = null;
+let gpLastOptions = false;    // Options / Start button
+let gpLastTriangle = false;   // Triangle button (laser toggle)
+let gpLastL2Press = false;    // L2 digital press (heavy fire)
+let gpLastShieldBtn = false;  // Cross / X button (shield)
+
 document.getElementById('passcode-btn').addEventListener('click', () => {
     const pw = document.getElementById('passcode-input').value;
     socket.emit('verify_passcode', { passcode: pw });
@@ -410,6 +417,7 @@ socket.on('game_init', (data) => {
     canvas.style.display = 'block';
     resizeCanvas();
     initTouchControls();
+    initGamepadControls();
     updateHUD();
 
     if (!window.loopRunning) {
@@ -666,6 +674,120 @@ function initTouchControls() {
         }
     });
 }
+
+// ─── Gamepad / DualSense Support ────────────────────────────────────────────
+function initGamepadControls() {
+    window.addEventListener('gamepadconnected', (e) => {
+        gamepadIndex = e.gamepad.index;
+        debugLog(`<span style="color:#0f0">🎮 Gamepad connected: ${e.gamepad.id} (index ${gamepadIndex})</span>`);
+        showGamepadHint();
+    });
+    window.addEventListener('gamepaddisconnected', (e) => {
+        if (e.gamepad.index === gamepadIndex) {
+            gamepadIndex = null;
+            debugLog(`<span style="color:yellow">🎮 Gamepad disconnected</span>`);
+        }
+    });
+}
+
+function showGamepadHint() {
+    const hint = document.createElement('div');
+    hint.id = 'gamepad-hint';
+    hint.style.cssText = [
+        'position:fixed', 'top:12px', 'left:50%', 'transform:translateX(-50%)',
+        'background:rgba(0,0,0,0.75)', 'color:#0f0', 'font-family:Orbitron,sans-serif',
+        'font-size:11px', 'padding:6px 14px', 'border-radius:20px',
+        'border:1px solid #0f0', 'z-index:9999', 'pointer-events:none',
+        'backdrop-filter:blur(4px)'
+    ].join(';');
+    hint.innerHTML = '🎮 DualSense Active &nbsp;|&nbsp; L-Stick: Move &nbsp;|&nbsp; R-Stick: Aim &nbsp;|&nbsp; R2: Fire &nbsp;|&nbsp; L2: Heavy &nbsp;|&nbsp; △: Laser &nbsp;|&nbsp; ○: Shop';
+    document.body.appendChild(hint);
+    setTimeout(() => hint.remove(), 5000);
+}
+
+const GAMEPAD_DEADZONE = 0.15;
+function applyDeadzone(v) { return Math.abs(v) < GAMEPAD_DEADZONE ? 0 : v; }
+
+function pollGamepad() {
+    if (gamepadIndex === null) return;
+    const gp = navigator.getGamepads ? navigator.getGamepads()[gamepadIndex] : null;
+    if (!gp) return;
+
+    // ── Axes ──────────────────────────────────────────────────────────────────
+    // DualSense: axes 0/1 = left stick X/Y,  axes 2/3 = right stick X/Y
+    const lx = applyDeadzone(gp.axes[0] || 0);
+    const ly = applyDeadzone(gp.axes[1] || 0);
+    const rx = applyDeadzone(gp.axes[2] || 0);
+    const ry = applyDeadzone(gp.axes[3] || 0);
+
+    // Left stick → movement (overrides keyboard / touch only when tilted)
+    if (lx !== 0 || ly !== 0) {
+        joyDx = lx;
+        joyDy = -ly;   // invert Y so up = forward
+    } else if (gamepadIndex !== null) {
+        // release if stick centred (don't clobber touch joyDx if no gamepad)
+        joyDx = 0;
+        joyDy = 0;
+    }
+
+    // Right stick → aim angle
+    if (rx !== 0 || ry !== 0) {
+        joyAngle = Math.atan2(ry, rx);
+    }
+    // (if right stick centred, leave joyAngle as whatever it was so mouse still works)
+
+    // ── Buttons ───────────────────────────────────────────────────────────────
+    // DualSense standard mapping:
+    //   0=Cross  1=Circle  2=Square  3=Triangle
+    //   4=L1     5=R1      6=L2(dig) 7=R2(dig)
+    //   8=Share  9=Options 10=L3     11=R3
+    //   12=Up    13=Down   14=Left   15=Right
+    //   16=PS    17=Touchpad
+
+    const btnR2      = gp.buttons[7];
+    const btnL2      = gp.buttons[6];
+    const btnTriangle = gp.buttons[3];
+    const btnCircle  = gp.buttons[1];
+    const btnCross   = gp.buttons[0];
+    const btnOptions = gp.buttons[9];
+    const btnR1      = gp.buttons[5];
+
+    // R2 (or R1) → primary fire (hold)
+    const r2Val = btnR2 ? (typeof btnR2.value === 'number' ? btnR2.value : (btnR2.pressed ? 1 : 0)) : 0;
+    joyShooting = r2Val > 0.1 || (btnR1 && btnR1.pressed);
+
+    // L2 → heavy weapon (press, not hold)
+    const l2Val = btnL2 ? (typeof btnL2.value === 'number' ? btnL2.value : (btnL2.pressed ? 1 : 0)) : 0;
+    const l2Pressed = l2Val > 0.1;
+    if (l2Pressed && !gpLastL2Press) fireHeavyWeapon();
+    gpLastL2Press = l2Pressed;
+
+    // Triangle → toggle laser
+    const triPressed = btnTriangle && btnTriangle.pressed;
+    if (triPressed && !gpLastTriangle) {
+        laserMode = !laserMode;
+        const btn = document.getElementById('laser-toggle-btn');
+        if (btn) btn.innerText = `Laser [${laserMode ? 'ON' : 'OFF'}] (${Math.max(0, laserBank).toFixed(1)}s)`;
+    }
+    gpLastTriangle = triPressed;
+
+    // Circle → toggle shop
+    const optPressed = (btnOptions && btnOptions.pressed) || (btnCircle && btnCircle.pressed);
+    if (optPressed && !gpLastOptions) {
+        document.getElementById('shop-panel').classList.toggle('hidden');
+    }
+    gpLastOptions = optPressed;
+
+    // Cross / X → shield (right-click equivalent)
+    const shieldPressed = btnCross && btnCross.pressed;
+    if (shieldPressed && !gpLastShieldBtn) {
+        mouse.isRightDown = true;
+    } else if (!shieldPressed && gpLastShieldBtn) {
+        mouse.isRightDown = false;
+    }
+    gpLastShieldBtn = shieldPressed;
+}
+// ────────────────────────────────────────────────────────────────────────────
 
 let lastTime = performance.now();
 let lastShootTime = 0;
@@ -1047,6 +1169,7 @@ function gameLoop() {
     const dt = (now - lastTime) / 1000;
     lastTime = now;
 
+    pollGamepad();
     update(dt);
     draw();
 
