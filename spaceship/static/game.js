@@ -723,7 +723,7 @@ function pollGamepad() {
     // Left stick → movement (overrides keyboard / touch only when tilted)
     if (lx !== 0 || ly !== 0) {
         joyDx = lx;
-        joyDy = -ly;   // invert Y so up = forward
+        joyDy = ly;
     } else if (gamepadIndex !== null) {
         // release if stick centred (don't clobber touch joyDx if no gamepad)
         joyDx = 0;
